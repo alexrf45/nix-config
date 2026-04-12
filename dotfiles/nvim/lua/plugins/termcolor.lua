@@ -1,0 +1,3 @@
+return {
+  "sekhat/termcolors.nvim",
+}

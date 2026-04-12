@@ -1,0 +1,132 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[╭─infra────❯](white) $kubernetes $terraform $aws $gcloud $azure
+[┣─project──❯](white) $directory$git_branch $git_status $git_commit $golang $python
+[╰](white)$character
+"""
+
+# Wait 10 milliseconds for starship to check files under the current directory.
+scan_timeout = 10
+
+# Disable the blank line at the start of the prompt
+add_newline = true
+
+[directory]
+read_only = " 🔒"
+home_symbol = "~"
+truncation_length = 3
+truncate_to_repo = true # truncates directory to root folder if in github repo
+style = "dimmed blue"
+
+
+[character]
+success_symbol = " [>](bold green)"
+error_symbol = " [×](bold red)"
+
+[time]
+disabled = true
+style = "bold purple"
+format = "🕙 $time($style) "
+time_format = "%T"
+utc_time_offset = "-5"
+
+[custom.tztime]
+command = 'date +"%a %b %d %Y %T"'
+disabled = true
+when = "true"
+format = ' [\[🕙 $symbol($output)\]]($style)'
+style = "bold white"
+
+[custom.vpn]
+command = "ip addr show | grep -E '^[0-9]+: (tun|tap|wg)' -A 2 | grep 'inet ' | head -1 | awk '{print $2}' | cut -d'/' -f1"
+disabled = false
+when = "true"
+format = ' [\[🕙 $symbol($output)\]]($style)'
+style = "bold white"
+
+[line_break]
+disabled = false
+
+[python]
+symbol = " "
+#pyenv_version_name = true
+format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+pyenv_prefix = "venv "
+python_binary = ["./venv/bin/python", "python", "python3", "python2"]
+detect_extensions = ["py"]
+version_format = "v${raw}"
+
+[aws]
+format = '[ aws: $profile/$region ]($style)'
+style = " italic #bf5700"
+[aws.region_aliases]
+us-east-1 = "us-east-1"
+[aws.profile_aliases]
+Admin = 'Administrator'
+account-admin = 'acct-adm'
+
+[gcloud]
+disabled = false
+format = ' gcloud: [$symbol$account(@$domain)(\($project\))]($style) '
+style = "#FEFB61"
+
+[git_branch]
+format = " [ $symbol $branch]($style) "
+style = "bold green"
+symbol = " "
+
+[git_status]
+conflicted = "⚔️ "
+ahead = "🏎️ 💨 ×${count} "
+behind = "🐢 ×${count} "
+diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
+untracked = "🛤️  ×${count} "
+stashed = "📦 "
+modified = "📝 ×${count} "
+staged = "🗃️  ×${count} "
+renamed = "📛 ×${count} "
+deleted = "🗑️  ×${count} "
+style = "bright-white"
+format = "$all_status$ahead_behind"
+
+[git_commit]
+commit_hash_length = 5
+style = "bold yellow"
+
+[pulumi]
+symbol = "🎁"
+format = " [$symbol $stack]($style)"
+disabled = false
+
+[terraform]
+format = " [🔧 $version]($style) "
+
+[kubernetes]
+format = '[k8s: $context \($namespace\)]($style) '
+disabled = false
+style = "dimmed purple"
+
+
+[[kubernetes.contexts]]
+context_pattern = "^admin@abydos$"
+context_alias = "test"
+style = "dimmed red"
+
+[[kubernetes.contexts]]
+context_pattern = "^admin@memphis$"
+context_alias = "dev"
+style = "dimmed yellow"
+
+[[kubernetes.contexts]]
+context_pattern = "^admin@horus$"
+context_alias = "prod"
+style = "italic purple"
+
+[azure]
+disabled = false
+format = "on [$symbol($subscription)]($style) "
+symbol = "azure: "
+style = "bold blue"

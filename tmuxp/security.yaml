@@ -1,0 +1,20 @@
+# Security / CTF session
+# Usage: tmuxp load ~/.config/tmuxp/security.yaml
+session_name: kali
+windows:
+  - window_name: notes
+    layout: tiled
+    panes:
+      - cd ~/fr3d && nvim
+  - window_name: hackthebox
+    layout: tiled
+    panes:
+      - cd ~/hackthebox/
+  - window_name: host
+    layout: tiled
+    panes:
+      - btop
+  - window_name: vpn
+    layout: tiled
+    panes:
+      - echo "Connect VPN: sudo openvpn ~/.config/openvpn/<profile>.ovpn"
