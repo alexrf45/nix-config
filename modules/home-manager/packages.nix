@@ -5,7 +5,6 @@
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
     # Shell enhancements
-    fzf
     fd
     ripgrep
     bat
@@ -71,6 +70,29 @@
   xdg.configFile."tmuxp/dev.yaml".source      = ../../tmuxp/dev.yaml;
 
   # -----------------------------------------------------------------------
+  # fzf — use programs.fzf.defaultOptions (list of strings) to avoid shell
+  # redirection issues: bare > in FZF_DEFAULT_OPTS via sessionVariables gets
+  # interpreted as a redirect operator, creating junk files in $HOME.
+  # -----------------------------------------------------------------------
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    defaultOptions = [
+      "--color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626"
+      "--color=hl:#5fb079,hl+:#43fb00,info:#afaf87,marker:#87ff00"
+      "--color=prompt:#06fd34,spinner:#f2ff5e,pointer:#fbfbfb,header:#87afaf"
+      "--color=border:#2B3328,preview-fg:#f1f8f2,query:#e97b7b"
+      "--border=rounded"
+      "--preview-window=border-rounded"
+      "--prompt=> "
+      "--marker=>"
+      "--pointer=\uf054"
+      "--separator=─"
+      "--scrollbar=│"
+    ];
+  };
+
+  # -----------------------------------------------------------------------
   # Session environment (mirrors .zprofile)
   # -----------------------------------------------------------------------
   home.sessionVariables = {
@@ -81,15 +103,7 @@
     KUBECONFIG           = "$HOME/.kube/config";
     KUBECTL_KUBERC       = "true";
     KUBE_EDITOR          = "nvim";
-    FZF_DEFAULT_OPTS     = ''
-      --color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626
-      --color=hl:#5fb079,hl+:#43fb00,info:#afaf87,marker:#87ff00
-      --color=prompt:#06fd34,spinner:#f2ff5e,pointer:#fbfbfb,header:#87afaf
-      --color=border:#2B3328,preview-fg:#f1f8f2,query:#e97b7b
-      --border="rounded" --preview-window="border-rounded" --prompt="> "
-      --marker=">" --pointer="" --separator="─" --scrollbar="│"
-    '';
     FZF_COMPLETION_TRIGGER = "..";
-    FZF_COMPLETION_OPTS  = "--border --info=inline";
+    FZF_COMPLETION_OPTS    = "--border --info=inline";
   };
 }
