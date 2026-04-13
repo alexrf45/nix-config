@@ -12,6 +12,7 @@
     ../../modules/nixos/desktop.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
+    ../../modules/nixos/smartcard.nix
 
     # SOPS-nix system module
     inputs.sops-nix.nixosModules.sops

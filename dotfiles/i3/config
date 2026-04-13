@@ -171,6 +171,8 @@ exec --no-startup-id "i3-msg 'workspace 2; exec brave'"
 
 assign [class="alacritty"] $ws1
 assign [class="Brave-browser"] $ws2
+assign [class="firefox"] $ws3
+assign [class="Google-chrome"] $ws4
 
 bindsym $mod+p exec flameshot gui
 

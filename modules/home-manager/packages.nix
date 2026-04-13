@@ -44,8 +44,9 @@
     # VPN
     openvpn
 
-    # Web browser
+    # Web browsers
     brave
+    google-chrome    # CAC-authenticated DoD portals
   ];
 
   # -----------------------------------------------------------------------
@@ -69,6 +70,24 @@
   xdg.configFile."tmuxp/homelab.yaml".source = ../../tmuxp/homelab.yaml;
   xdg.configFile."tmuxp/security.yaml".source = ../../tmuxp/security.yaml;
   xdg.configFile."tmuxp/dev.yaml".source      = ../../tmuxp/dev.yaml;
+
+  # -----------------------------------------------------------------------
+  # Firefox — managed via programs module for profile/settings control
+  # security.osclientcerts.autoload exposes OS trust anchors via p11-kit.
+  # For full CAC client auth, load OpenSC manually once in Firefox:
+  #   Preferences → Privacy & Security → Security Devices → Load
+  #   Path: /run/current-system/sw/lib/opensc-pkcs11.so
+  # -----------------------------------------------------------------------
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      settings = {
+        "security.osclientcerts.autoload" = true;
+        # Some DoD sites still require older TLS — allow TLS 1.0+
+        "security.tls.version.min" = 1;
+      };
+    };
+  };
 
   # -----------------------------------------------------------------------
   # fzf — use programs.fzf.defaultOptions (list of strings) to avoid shell

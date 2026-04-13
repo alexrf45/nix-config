@@ -25,6 +25,7 @@
       ripgrep
       fd
       tree-sitter
+      gcc      # Required by nvim-treesitter to compile parsers
       nodejs   # Required by many mason-installed LSPs
     ];
   };

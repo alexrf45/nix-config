@@ -13,6 +13,7 @@
     ../../../modules/home-manager/desktop.nix
     ../../../modules/home-manager/dev-tools.nix
     ../../../modules/home-manager/packages.nix
+    ../../../modules/home-manager/ssh.nix
   ];
 
   home = {

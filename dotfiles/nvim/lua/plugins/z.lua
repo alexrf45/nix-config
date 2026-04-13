@@ -72,7 +72,7 @@ return {
 
         -- Pass 1: inline  tags: [tag1, tag2]
         local inline = vim.fn.systemlist(
-          "rg --with-filename -o 'tags: \[[^\]]+\]' '" .. vault .. "'"
+          "rg --with-filename -o 'tags: \\[[^\\]]+\\]' '" .. vault .. "'"
           .. " '--glob=*.md' '--glob=!templates/*.md' 2>/dev/null"
         )
         for _, line in ipairs(inline) do
@@ -92,7 +92,7 @@ return {
         --   tags:
         --     - tagname
         local multiline = vim.fn.systemlist(
-          "rg --vimgrep '^\s+- [a-zA-Z0-9_/-]+$' '" .. vault .. "'"
+          "rg --vimgrep '^\\s+- [a-zA-Z0-9_/-]+$' '" .. vault .. "'"
           .. " '--glob=*.md' '--glob=!templates/*.md' 2>/dev/null"
         )
         for _, line in ipairs(multiline) do

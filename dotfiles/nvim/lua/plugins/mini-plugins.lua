@@ -44,9 +44,6 @@ return {
         { name = "Files", action = "FzfLua files", section = "Files" },
         { name = "Recent Files", action = ":Telescope oldfiles", section = "Files" },
       },
-      function()
-        require("mini.starter").setup()
-      end,
     },
   },
 }
