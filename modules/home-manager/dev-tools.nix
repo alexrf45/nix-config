@@ -15,7 +15,7 @@
     python3
     python3Packages.pip
     python3Packages.virtualenv
-    python3Packages.tmuxp        # tmuxp session manager
+    tmuxp                        # tmuxp session manager
 
     # -----------------------------------------------------------------------
     # Kubernetes / Home Lab
