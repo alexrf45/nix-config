@@ -65,7 +65,7 @@
     burpsuite             # Requires unfree; from unstable for latest
     metasploit            # Requires unfree
     binutils              # objdump, strings, nm
-    pwndbg                # GDB enhancement for CTF
+    gef                   # GDB enhancement for CTF (pwndbg not in nixpkgs)
     pwntools              # CTF toolkit
     gdb
 
