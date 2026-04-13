@@ -49,7 +49,7 @@
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       liberation_ttf
     ];
     fontconfig = {
