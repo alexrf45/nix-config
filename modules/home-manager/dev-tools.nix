@@ -77,8 +77,8 @@
     # -----------------------------------------------------------------------
     # Unstable packages (accessed via pkgs.unstable.*)
     # -----------------------------------------------------------------------
-    pkgs-unstable._1password-cli-beta
     pkgs-unstable.claude-code
+    _1password-gui-beta
   ] ++ (with pkgs-unstable; [
     # Any additional unstable packages
   ]);
