@@ -36,6 +36,7 @@
   programs._1password-gui = {
     enable = true;
     polkitPolicyOwners = [ "fr3d" ];
+    package = pkgs._1password-gui-beta;
   };
 
   # -----------------------------------------------------------------------
