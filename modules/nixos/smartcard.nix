@@ -15,13 +15,13 @@
   # opensc:     PIV/CAC PKCS#11 provider (covers all DoD CAC since ~2013)
   # pcsc-tools: pcsc_scan for reader/card diagnostics
   # p11-kit:    unified PKCS#11 broker (browser + SSH share one module reg)
-  # nsstools:   modutil/certutil for NSS database management
+  # nssTools:   modutil/certutil for NSS database management
   # -----------------------------------------------------------------------
   environment.systemPackages = with pkgs; [
     opensc
     pcsc-tools
     p11-kit
-    nsstools
+    nssTools
   ];
 
   # -----------------------------------------------------------------------
