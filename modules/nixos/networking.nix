@@ -5,7 +5,7 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 ];
+      allowedTCPPorts = [ 22 8080 8000];
       # Extend as needed:
       #   allowedTCPPorts = [ 22 8080 ];
       #   allowedUDPPorts = [ 51820 ];  # WireGuard

@@ -56,7 +56,7 @@
     ];
     # SSH public key for remote access — update with your key
     # openssh.authorizedKeys.keys = [
-    #   "ssh-ed25519 AAAAC3... fr3d@nitro5"
+    #   "ssh-ed25519 AAAAC3... fr3d@horus"
     # ];
   };
 

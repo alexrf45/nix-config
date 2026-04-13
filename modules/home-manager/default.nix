@@ -1,5 +1,5 @@
 # Home Manager module index.
-# Within this repo, modules are imported by path in home-manager/nitro5/fr3d/default.nix.
+# Within this repo, modules are imported by path in home-manager/horus/fr3d/default.nix.
 {
   shell      = import ./shell.nix;
   terminal   = import ./terminal.nix;

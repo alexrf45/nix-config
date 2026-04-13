@@ -23,7 +23,7 @@ Replace the `age1REPLACE...` placeholder in `.sops.yaml` with your actual public
 ### 3. Create or edit a secrets file
 
 ```bash
-sops secrets/nitro5.yaml
+sops secrets/horus.yaml
 ```
 
 SOPS opens `$EDITOR`. Add secrets in YAML format:
@@ -46,7 +46,7 @@ To rotate the age key or add a new key:
 
 ```bash
 # Add the new public key to .sops.yaml, then:
-sops updatekeys secrets/nitro5.yaml
+sops updatekeys secrets/horus.yaml
 ```
 
 ## Secret inventory

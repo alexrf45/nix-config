@@ -66,7 +66,7 @@
       #   06:00.0 VGA: AMD Radeon   → amdgpuBusId = "PCI:6:0:0"
       #   01:00.0 3D: NVIDIA        → nvidiaBusId  = "PCI:1:0:0"
       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      amdgpuBusId = "PCI:6:0:0";   # PLACEHOLDER
+      amdgpuBusId = "PCI:4:0:0";   # PLACEHOLDER
       nvidiaBusId  = "PCI:1:0:0";  # PLACEHOLDER
     };
   };

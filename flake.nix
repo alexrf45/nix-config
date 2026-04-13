@@ -14,14 +14,14 @@
 
   inputs = {
     # Primary stable channel
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # Unstable channel — used via overlay for select packages only
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # Home Manager pinned to matching stable release
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -47,13 +47,13 @@
 
     overlays = import ./overlays { inherit inputs; };
 
-    nixosConfigurations.nitro5 = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.horus = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit inputs outputs pkgs-unstable;
       };
       modules = [
-        ./hosts/nitro5
+        ./hosts/horus
       ];
     };
   };
