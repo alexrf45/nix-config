@@ -47,6 +47,9 @@
     # Web browsers
     brave
     google-chrome    # CAC-authenticated DoD portals
+
+    # Notes / PKM
+    obsidian         # Vault: ~/notes (templater + meld-encrypt + pandoc)
   ];
 
   # -----------------------------------------------------------------------
