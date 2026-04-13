@@ -35,7 +35,6 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      amdvlk                     # AMD Vulkan ICD
       rocmPackages.clr           # ROCm OpenCL runtime
     ];
   };
