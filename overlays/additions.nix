@@ -1,7 +1,7 @@
 { inputs }:
-# Custom derivations not yet in nixpkgs.
-# Usage: pkgs.my-package
+# Custom derivations and version overrides.
 final: prev: {
-  # Example:
-  # my-tool = final.callPackage ../pkgs/my-tool { };
+  # 1Password GUI beta — pinned to latest release, overrides the nixpkgs version.
+  # See pkgs/1password-gui-beta.nix for update instructions.
+  _1password-gui-beta = final.callPackage ../pkgs/1password-gui-beta.nix { };
 }

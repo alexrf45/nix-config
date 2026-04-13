@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 {
   # -----------------------------------------------------------------------
   # SSH daemon
@@ -36,7 +36,7 @@
   programs._1password-gui = {
     enable = true;
     polkitPolicyOwners = [ "fr3d" ];
-    package = pkgs-unstable._1password-gui-beta;
+    package = pkgs._1password-gui-beta;
   };
 
   # -----------------------------------------------------------------------

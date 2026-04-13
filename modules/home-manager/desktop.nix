@@ -14,6 +14,14 @@
   xdg.configFile."picom.conf" = { source = ../../dotfiles/picom.conf; force = true; };
 
   # -----------------------------------------------------------------------
+  # Wallpaper + lock screen images
+  # i3 config refs: feh --bg-fill ~/.config/pictures/skull.jpg
+  #                 i3lock -i ~/.config/pictures/sky.png
+  # -----------------------------------------------------------------------
+  xdg.configFile."pictures/skull.jpg" = { source = ../../dotfiles/pictures/skull.jpg; force = true; };
+  xdg.configFile."pictures/sky.png"   = { source = ../../dotfiles/pictures/sky.png;   force = true; };
+
+  # -----------------------------------------------------------------------
   # Desktop packages (picom, rofi, network tray, etc.)
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [

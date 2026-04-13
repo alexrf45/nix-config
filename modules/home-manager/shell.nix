@@ -90,5 +90,11 @@
     ".zsh/python.zsh".source    = ../../dotfiles/zsh/python.zsh;
     ".zsh/history.zsh".source   = ../../dotfiles/zsh/history.zsh;
     ".zsh/functions.zsh".source = ../../dotfiles/zsh/functions.zsh;
+
+    # Overwrite the pre-NixOS dotfiles .zprofile — it contained a multiline
+    # FZF_DEFAULT_OPTS with bare > characters that zsh interpreted as redirects,
+    # creating junk files in $HOME on every login. Session variables are now
+    # managed by Home Manager via home.sessionVariables / programs.fzf.
+    ".zprofile" = { text = "# Managed by Home Manager — do not edit\n"; force = true; };
   };
 }
