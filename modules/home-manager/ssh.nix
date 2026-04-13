@@ -28,9 +28,9 @@
   home.activation.registerCACinNSSDB = lib.hm.dag.entryAfter ["writeBoundary"] ''
     NSSDB="$HOME/.pki/nssdb"
     if [ ! -d "$NSSDB" ]; then
-      ${pkgs.nsstools}/bin/certutil -d "sql:$NSSDB" -N --empty-password
+      ${pkgs.nssTools}/bin/certutil -d "sql:$NSSDB" -N --empty-password
     fi
-    ${pkgs.nsstools}/bin/modutil \
+    ${pkgs.nssTools}/bin/modutil \
       -dbdir "sql:$NSSDB" \
       -add "OpenSC PKCS11" \
       -libfile "${pkgs.opensc}/lib/opensc-pkcs11.so" \
