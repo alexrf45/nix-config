@@ -9,6 +9,7 @@
   programs.ssh = {
     enable = true;
     extraConfig = ''
+      IdentityAgent ~/.1password/agent.sock
       PKCS11Provider ${pkgs.opensc}/lib/opensc-pkcs11.so
     '';
     # Restrict CAC auth to DoD hosts only (avoids PIN prompts elsewhere):
