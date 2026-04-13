@@ -44,7 +44,8 @@
     # VPN
     openvpn
 
-    # Scripts directory — managed as home.file
+    # Web browser
+    brave
   ];
 
   # -----------------------------------------------------------------------

@@ -167,10 +167,10 @@ exec_always --no-startup-id feh --no-fehbg --bg-fill $HOME/.config/pictures/skul
 exec_always --no-startup-id picom --config ~/.config/picom.conf -b
 
 exec --no-startup-id "i3-msg 'workspace 1; exec alacritty'"
-exec --no-startup-id "i3-msg 'workspace 2; exec brave-browser'"
+exec --no-startup-id "i3-msg 'workspace 2; exec brave'"
 
 assign [class="alacritty"] $ws1
-assign [class="brave-browser"] $ws2
+assign [class="Brave-browser"] $ws2
 
 bindsym $mod+p exec flameshot gui
 
