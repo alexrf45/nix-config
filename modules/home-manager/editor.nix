@@ -33,7 +33,7 @@
   # mason.nvim inside neovim manages plugin installation at runtime.
   # To update: run :Mason inside neovim.
   xdg.configFile."nvim" = {
-    source = ../../../dotfiles/nvim;
+    source = ../../dotfiles/nvim;
     recursive = true;
   };
 }

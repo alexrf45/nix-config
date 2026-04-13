@@ -52,7 +52,7 @@
   # Scripts from dotfiles — placed at ~/.config/scripts/
   # -----------------------------------------------------------------------
   xdg.configFile."scripts" = {
-    source = ../../../dotfiles/scripts;
+    source = ../../dotfiles/scripts;
     recursive = true;
     executable = true;
   };
@@ -60,23 +60,15 @@
   # -----------------------------------------------------------------------
   # Starship config — mirrors .config/starship.toml from dotfiles
   # -----------------------------------------------------------------------
-  xdg.configFile."starship.toml".source = ../../../dotfiles/starship.toml;
+  xdg.configFile."starship.toml".source = ../../dotfiles/starship.toml;
 
   # -----------------------------------------------------------------------
   # tmuxp session files — placed at ~/.config/tmuxp/
   # Aliases in aliases.zsh reference these paths
   # -----------------------------------------------------------------------
-  xdg.configFile."tmuxp/homelab.yaml".source = ../../../tmuxp/homelab.yaml;
-  xdg.configFile."tmuxp/security.yaml".source = ../../../tmuxp/security.yaml;
-  xdg.configFile."tmuxp/dev.yaml".source      = ../../../tmuxp/dev.yaml;
-
-  # -----------------------------------------------------------------------
-  # k9s skin
-  # -----------------------------------------------------------------------
-  xdg.configFile."k9s" = {
-    source = ../../../dotfiles/k9s;
-    recursive = true;
-  };
+  xdg.configFile."tmuxp/homelab.yaml".source = ../../tmuxp/homelab.yaml;
+  xdg.configFile."tmuxp/security.yaml".source = ../../tmuxp/security.yaml;
+  xdg.configFile."tmuxp/dev.yaml".source      = ../../tmuxp/dev.yaml;
 
   # -----------------------------------------------------------------------
   # Session environment (mirrors .zprofile)

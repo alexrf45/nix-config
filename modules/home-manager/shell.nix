@@ -81,14 +81,14 @@
   # Placed at ~/.zsh/*.zsh and sourced from initExtra above
   # -----------------------------------------------------------------------
   home.file = {
-    ".zsh/aliases.zsh".source   = ../../../dotfiles/zsh/aliases.zsh;
-    ".zsh/git.zsh".source       = ../../../dotfiles/zsh/git.zsh;
-    ".zsh/docker.zsh".source    = ../../../dotfiles/zsh/docker.zsh;
-    ".zsh/kube.zsh".source      = ../../../dotfiles/zsh/kube.zsh;
-    ".zsh/aws.zsh".source       = ../../../dotfiles/zsh/aws.zsh;
-    ".zsh/tf.zsh".source        = ../../../dotfiles/zsh/tf.zsh;
-    ".zsh/python.zsh".source    = ../../../dotfiles/zsh/python.zsh;
-    ".zsh/history.zsh".source   = ../../../dotfiles/zsh/history.zsh;
-    ".zsh/functions.zsh".source = ../../../dotfiles/zsh/functions.zsh;
+    ".zsh/aliases.zsh".source   = ../../dotfiles/zsh/aliases.zsh;
+    ".zsh/git.zsh".source       = ../../dotfiles/zsh/git.zsh;
+    ".zsh/docker.zsh".source    = ../../dotfiles/zsh/docker.zsh;
+    ".zsh/kube.zsh".source      = ../../dotfiles/zsh/kube.zsh;
+    ".zsh/aws.zsh".source       = ../../dotfiles/zsh/aws.zsh;
+    ".zsh/tf.zsh".source        = ../../dotfiles/zsh/tf.zsh;
+    ".zsh/python.zsh".source    = ../../dotfiles/zsh/python.zsh;
+    ".zsh/history.zsh".source   = ../../dotfiles/zsh/history.zsh;
+    ".zsh/functions.zsh".source = ../../dotfiles/zsh/functions.zsh;
   };
 }
