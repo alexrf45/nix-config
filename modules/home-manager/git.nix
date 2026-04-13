@@ -7,15 +7,13 @@
   programs.git = {
     enable = true;
 
-    userName  = "alexrf45";
-    userEmail = "fonalex45@gmail.com";
+    settings = {
+      user = {
+        name       = "alexrf45";
+        email      = "fonalex45@gmail.com";
+        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL12pfw++v9LFlLvug4OaZ9biScTIq8hcm6uiYM9kO4j";
+      };
 
-    signing = {
-      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL12pfw++v9LFlLvug4OaZ9biScTIq8hcm6uiYM9kO4j";
-      signByDefault = true;
-    };
-
-    extraConfig = {
       init.defaultBranch = "main";
 
       commit = {
@@ -29,7 +27,7 @@
 
       gpg = {
         format = "ssh";
-        "ssh" = {
+        ssh = {
           allowedSignersFile = "${config.home.homeDirectory}/.config/git/allowed_signers";
           program = "/run/current-system/sw/bin/op-ssh-sign";
         };
