@@ -9,9 +9,9 @@
 #      "
 #   4. Update version + hash below.
 
-{ _1password-gui, fetchurl }:
+{ _1password-gui, fetchurl, polkitPolicyOwners ? [] }:
 
-(_1password-gui.override { channel = "beta"; }).overrideAttrs (_: rec {
+(_1password-gui.override { channel = "beta"; inherit polkitPolicyOwners; }).overrideAttrs (_: rec {
   version = "8.12.10-38.BETA";
   src = fetchurl {
     url = "https://downloads.1password.com/linux/tar/beta/x86_64/1password-${version}.x64.tar.gz";
