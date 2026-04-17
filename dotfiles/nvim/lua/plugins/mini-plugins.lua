@@ -5,7 +5,7 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-      header = [=[
+      header = [
 .         .                                  .*%@@@@@%+.                               .            
      .                      .        .      +@@@#+=+%@@@=.  .       .                               
                   .                       .+@@%.     :@@@:     .                     .              
@@ -36,7 +36,7 @@ return {
                                              .#@@@@@@@*.                 .                    .     
           .     .  .  .                 .   .+@@@@@@@@@-         .  .                         .     
 .             .              .              -@@@@@@@@@@@:                                         . 
-        ]=],
+        ],
       footer = "welcome",
       items = {
         { name = "Edit new buffer", action = "enew", section = "Commands" },
