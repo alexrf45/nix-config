@@ -31,7 +31,7 @@ require("lazy").setup({
   install = {
     -- install missing plugins on startup
     missing = true,
-    colorscheme = { "base16-greenscreen", "habamax" },
+    colorscheme = { "gruvbox-material", "habamax" },
   },
   checker = {
     enabled = true,

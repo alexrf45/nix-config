@@ -40,6 +40,37 @@
         multiplier = 3;
       };
 
+      colors = {
+        primary = {
+          background = "#32302f";
+          foreground = "#d4be98";
+        };
+        cursor = {
+          text = "#32302f";
+          cursor = "#d4be98";
+        };
+        normal = {
+          black =   "#665c54";
+          red =     "#ea6962";
+          green =   "#a9b665";
+          yellow =  "#d8a657";
+          blue =    "#7daea3";
+          magenta = "#d3869b";
+          cyan =    "#89b482";
+          white =   "#d4be98";
+        };
+        bright = {
+          black =   "#928374";
+          red =     "#ea6962";
+          green =   "#a9b665";
+          yellow =  "#d8a657";
+          blue =    "#7daea3";
+          magenta = "#d3869b";
+          cyan =    "#89b482";
+          white =   "#d4be98";
+        };
+      };
+
       selection.save_to_clipboard = true;
 
       # Vi mode keybindings
