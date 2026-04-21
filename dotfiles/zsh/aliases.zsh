@@ -1,7 +1,5 @@
 #day to day
 alias r='. ~/.zshrc'
-alias u='sudo apt update && sudo apt upgrade -y'
-alias i='sudo apt install'
 alias h='cd ~'
 alias v='nvim'
 alias config='v ~/.vimrc'
@@ -18,8 +16,6 @@ alias lsblk="lsblk | bat -l conf -p"
 alias sensors="sensors | bat -l cpuinfo -p"
 #notes
 alias daily='bash $HOME/.config/scripts/daily.sh'
-alias web='bash $HOME/.config/scripts/firefox-esr.sh'
-alias brave='bash $HOME/.config/scripts/brave.sh'
 
 #claude code auth
 alias code-auth='export CLAUDE_CODE_OAUTH_TOKEN=$(op read "op://Private/claude_api_token/credential")'
@@ -42,12 +38,6 @@ alias public='curl wtfismyip.com/text'
 #vpn
 alias htb='sudo openvpn ~/.config/openvpn/lab_fr3d1eeT.ovpn'
 alias vpn='sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn'
-
-#dot files
-alias dot='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME'
-alias status='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME status'
-alias commit='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME commit -am'
-alias push='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME push'
 
 #aws-vault
 alias av='aws-vault exec $1 --duration=2h'
