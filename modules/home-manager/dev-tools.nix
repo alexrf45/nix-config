@@ -54,7 +54,7 @@
     # -----------------------------------------------------------------------
     nmap
     netcat-gnu
-    wireshark
+    # wireshark now provided system-wide via programs.wireshark (modules/nixos/security.nix)
     tcpdump
     gobuster
     ffuf

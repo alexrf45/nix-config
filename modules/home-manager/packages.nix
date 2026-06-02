@@ -73,6 +73,7 @@
   xdg.configFile."tmuxp/homelab.yaml".source = ../../tmuxp/homelab.yaml;
   xdg.configFile."tmuxp/security.yaml".source = ../../tmuxp/security.yaml;
   xdg.configFile."tmuxp/dev.yaml".source      = ../../tmuxp/dev.yaml;
+  xdg.configFile."tmuxp/ctf.yaml".source      = ../../tmuxp/ctf.yaml;
 
   # -----------------------------------------------------------------------
   # Firefox — managed via programs module for profile/settings control

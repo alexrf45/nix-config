@@ -74,6 +74,33 @@ sudo nixos-rebuild switch --flake .#horus
 - Dev envs: Python, Go, Security/CTF, Home Lab
 - Reference: <https://github.com/alexrf45/home-0ps.com>, <https://github.com/alexrf45/dotfiles>
 
+## Security devShells (CTF / pentesting)
+
+Disposable per-engagement toolchains modeled on [SCRT](https://github.com/alexrf45/SCRT),
+exposed as flake `devShells` (defined in `flake.nix` from `pkgs-sec` = unstable + unfree +
+the `additions` overlay). Tools are NOT installed into the system profile — enter a shell:
+
+```bash
+nix develop .#web        # recon + web fuzzing (ProjectDiscovery, ffuf, sqlmap, wpscan, …)
+nix develop .#ad         # Active Directory / Windows (impacket, netexec, bloodhound, …)
+nix develop .#forensics  # forensics / stego / cracking (vol3, steghide, john, seclists, …)
+nix develop .#ctf        # pwn / RE / crypto (radare2, ropgadget, gdb+gef, pwntools, z3) [= default]
+```
+
+Pwn basics (`pwntools`, `gdb`, `gef`, `binutils`) also live always-on in `dev-tools.nix`.
+The `.#ad` shell exports `$RUBEUS`, `$CERTIFY`, `$WINPEAS`, `$NISHANG_DIR` for the vendored
+Windows tools. Always-on ergonomics (independent of any shell): pentest zsh aliases +
+`~/.proxychains/proxychains.conf` (`modules/home-manager/security.nix`), a `ctf` tmuxp
+session (`tmuxp load ctf`), and unprivileged Wireshark capture (`programs.wireshark`, user in
+the `wireshark` group). The firewall already opens TCP 22/8080/8000 for serving payloads.
+
+### Vendored security tools (not in nixpkgs)
+
+`pkgs/{linpeas,winpeas,pspy,sharpcollection,nishang}.nix` pin upstream release assets with
+SRI hashes and are registered in `overlays/additions.nix`. To bump a version: follow the
+update header in each file (resolve the new tag/commit, recompute the hash with
+`nix-prefetch-url <url>` or `curl -sSL <url> | openssl dgst -sha256 -binary | base64`).
+
 ## Git Workflow
 
 All changes go to the `dev` branch before merging to `main`.

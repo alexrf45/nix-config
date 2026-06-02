@@ -40,6 +40,17 @@
   };
 
   # -----------------------------------------------------------------------
+  # Wireshark — capture privileges without root.
+  # Sets setcap on dumpcap and creates the `wireshark` group; members capture
+  # live traffic unprivileged. Installs the Qt GUI + tshark system-wide (so the
+  # plain `wireshark` package is dropped from dev-tools.nix to avoid duplication).
+  # -----------------------------------------------------------------------
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
+
+  # -----------------------------------------------------------------------
   # User declaration
   # -----------------------------------------------------------------------
   users.users.fr3d = {
@@ -54,6 +65,7 @@
       "video"
       "input"
       "bluetooth"
+      "wireshark"
     ];
     # SSH public key for remote access — update with your key
     # openssh.authorizedKeys.keys = [
