@@ -1,4 +1,4 @@
-// Waybar config — i3blocks-inspired minimal layout
+// Waybar config — i3blocks-inspired minimal layout, base16-bright
 {
   "layer": "top",
   "position": "top",
@@ -19,24 +19,24 @@
   },
 
   "clock": {
-    "format": "{:%a %b %d  %H:%M}",
+    "format": " {:%a %b %d  %H:%M}",
     "tooltip-format": "{:%Y-%m-%d %A}"
   },
 
   "cpu": {
-    "format": "CPU {usage}%",
+    "format": " {usage}%",
     "interval": 5
   },
 
   "memory": {
-    "format": "MEM {percentage}%",
+    "format": " {percentage}%",
     "interval": 5
   },
 
   "battery": {
-    "format": "BAT {capacity}%",
-    "format-charging": "CHG {capacity}%",
-    "format-full": "FULL",
+    "format": " {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-full": " Full",
     "states": {
       "warning": 30,
       "critical": 15
@@ -44,15 +44,15 @@
   },
 
   "network": {
-    "format-wifi": "{essid}",
-    "format-ethernet": "ETH",
-    "format-disconnected": "DOWN",
+    "format-wifi": " {essid}",
+    "format-ethernet": "󰈀 ETH",
+    "format-disconnected": "󰖪 DOWN",
     "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
   },
 
   "pulseaudio": {
-    "format": "VOL {volume}%",
-    "format-muted": "MUTE",
+    "format": " {volume}%",
+    "format-muted": "󰝟 Mute",
     "on-click": "pavucontrol"
   },
 
