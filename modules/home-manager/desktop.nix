@@ -6,7 +6,7 @@ let
   up    = "l";
   right = "semicolon";
   term  = "kitty";
-  menu  = "wmenu-run";
+  menu  = "wofi --show drun";
 
   # Lock/exit mode label (mirrors the old i3 $mode_system prompt).
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
