@@ -1,0 +1,62 @@
+// Waybar config — i3blocks-inspired minimal layout
+{
+  "layer": "top",
+  "position": "top",
+  "height": 24,
+  "spacing": 0,
+
+  "modules-left": ["sway/workspaces", "sway/mode"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "cpu", "memory", "battery", "tray"],
+
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "format": "{name}"
+  },
+
+  "sway/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+
+  "clock": {
+    "format": "{:%a %b %d  %H:%M}",
+    "tooltip-format": "{:%Y-%m-%d %A}"
+  },
+
+  "cpu": {
+    "format": "CPU {usage}%",
+    "interval": 5
+  },
+
+  "memory": {
+    "format": "MEM {percentage}%",
+    "interval": 5
+  },
+
+  "battery": {
+    "format": "BAT {capacity}%",
+    "format-charging": "CHG {capacity}%",
+    "format-full": "FULL",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    }
+  },
+
+  "network": {
+    "format-wifi": "{essid}",
+    "format-ethernet": "ETH",
+    "format-disconnected": "DOWN",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}"
+  },
+
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "MUTE",
+    "on-click": "pavucontrol"
+  },
+
+  "tray": {
+    "spacing": 8
+  }
+}

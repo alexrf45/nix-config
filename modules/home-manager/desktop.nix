@@ -170,6 +170,12 @@ in
   };
 
   # -----------------------------------------------------------------------
+  # Waybar — config + style from dotfiles
+  # -----------------------------------------------------------------------
+  xdg.configFile."waybar/config".source = ../../dotfiles/waybar/config.jsonc;
+  xdg.configFile."waybar/style.css".source = ../../dotfiles/waybar/style.css;
+
+  # -----------------------------------------------------------------------
   # Wallpaper + lock screen images (referenced by swaybg / swaylock above)
   # -----------------------------------------------------------------------
   xdg.configFile."pictures/skull.jpg" = { source = ../../dotfiles/pictures/skull.jpg; force = true; };

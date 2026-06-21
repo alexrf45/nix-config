@@ -71,6 +71,15 @@
   };
 
   # -----------------------------------------------------------------------
+  # Power / Lid — ignore lid close (laptop used docked with external display)
+  # -----------------------------------------------------------------------
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchExternalPower = "ignore";
+    lidSwitchDocked = "ignore";
+  };
+
+  # -----------------------------------------------------------------------
   # Firmware
   # -----------------------------------------------------------------------
   hardware.enableRedistributableFirmware = true;   # WiFi, BT, etc.
