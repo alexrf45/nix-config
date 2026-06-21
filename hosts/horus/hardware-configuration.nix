@@ -3,7 +3,8 @@
 # on the running Acer Nitro 5.
 #
 # Known layout:
-#   sda  476.9G  (secondary storage)
+#   sda  476.9G
+#     sda1  470G  /home/anubis  (research + bulk files)
 #   sdb  953.9G
 #     sdb1  1G    /boot  (EFI system partition)
 #     sdb2  4G    [SWAP]
@@ -47,11 +48,11 @@
     { device = "/dev/sdb2"; }
   ];
 
-  # Secondary drive (unmounted by default — mount manually as needed)
-  # fileSystems."/mnt/data" = {
-  #   device = "/dev/sda";
-  #   fsType = "ext4";
-  # };
+  # Secondary drive — research and other bulk files
+  fileSystems."/home/anubis" = {
+    device = "/dev/sda1";
+    fsType = "ext4";
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

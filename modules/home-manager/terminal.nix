@@ -1,84 +1,53 @@
-{ pkgs, ... }:
+{ ... }:
 {
   # -----------------------------------------------------------------------
-  # Alacritty — mirrors .config/alacritty/ from dotfiles
+  # kitty — GPU terminal, base16-bright palette
   # -----------------------------------------------------------------------
-  programs.alacritty = {
+  programs.kitty = {
     enable = true;
+
+    font = {
+      name = "Iosevka Nerd Font Mono";
+      size = 11;
+    };
+
     settings = {
-      general.live_config_reload = true;
+      scrollback_lines = 20000;
+      copy_on_select = "clipboard";
+      window_padding_width = 4;
+      hide_window_decorations = "yes";
+      confirm_os_window_close = 0;
+      enable_audio_bell = "no";
 
-      env = {
-        TERM = "xterm-256color";
-      };
+      # base16-bright (Chris Kempson) — terminal mapping
+      background = "#000000";  # base00
+      foreground = "#e0e0e0";  # base05
 
-      window = {
-        startup_mode = "Maximized";
-        decorations = "None";
-        dynamic_padding = true;
-        padding = { x = 4; y = 4; };
-      };
+      cursor            = "#e0e0e0";  # base05
+      cursor_text_color = "#000000";  # base00
 
-      font = {
-        normal = {
-          family = "Iosevka Nerd Font Mono";
-          style = "Regular";
-        };
-        bold = {
-          family = "Iosevka Nerd Font Mono";
-          style = "Bold";
-        };
-        italic = {
-          family = "Iosevka Nerd Font Mono";
-          style = "Italic";
-        };
-        size = 11.0;
-      };
+      selection_background = "#505050";  # base02
+      selection_foreground = "#e0e0e0";  # base05
 
-      scrolling = {
-        history = 20000;
-        multiplier = 3;
-      };
+      # normal
+      color0 = "#000000";  # base00 black
+      color1 = "#fb0120";  # base08 red
+      color2 = "#a1c659";  # base0B green
+      color3 = "#fda331";  # base0A yellow
+      color4 = "#6fb3d2";  # base0D blue
+      color5 = "#d381c3";  # base0E magenta
+      color6 = "#76c7b7";  # base0C cyan
+      color7 = "#e0e0e0";  # base05 white
 
-      colors = {
-        primary = {
-          background = "#32302f";
-          foreground = "#d4be98";
-        };
-        cursor = {
-          text = "#32302f";
-          cursor = "#d4be98";
-        };
-        normal = {
-          black =   "#665c54";
-          red =     "#ea6962";
-          green =   "#a9b665";
-          yellow =  "#d8a657";
-          blue =    "#7daea3";
-          magenta = "#d3869b";
-          cyan =    "#89b482";
-          white =   "#d4be98";
-        };
-        bright = {
-          black =   "#928374";
-          red =     "#ea6962";
-          green =   "#a9b665";
-          yellow =  "#d8a657";
-          blue =    "#7daea3";
-          magenta = "#d3869b";
-          cyan =    "#89b482";
-          white =   "#d4be98";
-        };
-      };
-
-      selection.save_to_clipboard = true;
-
-      # Vi mode keybindings
-      keyboard.bindings = [
-        { key = "V"; mods = "Control|Shift"; action = "Paste"; }
-        { key = "C"; mods = "Control|Shift"; action = "Copy"; }
-        { key = "Return"; mods = "Control|Shift"; action = "SpawnNewInstance"; }
-      ];
+      # bright
+      color8  = "#b0b0b0";  # base03
+      color9  = "#fb0120";  # base08
+      color10 = "#a1c659";  # base0B
+      color11 = "#fda331";  # base0A
+      color12 = "#6fb3d2";  # base0D
+      color13 = "#d381c3";  # base0E
+      color14 = "#76c7b7";  # base0C
+      color15 = "#ffffff";  # base07
     };
   };
 }

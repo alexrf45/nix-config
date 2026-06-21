@@ -1,32 +1,31 @@
 { pkgs, ... }:
 {
   # -----------------------------------------------------------------------
-  # X11 + LightDM + i3
+  # GDM + Sway (Wayland)
   # -----------------------------------------------------------------------
-  services.xserver = {
+  # Keyboard layout (consumed by GDM and the console; no Xorg required).
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  # GDM display manager — runs on Wayland by default, correct host for Sway.
+  services.displayManager.gdm.enable = true;
+
+  # Sway compositor — sets up the wrapper, polkit, and required system bits.
+  # Per-user keybindings/bars live in modules/home-manager/desktop.nix.
+  programs.sway = {
     enable = true;
-
-    xkb.layout = "us";
-    xkb.variant = "";
-
-    # LightDM: no Qt dependency, correct pairing for standalone WMs
-    displayManager.lightdm = {
-      enable = true;
-      greeters.gtk.enable = true;
-    };
-
-    displayManager.defaultSession = "none+i3";
-
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        i3status
-        i3blocks
-        i3lock
-        dmenu
-        xss-lock     # Screen locker integration
-      ];
-    };
+    wrapperFeatures.gtk = true;
+    extraPackages = with pkgs; [
+      swaylock      # Screen locker
+      swayidle      # Idle management (lock/DPMS)
+      swaybg        # Wallpaper
+      grim          # Screenshot capture
+      slurp         # Region selection (for screenshots)
+      wl-clipboard  # Wayland clipboard (wl-copy / wl-paste)
+      wmenu         # dmenu-equivalent launcher for Wayland
+    ];
   };
 
   # -----------------------------------------------------------------------
@@ -34,7 +33,10 @@
   # -----------------------------------------------------------------------
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-wlr   # wlroots backend for screen sharing under Sway
+    ];
     config.common.default = "*";
   };
 
@@ -44,7 +46,7 @@
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      nerd-fonts.iosevka           # Primary terminal font (Alacritty config)
+      nerd-fonts.iosevka           # Primary terminal font (kitty config)
       nerd-fonts.hack
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono

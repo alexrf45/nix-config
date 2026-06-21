@@ -9,8 +9,10 @@ This repository houses NixOS flake configurations for personal use on an Acer Ni
 - **Machine**: Acer Nitro 5 — AMD Ryzen CPU + NVIDIA discrete GPU
 - **RAM**: 32GB
 - **Storage**:
+
   ```
-  sda  476.9G  (secondary, unmounted by default)
+  sda  476.9G
+    sda1 470G /home/anubis (used to store research and other bulk files)
   sdb  953.9G
     sdb1  1G    /boot  (EFI, vfat)
     sdb2  4G    [SWAP]
@@ -32,12 +34,12 @@ secrets/               — SOPS-encrypted secrets (age-encrypted .yaml files)
 
 ## Key Design Decisions
 
-- **nixpkgs**: `nixos-24.11` stable + `nixos-unstable` overlay for select packages
+- **nixpkgs**: `nixos-26.05` stable + `nixos-unstable` overlay for select packages
 - **Home Manager**: NixOS-integrated module (`useGlobalPkgs = true`)
 - **Overlays**: Declared in `hosts/horus/default.nix` — NOT inside home.nix
 - **GPU**: NVIDIA PRIME offload mode (AMD iGPU drives display, NVIDIA on demand)
 - **Sound**: PipeWire + WirePlumber (PulseAudio compat shim enabled)
-- **Display**: X11 + LightDM + i3
+- **Display**: GDM + Sway
 - **Secrets**: SOPS + Age (key at `~/.config/sops/age/keys.txt`, never in repo)
 
 ## PRIME Bus IDs — ACTION REQUIRED
@@ -72,7 +74,7 @@ sudo nixos-rebuild switch --flake .#horus
 - Shell: zsh (modular config mirrored from dotfiles)
 - Tools: 1password (CLI+GUI beta), terraform, kubectl, k9s, claude-code, docker, flux, helm, tmux, neovim, SOPS, Age
 - Dev envs: Python, Go, Security/CTF, Home Lab
-- Reference: <https://github.com/alexrf45/home-0ps.com>, <https://github.com/alexrf45/dotfiles>
+- Reference: <https://github.com/alexrf45/h0me>, <https://github.com/alexrf45/dotfiles>
 
 ## Security devShells (CTF / pentesting)
 

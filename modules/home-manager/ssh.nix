@@ -18,7 +18,7 @@
     # };
   };
 
-  # GTK2 PIN entry dialog — correct for i3/X11 (non-GNOME) environment
+  # GTK PIN entry dialog — works under Sway/Wayland (via XWayland), non-GNOME
   home.packages = [ pkgs.pinentry-gtk2 ];
 
   # -----------------------------------------------------------------------
