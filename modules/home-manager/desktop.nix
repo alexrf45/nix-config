@@ -140,14 +140,12 @@ in
 
       startup = [
         { command = "swaybg -i $HOME/.config/pictures/skull.jpg -m fill"; always = true; }
+        { command = "${pkgs.waybar}/bin/waybar"; always = true; }
         { command = "kitty"; }
       ];
 
-      # waybar replaces the old i3bar/i3blocks status bar.
-      bars = [{
-        command = "${pkgs.waybar}/bin/waybar";
-        position = "top";
-      }];
+      # Disable swaybar — waybar is launched via startup above.
+      bars = [];
     };
 
     # base16-bright window border colours + display/idle tweaks.
