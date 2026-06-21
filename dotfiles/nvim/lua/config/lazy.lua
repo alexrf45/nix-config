@@ -24,7 +24,7 @@ require("lazy").setup({
     -- LazyExtras
     { import = "lazyvim.plugins.extras.editor.neo-tree" },
     { import = "lazyvim.plugins.extras.lang.markdown" },
-    { import = "lazyvim.plugins.extras.editor.mini-starter" },
+    { import = "lazyvim.plugins.extras.ui.mini-starter" },
     -- User plugin specs from lua/plugins/
     { import = "plugins" },
   },
