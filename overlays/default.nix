@@ -1,0 +1,5 @@
+{ inputs }: {
+  additions    = import ./additions.nix { inherit inputs; };
+  modifications = import ./modifications.nix { inherit inputs; };
+  unstable-packages = import ./unstable-packages.nix { inherit inputs; };
+}

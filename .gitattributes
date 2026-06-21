@@ -1,0 +1,5 @@
+# Mark SOPS-encrypted age files as binary so git doesn't try to diff them
+*.age binary
+
+# Nix lock file — treat as text for clean diffs
+flake.lock text

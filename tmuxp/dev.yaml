@@ -1,0 +1,20 @@
+# General development session
+# Usage: tmuxp load ~/.config/tmuxp/dev.yaml
+session_name: dev
+windows:
+  - window_name: editor
+    layout: tiled
+    panes:
+      - cd ~/projects && nvim .
+  - window_name: shell
+    layout: tiled
+    panes:
+      - cd ~/projects
+  - window_name: git
+    layout: tiled
+    panes:
+      - cd ~/projects && lazygit
+  - window_name: run
+    layout: tiled
+    panes:
+      - cd ~/projects

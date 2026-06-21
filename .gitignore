@@ -1,6 +1,15 @@
-# Ignore build outputs from performing a nix-build or `nix build` command
+# Nix build outputs
 result
 result-*
 
-# Ignore automatically generated direnv output
+# direnv
 .direnv
+
+# SOPS age private key — NEVER commit this
+**/keys.txt
+*.age.key
+
+# Editor swap files
+*.swp
+*.swo
+.DS_Store

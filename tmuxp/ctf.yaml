@@ -1,0 +1,27 @@
+# CTF / engagement session
+# Usage: tmuxp load ~/.config/tmuxp/ctf.yaml
+# Pairs with the security devShells: run `nix develop ~/projects/nix-config#web`
+# (or .#ad / .#forensics / .#ctf) inside the exploit/recon panes as needed.
+session_name: ctf
+windows:
+  - window_name: recon
+    layout: main-vertical
+    panes:
+      - cd ~/ctf && echo "TARGET= ; export it, then: nmapq -p- $TARGET"
+      - cd ~/ctf
+  - window_name: exploit
+    layout: tiled
+    panes:
+      - cd ~/ctf
+  - window_name: notes
+    layout: tiled
+    panes:
+      - cd ~/ctf && nvim notes.md
+  - window_name: serve
+    layout: tiled
+    panes:
+      - cd ~/ctf && echo "Drop payloads here, then: serve   (HTTP :8000)"
+  - window_name: vpn
+    layout: tiled
+    panes:
+      - echo "Connect VPN: sudo openvpn ~/.config/openvpn/<profile>.ovpn ; then: tunip"
