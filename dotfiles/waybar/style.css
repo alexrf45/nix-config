@@ -1,7 +1,7 @@
-/* i3blocks-inspired flat, minimal waybar theme */
+/* base16-bright (Chris Kempson) — matches kitty + neovim theme */
 
 * {
-  font-family: "JetBrains Mono", "Iosevka Nerd Font Mono", monospace;
+  font-family: "Iosevka Nerd Font Mono", "JetBrains Mono", monospace;
   font-size: 12px;
   border: none;
   border-radius: 0;
@@ -9,25 +9,25 @@
 }
 
 window#waybar {
-  background-color: #1d2021;
-  color: #ebdbb2;
+  background-color: #000000;  /* base00 */
+  color: #e0e0e0;            /* base05 */
 }
 
 /* Workspaces — flat buttons like i3bar */
 #workspaces button {
   padding: 0 8px;
-  color: #a89984;
+  color: #b0b0b0;            /* base03 */
   background: transparent;
   border-bottom: 2px solid transparent;
 }
 
 #workspaces button.focused {
-  color: #ebdbb2;
-  border-bottom: 2px solid #6fb3d2;
+  color: #e0e0e0;            /* base05 */
+  border-bottom: 2px solid #6fb3d2;  /* base0D blue */
 }
 
 #workspaces button.urgent {
-  color: #fb4934;
+  color: #fb0120;            /* base08 red */
 }
 
 /* Module separator styling — pipe-delimited like i3blocks */
@@ -40,29 +40,29 @@ window#waybar {
 #tray,
 #mode {
   padding: 0 8px;
-  border-left: 1px solid #504945;
+  border-left: 1px solid #303030;  /* base01 */
 }
 
 #mode {
-  color: #fabd2f;
+  color: #fda331;            /* base0A yellow */
   font-style: italic;
 }
 
 /* Battery states */
 #battery.warning {
-  color: #fabd2f;
+  color: #fda331;            /* base0A yellow */
 }
 
 #battery.critical {
-  color: #fb4934;
+  color: #fb0120;            /* base08 red */
 }
 
 /* Network disconnected */
 #network.disconnected {
-  color: #fb4934;
+  color: #fb0120;            /* base08 red */
 }
 
 /* Muted audio */
 #pulseaudio.muted {
-  color: #a89984;
+  color: #505050;            /* base02 */
 }
