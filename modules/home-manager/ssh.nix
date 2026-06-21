@@ -28,7 +28,10 @@
   # -----------------------------------------------------------------------
   home.activation.registerCACinNSSDB = lib.hm.dag.entryAfter ["writeBoundary"] ''
     NSSDB="$HOME/.pki/nssdb"
-    if [ ! -d "$NSSDB" ]; then
+    mkdir -p "$NSSDB"
+    # Initialize the SQLite NSS DB only if it isn't already present. certutil
+    # needs the directory to exist first and will not create it itself.
+    if [ ! -f "$NSSDB/cert9.db" ]; then
       ${pkgs.nssTools}/bin/certutil -d "sql:$NSSDB" -N --empty-password
     fi
     ${pkgs.nssTools}/bin/modutil \
