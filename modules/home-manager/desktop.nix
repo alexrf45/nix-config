@@ -140,12 +140,27 @@ in
 
       startup = [
         { command = "swaybg -i $HOME/.config/pictures/skull.jpg -m fill"; always = true; }
-        { command = "${pkgs.waybar}/bin/waybar"; always = true; }
         { command = "kitty"; }
       ];
 
-      # Disable swaybar — waybar is launched via startup above.
-      bars = [];
+      # i3status via swaybar
+      bars = [{
+        statusCommand = "${pkgs.i3status}/bin/i3status";
+        position = "top";
+        fonts = {
+          names = [ "Iosevka Nerd Font Mono" ];
+          size = 11.0;
+        };
+        colors = {
+          background = "#000000";
+          statusline = "#e0e0e0";
+          separator = "#505050";
+          focusedWorkspace = { border = "#6fb3d2"; background = "#6fb3d2"; text = "#000000"; };
+          activeWorkspace = { border = "#303030"; background = "#303030"; text = "#e0e0e0"; };
+          inactiveWorkspace = { border = "#000000"; background = "#000000"; text = "#b0b0b0"; };
+          urgentWorkspace = { border = "#fb0120"; background = "#fb0120"; text = "#ffffff"; };
+        };
+      }];
     };
 
     # base16-bright window border colours + display/idle tweaks.
@@ -168,10 +183,9 @@ in
   };
 
   # -----------------------------------------------------------------------
-  # Waybar — config + style from dotfiles
+  # i3status config — base16-bright colours, Nerd Font icons
   # -----------------------------------------------------------------------
-  xdg.configFile."waybar/config".source = ../../dotfiles/waybar/config.jsonc;
-  xdg.configFile."waybar/style.css".source = ../../dotfiles/waybar/style.css;
+  xdg.configFile."i3status/config".source = ../../dotfiles/i3status/config;
 
   # -----------------------------------------------------------------------
   # Wallpaper + lock screen images (referenced by swaybg / swaylock above)
@@ -188,7 +202,7 @@ in
   # Desktop packages (Wayland equivalents of the former X11 toolset)
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
-    waybar                 # Status bar (replaces i3blocks/i3status)
+    i3status               # Status bar for swaybar
     wofi                   # App launcher (rofi replacement)
     wl-clipboard           # wl-copy / wl-paste (replaces xclip)
     wlr-randr              # Output management (replaces xrandr)
