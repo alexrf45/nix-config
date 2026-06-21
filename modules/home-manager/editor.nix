@@ -19,7 +19,7 @@
       pyright
       terraform-ls
       yaml-language-server
-      nodePackages.typescript-language-server
+      typescript-language-server
 
       # Tools used by plugins
       ripgrep
