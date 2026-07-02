@@ -11,11 +11,6 @@ http() {
   busybox httpd -h "$HOME/webserver" -p "$1"
 }
 
-pdf() {
-
-  zathura "$1" &
-}
-
 extract() {
   if [ -f "$1" ]; then
     case "$1" in
@@ -114,26 +109,6 @@ decrypt_age() {
     "$1" >"$2"
 }
 
-nb() {
-  aws s3 sync \
-    --delete ~/notes/notes-vault/. \
-    s3://notes-backup-primary
-}
-
-nb1() {
-  aws s3 sync \
-    --delete ~/notes/fr3d/. \
-    s3://fr3d-backup-2025
-}
-
-# k9s() {
-#   docker run \
-#     --rm --net=host -it \
-#     -v "$KUBECONFIG:/root/.kube/config" \
-#     -v "/home/fr3d/.config/k9s:/root/.config/k9s" \
-#     derailed/k9s:latest "$@"
-# }
-
 tf-docs() {
   docker run --rm \
     --volume "$(pwd):/terraform-docs" \
@@ -148,38 +123,3 @@ doc2md() {
     "$myfilename.docx" \
     -o "$myfilename.md"
 }
-
-kube() {
-  local env="${1:-dev}"
-  shift
-  op run --env-file="$HOME/home-0ps.com/terraform/${env}/${env}.env" -- \
-    bash -c 'kubectl --kubeconfig <(printenv KUBECONFIG_DATA) "$@"' _ "$@"
-}
-
-k9s-op() {
-  local env="${1:-dev}"
-  shift
-  op run --env-file="$HOME/home-0ps.com/terraform/${env}/${env}.env" -- \
-    bash -c 'k9s --kubeconfig <(printenv KUBECONFIG_DATA) "$@"' _ "$@"
-}
-
-kube-op() {
-  local env="${1:-dev}"
-  local cmd="${2}"
-  shift 2
-  local kubedata
-  kubedata=$(op read "$(grep KUBECONFIG_DATA "$HOME/home-0ps.com/terraform/${env}/${env}.env" | cut -d= -f2)" --no-newline)
-
-  tmpfile=$(mktemp /dev/shm/kubeconfig.XXXXXX)
-  chmod 600 "$tmpfile"
-  trap 'rm -f $tmpfile' EXIT INT TERM
-  echo "$kubedata" >"$tmpfile"
-  export KUBECONFIG="$tmpfile"
-
-  "$cmd" "$@"
-}
-
-# Usage:
-# kube-op dev kubectl get nodes
-# kube-op prod k9s
-# kube-op test helm list -A

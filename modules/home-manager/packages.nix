@@ -124,9 +124,6 @@
     AWS_VAULT_BACKEND    = "pass";
     AWS_CLI_AUTO_PROMPT  = "on-partial";
     DOCKER_BUILDKIT      = "1";
-    KUBECONFIG           = "$HOME/.kube/config";
-    KUBECTL_KUBERC       = "true";
-    KUBE_EDITOR          = "nvim";
     FZF_COMPLETION_TRIGGER = "..";
     FZF_COMPLETION_OPTS    = "--border --info=inline";
   };

@@ -8,15 +8,9 @@ let
   term  = "kitty";
   menu  = "wmenu-run";
 
-  # Lock/exit mode label (mirrors the old i3 $mode_system prompt).
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 in
 {
-  # -----------------------------------------------------------------------
-  # Sway (Wayland) — declarative, ported from the former dotfiles/i3/config.
-  # System-level session lives in modules/nixos/desktop.nix (programs.sway);
-  # package = null so Home Manager only manages the user config here.
-  # -----------------------------------------------------------------------
   wayland.windowManager.sway = {
     enable = true;
     package = null;
@@ -38,7 +32,6 @@ in
         smartGaps = true;
       };
 
-      # Borderless tiling (i3 had `border pixel 0`).
       window.border = 0;
       window.titlebar = false;
 
@@ -169,20 +162,11 @@ in
     '';
   };
 
-  # -----------------------------------------------------------------------
-  # Wallpaper + lock screen images (referenced by swaybg / swaylock above)
-  # -----------------------------------------------------------------------
   xdg.configFile."pictures/skull.jpg" = { source = ../../dotfiles/pictures/skull.jpg; force = true; };
   xdg.configFile."pictures/sky.png"   = { source = ../../dotfiles/pictures/sky.png;   force = true; };
 
-  # -----------------------------------------------------------------------
-  # mako — Wayland notification daemon (replaces dunst)
-  # -----------------------------------------------------------------------
   services.mako.enable = true;
 
-  # -----------------------------------------------------------------------
-  # Desktop packages (Wayland equivalents of the former X11 toolset)
-  # -----------------------------------------------------------------------
   home.packages = with pkgs; [
     waybar                 # Status bar (replaces i3blocks/i3status)
     wofi                   # App launcher (rofi replacement)

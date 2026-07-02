@@ -1,5 +1,4 @@
-# Home lab session — kubectl, k9s, flux, homelab ops
-# Mirrors debian-desktop.yaml (renamed to homelab.yaml for NixOS)
+# Home lab session — homelab ops, notes, shell
 # Usage: tmuxp load ~/.config/tmuxp/homelab.yaml
 session_name: home-lab
 windows:
@@ -7,10 +6,6 @@ windows:
     layout: tiled
     panes:
       - cd ~/home-ops/ && nvim .
-  - window_name: k9s
-    layout: tiled
-    panes:
-      - k9s
   - window_name: notes
     layout: tiled
     panes:

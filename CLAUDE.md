@@ -2,9 +2,24 @@
 
 ## Purpose
 
-This repository houses NixOS flake configurations for personal use on an Acer Nitro 5.
+This repository houses NixOS flake configurations for personal use across two laptops.
+
+## Hosts
+
+| Host    | Machine                     | GPU               | Desktop        | Role                          |
+|---------|-----------------------------|-------------------|----------------|-------------------------------|
+| `horus` | Acer Nitro 5                | AMD iGPU + NVIDIA | Sway (Wayland) | primary workstation           |
+| `thoth` | Intel i5-1155G7 laptop      | Intel Iris Xe     | i3 (X11)       | security-research daily driver |
+
+Build/switch a host with `sudo nixos-rebuild switch --flake .#<host>`.
+
+Shared modules live in `modules/nixos` and `modules/home-manager`; host-specific
+hardware/desktop variants are split out (e.g. `hardware.nix` vs `hardware-intel.nix`,
+`desktop.nix` (Sway) vs `desktop-x11.nix` (i3), HM `desktop.nix` vs `desktop-i3.nix`).
 
 ## Hardware
+
+### horus — Acer Nitro 5
 
 - **Machine**: Acer Nitro 5 — AMD Ryzen CPU + NVIDIA discrete GPU
 - **RAM**: 32GB
@@ -19,13 +34,35 @@ This repository houses NixOS flake configurations for personal use on an Acer Ni
     sdb3  948.9G  /  (ext4, also hosts /nix/store)
   ```
 
+### thoth — Intel Tiger Lake laptop
+
+- **Machine**: Intel i5-1155G7 (Tiger Lake), Iris Xe iGPU only, 38GB RAM
+- **WiFi**: Realtek RTL8821CE (rtw88_8821ce, in-tree) — no wired NIC
+- **Boot**: UEFI + systemd-boot. **Intel VMD is active** — the `vmd` initrd
+  module is REQUIRED or the NVMe disk won't be found at boot.
+- **Storage**:
+
+  ```
+  nvme0n1  (NixOS target — reformatted on install)
+    nvme0n1p1  1G      /boot  (EFI, vfat)
+    nvme0n1p2  ~470G   /      (ext4, also hosts /nix/store)
+    nvme0n1p3  ~4G     [SWAP]
+  sda        476.9G
+    sda1     470G      /home  (ext4 — PRESERVED across the reinstall)
+  ```
+
+- **Network mount**: CIFS `//192.168.20.106/home-drive` → `/mnt/home-drive`
+  (systemd automount; credentials at `/etc/nixos/smb-secrets`, prefer sops).
+
 ## Configuration Structure
 
 ```
-hosts/horus/          — Host entry, hardware-configuration.nix, disk docs
-modules/nixos/         — System modules: hardware, networking, security, desktop, audio, virtualisation, nix-settings
-modules/home-manager/  — HM modules: shell, terminal, editor, tmux, git, desktop, dev-tools, packages
-home-manager/horus/fr3d/  — User HM entry point
+hosts/horus/          — horus host entry, hardware-configuration.nix, disk docs
+hosts/thoth/          — thoth host entry, hardware-configuration.nix, storage.nix (CIFS)
+modules/nixos/         — System modules: hardware(-intel), networking, security, desktop(-x11), audio, virtualisation, nix-settings
+modules/home-manager/  — HM modules: shell, terminal, editor, tmux, git, desktop(-i3), dev-tools, packages
+home-manager/horus/fr3d/  — horus user HM entry point
+home-manager/thoth/fr3d/  — thoth user HM entry point
 overlays/              — Unstable packages overlay (1password, claude-code)
 dotfiles/              — Mirrored dotfiles from github.com/alexrf45/dotfiles
 tmuxp/                 — tmuxp session files (homelab, security, dev)
@@ -72,8 +109,8 @@ sudo nixos-rebuild switch --flake .#horus
 
 - Sound, input, video (AMD+NVIDIA), wireless, Bluetooth
 - Shell: zsh (modular config mirrored from dotfiles)
-- Tools: 1password (CLI+GUI beta), terraform, kubectl, k9s, claude-code, docker, flux, helm, tmux, neovim, SOPS, Age
-- Dev envs: Python, Go, Security/CTF, Home Lab
+- Tools: 1password (CLI+GUI beta), terraform, claude-code, docker, tmux, neovim, SOPS, Age
+- Dev envs: Python, Go, Security/CTF
 - Reference: <https://github.com/alexrf45/h0me>, <https://github.com/alexrf45/dotfiles>
 
 ## Security devShells (CTF / pentesting)
