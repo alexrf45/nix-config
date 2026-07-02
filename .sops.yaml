@@ -12,8 +12,9 @@
 #   sops updatekeys secrets/nitro5.yaml
 #
 creation_rules:
-  - path_regex: secrets/nitro5\.yaml$
+  - path_regex: secrets/laptops\.yaml$
     key_groups:
       - age:
           # REPLACE with your actual age public key (age1...)
-          - age1REPLACE_WITH_YOUR_AGE_PUBLIC_KEY
+          - age17hpty940wu5d289u87qpea0h6663r7jq88gwuspf4n4gasqw23nspa0cjv
+
