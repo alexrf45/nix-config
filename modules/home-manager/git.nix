@@ -11,7 +11,7 @@
       user = {
         name       = "alexrf45";
         email      = "fonalex45@gmail.com";
-        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL12pfw++v9LFlLvug4OaZ9biScTIq8hcm6uiYM9kO4j";
+        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAs2dHrHfbcfK0TdcaI2xU6pn5MaDfuDoYuhk5PumFYR";
       };
 
       init.defaultBranch = "main";
