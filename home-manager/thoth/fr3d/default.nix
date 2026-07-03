@@ -46,8 +46,7 @@
       music = "/dev/null";
       videos = "/dev/null";
       public = "/dev/null";
-      templates = "/dev/null"
-
+      templates = "/dev/null";
   };
     };
   };
