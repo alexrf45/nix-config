@@ -41,6 +41,14 @@
     userDirs = {
       enable = true;
       createDirectories = true;
+      documents = "/dev/null";
+      download = "${config.home.homeDirectory}/.downloads";
+      music = "/dev/null";
+      videos = "/dev/null";
+      public = "/dev/null";
+      templates = "/dev/null"
+
+  };
     };
   };
 
