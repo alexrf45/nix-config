@@ -48,7 +48,6 @@
       public = "/dev/null";
       templates = "/dev/null";
   };
-    };
   };
 
   # Font discovery for user-installed fonts
