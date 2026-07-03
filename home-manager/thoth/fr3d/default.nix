@@ -45,7 +45,7 @@
       download = "${config.home.homeDirectory}/.downloads";
       music = "/dev/null";
       videos = "/dev/null";
-      public = "/dev/null";
+      publicShare = "/dev/null";
       templates = "/dev/null";
   };
   };
