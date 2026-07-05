@@ -10,6 +10,8 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    withRuby = false;
+    withPython3 = false;
 
     # System-level packages that LSP servers or plugins need
     extraPackages = with pkgs; [

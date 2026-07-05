@@ -41,6 +41,7 @@
     userDirs = {
       enable = true;
       createDirectories = false;
+      setSessionVariables = false;
       documents = "/dev/null";
       download = "${config.home.homeDirectory}/.downloads";
       music = "/dev/null";

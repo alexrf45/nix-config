@@ -11,8 +11,8 @@
     extraConfig = ''
       IdentityAgent ~/.1password/agent.sock
     '';
-    matchBlocks."*.mil" = {
-      extraOptions.PKCS11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+    settings."*.mil" = {
+      PKCS11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
     };
   };
 

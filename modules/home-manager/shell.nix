@@ -19,8 +19,10 @@
       share = true;
     };
 
+    dotDir = config.home.homeDirectory;
+
     # Zsh options — mirrors dotfiles .zshrc setopt block
-    initExtra = ''
+    initContent = ''
       setopt AUTO_CD
       setopt AUTO_PUSHD
       setopt EXTENDED_GLOB
