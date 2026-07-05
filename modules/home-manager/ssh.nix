@@ -16,6 +16,16 @@
     };
   };
 
+  # 1Password SSH agent — expose keys from all relevant vaults.
+  # Private vault is the default; HomeLab holds infrastructure keys.
+  xdg.configFile."1Password/ssh/agent.toml".text = ''
+    [[ssh-keys]]
+    vault = "Private"
+
+    [[ssh-keys]]
+    vault = "HomeLab"
+  '';
+
   # GTK PIN entry dialog — works under Sway/Wayland (via XWayland), non-GNOME
   home.packages = [ pkgs.pinentry-gtk2 ];
 
