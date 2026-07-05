@@ -40,7 +40,7 @@
     enable = true;
     userDirs = {
       enable = true;
-      createDirectories = true;
+      createDirectories = false;
       documents = "/dev/null";
       download = "${config.home.homeDirectory}/.downloads";
       music = "/dev/null";
