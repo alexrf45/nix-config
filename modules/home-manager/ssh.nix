@@ -9,11 +9,13 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    extraConfig = ''
-      IdentityAgent ~/.1password/agent.sock
-    '';
-    settings."*.mil" = {
-      PKCS11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+    settings = {
+      "*" = {
+        IdentityAgent = "~/.1password/agent.sock";
+      };
+      "*.mil" = {
+        PKCS11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+      };
     };
   };
 
