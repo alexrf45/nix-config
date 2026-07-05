@@ -1,12 +1,6 @@
--- z.lua — Zettelkasten workflow (fzf-lua; telekasten + telescope removed)
--- Vault lives at ~/fr3d; templates at ~/fr3d/templates/
--- All keymaps match the previous telekasten layout.
-
-local vault = vim.fn.expand("~/fr3d")
+local vault = vim.fn.expand("~/notes")
 
 local M = {}
-
--- ── helpers ──────────────────────────────────────────────────────────────────
 
 local function uuid() return os.date("%Y%m%d%H%M") end
 local function rfc3339() return os.date("%Y-%m-%dT%H:%M:%SZ") end
