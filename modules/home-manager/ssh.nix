@@ -9,6 +9,7 @@
   programs.ssh = {
     enable = true;
     extraConfig = ''
+      AddKeysToAgent yes
       IdentityAgent ~/.1password/agent.sock
       PKCS11Provider ${pkgs.opensc}/lib/opensc-pkcs11.so
     '';
