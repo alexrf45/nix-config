@@ -7,7 +7,7 @@ return {
 
   -- Override mini.starter opts (LazyExtras ui.mini-starter handles the setup).
   {
-    "echasnovski/mini.starter",
+    "nvim-mini/mini.starter",
     opts = {
       footer = "welcome",
       items = {
