@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   # -----------------------------------------------------------------------
   # SSH daemon
@@ -28,7 +28,7 @@
   # enableGnomeKeyring starts the keyring SSH agent via PAM which would
   # set SSH_AUTH_SOCK and conflict with IdentityAgent in ~/.ssh/config.
   # -----------------------------------------------------------------------
-  security.pam.services.login.enableGnomeKeyring = false;
+  security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
   services.gnome.gnome-keyring.enable = true;
 
   # -----------------------------------------------------------------------
