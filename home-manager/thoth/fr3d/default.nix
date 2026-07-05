@@ -42,13 +42,15 @@
       enable = true;
       createDirectories = false;
       setSessionVariables = false;
-      documents = "/dev/null";
-      download = "${config.home.homeDirectory}/.downloads";
-      music = "/dev/null";
-      videos = "/dev/null";
+      desktop    = "/dev/null";
+      documents  = "/dev/null";
+      download   = "${config.home.homeDirectory}/.downloads";
+      music      = "/dev/null";
+      pictures   = "/dev/null";
       publicShare = "/dev/null";
-      templates = "/dev/null";
-  };
+      templates  = "/dev/null";
+      videos     = "/dev/null";
+    };
   };
 
   # Font discovery for user-installed fonts
