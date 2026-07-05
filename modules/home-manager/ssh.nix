@@ -1,22 +1,19 @@
 { pkgs, lib, ... }:
 {
   # -----------------------------------------------------------------------
-  # SSH client — CAC PKCS#11 authentication
-  # Global PKCS11Provider: SSH gracefully skips the CAC key if the server
-  # doesn't accept it. To restrict to specific hosts only, comment out
-  # extraConfig and uncomment the matchBlocks block below.
+  # SSH client — 1Password SSH agent + CAC PKCS#11 authentication
+  # IdentityAgent routes all SSH auth through the 1Password agent socket.
+  # PKCS11Provider is scoped to DoD hosts only to avoid PIN prompts and
+  # OpenSC load failures on connections where no smart card is present.
   # -----------------------------------------------------------------------
   programs.ssh = {
     enable = true;
     extraConfig = ''
-      AddKeysToAgent yes
       IdentityAgent ~/.1password/agent.sock
-      PKCS11Provider ${pkgs.opensc}/lib/opensc-pkcs11.so
     '';
-    # Restrict CAC auth to DoD hosts only (avoids PIN prompts elsewhere):
-    # matchBlocks."*.mil" = {
-    #   pkcs11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
-    # };
+    matchBlocks."*.mil" = {
+      extraOptions.PKCS11Provider = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+    };
   };
 
   # GTK PIN entry dialog — works under Sway/Wayland (via XWayland), non-GNOME
