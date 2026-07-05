@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   # -----------------------------------------------------------------------
   # Neovim — package installed by Nix, config managed via xdg.configFile
@@ -42,4 +42,12 @@
     recursive = true;
     force = true;
   };
+
+  # Remove lazy.nvim on every activation so it re-clones fresh and can never
+  # get stuck in a bad git checkout state (e.g. "untracked files would be
+  # overwritten by checkout"). The bootstrap in lua/config/lazy.lua re-clones
+  # it automatically on the next nvim launch.
+  home.activation.clearLazyNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    rm -rf "$HOME/.local/share/nvim/lazy/lazy.nvim"
+  '';
 }
