@@ -8,6 +8,7 @@
   # -----------------------------------------------------------------------
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     extraConfig = ''
       IdentityAgent ~/.1password/agent.sock
     '';

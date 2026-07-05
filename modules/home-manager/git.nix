@@ -21,7 +21,9 @@
         verbose = true;
       };
 
-      core.editor = "nvim";
+      # emacsclient -t opens emacs in terminal; falls back to new emacs if no server.
+      # Keep nvim here if you prefer a fast terminal editor for commit messages.
+      core.editor = "emacsclient -t -a emacs";
 
       pull.rebase = true;
 

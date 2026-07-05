@@ -28,6 +28,9 @@
 
   programs.home-manager.enable = true;
 
+  # Wayland-native emacs build for Sway — overrides emacs30 (GTK3) from editor.nix
+  programs.emacs.package = pkgs.emacs30-pgtk;
+
   # direnv — per-project nix shells (python venvs, go workspaces, etc.)
   programs.direnv = {
     enable = true;
