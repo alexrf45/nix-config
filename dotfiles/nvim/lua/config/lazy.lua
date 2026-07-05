@@ -23,6 +23,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- LazyExtras: fzf replaces telescope; mini.starter replaces snacks dashboard
     { import = "lazyvim.plugins.extras.editor.fzf" },
+    { import = "lazyvim.plugins.extras.editor.neo-tree" },
     { import = "lazyvim.plugins.extras.ui.mini-starter" },
     -- User plugin specs from lua/plugins/
     { import = "plugins" },

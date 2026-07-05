@@ -22,8 +22,5 @@ map("x", "<leader>p", [["_dP]])
 -- Delete to void register
 map({ "n", "v" }, "<leader>d", [["_d]])
 
--- Oil file explorer
-map("n", "-", "<cmd>Oil<cr>", { desc = "Open Oil file explorer" })
-
 -- Quick config reload
 map("n", "<leader>x", "<cmd>source %<CR>", { desc = "Source current file" })
