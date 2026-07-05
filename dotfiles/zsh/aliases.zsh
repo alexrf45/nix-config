@@ -1,3 +1,7 @@
+#nixos-rebuild
+alias thoth='sudo nixos-rebuild switch --flake ".#thoth"'
+alias horus='sudo nixos-rebuild switch --flake ".#horus"'
+
 #day to day
 alias r='. ~/.zshrc'
 alias h='cd ~'
