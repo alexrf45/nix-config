@@ -64,7 +64,6 @@
     obs-studio
     remmina          # RDP/VNC client
     gimp
-    syncthing        # File sync (run `syncthing` or enable services.syncthing)
   ];
 
   # -----------------------------------------------------------------------

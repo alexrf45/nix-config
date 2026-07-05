@@ -13,6 +13,7 @@
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
+    ../../modules/nixos/syncthing.nix
 
     # SOPS-nix system module
     inputs.sops-nix.nixosModules.sops
