@@ -1,4 +1,4 @@
-{ inputs, outputs, pkgs, pkgs-unstable, config, lib, ... }:
+{ inputs, outputs, pkgs, pkgs-unstable, lib, ... }:
 {
   imports = [
     # SOPS home-manager module (for user-level secrets if needed)
@@ -28,9 +28,6 @@
 
   programs.home-manager.enable = true;
 
-  # Wayland-native emacs build for Sway — overrides emacs30 (GTK3) from editor.nix
-  programs.emacs.package = pkgs.emacs30-pgtk;
-
   # direnv — per-project nix shells (python venvs, go workspaces, etc.)
   programs.direnv = {
     enable = true;
@@ -43,16 +40,8 @@
     enable = true;
     userDirs = {
       enable = true;
-      createDirectories = false;
+      createDirectories = true;
       setSessionVariables = false;
-      desktop    = "/dev/null";
-      documents  = "/dev/null";
-      download   = "${config.home.homeDirectory}/.downloads";
-      music      = "/dev/null";
-      pictures   = "/dev/null";
-      publicShare = "/dev/null";
-      templates  = "/dev/null";
-      videos     = "/dev/null";
     };
   };
 
