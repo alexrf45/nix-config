@@ -16,6 +16,7 @@
     };
     gc = {
       automatic = true;
+      persistent = true;   # run missed GC on next boot (important for laptops)
       dates = "weekly";
       options = "--delete-older-than 14d";
     };
