@@ -40,7 +40,7 @@
 
 let
   mapperName = "sda-data";
-  mountPoint = "/mnt/data";
+  mountPoint = "/home/data";
 
   # Replace with the UUID from: blkid /dev/sda
   driveUuid = "fab681ec-5f90-47b0-876d-0065ac8fafa5";
