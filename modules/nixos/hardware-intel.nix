@@ -69,6 +69,9 @@
   services.thermald.enable = true;   # Intel thermal management daemon
   services.tlp.enable = true;        # Battery/power tuning (conflicts with power-profiles-daemon)
 
+  # Lid close does nothing — keep running when docked to external monitor.
+  services.logind.lidSwitch = "ignore";
+
   # -----------------------------------------------------------------------
   # TPM 2.0 present (/dev/tpm0) — expose tools for measured-boot experiments.
   # -----------------------------------------------------------------------

@@ -180,10 +180,10 @@ in
       exec_always --no-startup-id xset -dpms
       exec_always --no-startup-id xset s noblank
 
-      # External HDMI output — hardware specific; the Debian config mirrored the
-      # laptop panel to HDMI-1. Verify names with `xrandr` and uncomment:
-      # exec_always --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --same-as eDP-1
-      # workspace 1 output HDMI-1
+      # External monitor as primary; laptop panel off when connected.
+      # Verify output names with `xrandr` — adjust HDMI-1 if yours differs (e.g. HDMI-2, DP-1).
+      exec_always --no-startup-id xrandr --output HDMI-1 --auto --primary --output eDP-1 --off
+      workspace 1 output HDMI-1
     '';
   };
 
