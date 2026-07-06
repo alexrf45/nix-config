@@ -92,8 +92,10 @@ in
     after    = [ "sysinit.target" ];
     requires = [];
 
-    # Must finish before the mount unit tries to mount /mnt/data.
+    # Must finish before the mount unit tries to mount /mnt/data,
+    # and wants the mount so it is triggered automatically after unlock.
     before   = [ "${builtins.replaceStrings ["/"] ["-"] (lib.removePrefix "/" mountPoint)}.mount" ];
+    wants    = [ "${builtins.replaceStrings ["/"] ["-"] (lib.removePrefix "/" mountPoint)}.mount" ];
 
     wantedBy = [ "multi-user.target" ];
 
