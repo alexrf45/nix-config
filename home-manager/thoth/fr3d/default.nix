@@ -70,6 +70,16 @@
   ];
 
   # -----------------------------------------------------------------------
+  # thoth-specific shell aliases
+  # -----------------------------------------------------------------------
+  programs.zsh.shellAliases = {
+    # Edit SOPS secrets on thoth. Derives the age private key from the SSH
+    # host key on the fly so it never touches disk in plaintext.
+    # Usage: sops-thoth secrets/thoth.yaml
+    sops-thoth = "SOPS_AGE_KEY=$(sudo cat /etc/ssh/ssh_host_ed25519_key | ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key) sops";
+  };
+
+  # -----------------------------------------------------------------------
   # SOPS user-level secrets (optional — extend as needed)
   # -----------------------------------------------------------------------
   # sops = {

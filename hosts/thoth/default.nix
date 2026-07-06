@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ./storage.nix
+    ./luks-data-drive.nix
 
     # NixOS system modules
     ../../modules/nixos/nix-settings.nix
