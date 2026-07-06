@@ -87,9 +87,10 @@ in
   systemd.services."cryptsetup-${mapperName}" = {
     description = "Open LUKS data drive /dev/sda (${mapperName})";
 
-    # Must run after sops-nix has written /run/secrets/luks-sda-key.
-    after    = [ "sops-install-secrets.service" ];
-    requires = [ "sops-install-secrets.service" ];
+    # Secrets are written by sops-nix during activation (not a persistent service),
+    # so they are available in /run/secrets/ before any systemd services start.
+    after    = [ "sysinit.target" ];
+    requires = [];
 
     # Must finish before the mount unit tries to mount /mnt/data.
     before   = [ "${builtins.replaceStrings ["/"] ["-"] (lib.removePrefix "/" mountPoint)}.mount" ];

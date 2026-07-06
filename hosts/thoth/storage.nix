@@ -41,8 +41,6 @@
       "vers=3.0"
       "x-systemd.automount"
       "x-systemd.idle-timeout=600"
-      "x-systemd.requires=sops-install-secrets.service"
-      "x-systemd.after=sops-install-secrets.service"
       "noauto"
       "_netdev"
     ];
