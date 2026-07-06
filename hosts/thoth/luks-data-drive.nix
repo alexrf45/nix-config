@@ -92,7 +92,7 @@ in
     requires = [ "sops-install-secrets.service" ];
 
     # Must finish before the mount unit tries to mount /mnt/data.
-    before   = [ "${lib.escapeSystemdPath mountPoint}.mount" ];
+    before   = [ "${builtins.replaceStrings ["/"] ["-"] (lib.removePrefix "/" mountPoint)}.mount" ];
 
     wantedBy = [ "multi-user.target" ];
 
