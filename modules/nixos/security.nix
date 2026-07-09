@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   # -----------------------------------------------------------------------
   # SSH daemon
@@ -23,9 +23,12 @@
   security.polkit.enable = true;
 
   # -----------------------------------------------------------------------
-  # GNOME Keyring (git credential storage, SSH key passphrase caching)
+  # GNOME Keyring (git credential storage)
+  # SSH component is intentionally disabled — 1Password handles SSH auth.
+  # enableGnomeKeyring starts the keyring SSH agent via PAM which would
+  # set SSH_AUTH_SOCK and conflict with IdentityAgent in ~/.ssh/config.
   # -----------------------------------------------------------------------
-  security.pam.services.login.enableGnomeKeyring = true;
+  security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
   services.gnome.gnome-keyring.enable = true;
 
   # -----------------------------------------------------------------------

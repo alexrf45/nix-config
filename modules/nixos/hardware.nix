@@ -90,6 +90,14 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
-    settings.General.Experimental = "true";   # Battery level reporting
+    settings = {
+      General = {
+        Experimental = "true";         # Battery level reporting
+        FastConnectable = "true";      # Faster reconnect on resume/boot
+        JustWorksRepairing = "always"; # Skip re-pair prompt for known devices
+      };
+      Policy.AutoEnable = "true";      # Keep adapter enabled after suspend
+      LE.MinConnectionInterval = 7;    # Tighten BLE interval (headphones)
+    };
   };
 }

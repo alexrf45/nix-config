@@ -1,14 +1,18 @@
 { ... }:
 {
   # -----------------------------------------------------------------------
-  # kitty — GPU terminal, base16-bright palette
+  # kitty — GPU terminal, gruvbox-material dark soft palette
   # -----------------------------------------------------------------------
   programs.kitty = {
     enable = true;
 
     font = {
       name = "Iosevka Nerd Font Mono";
+<<<<<<< HEAD
       size = 14;
+=======
+      size = 13;
+>>>>>>> dev
     };
 
     settings = {
@@ -19,35 +23,35 @@
       confirm_os_window_close = 0;
       enable_audio_bell = "no";
 
-      # base16-bright (Chris Kempson) — terminal mapping
-      background = "#000000";  # base00
-      foreground = "#e0e0e0";  # base05
+      # gruvbox-material dark soft
+      background = "#32302f";
+      foreground = "#d4be98";
 
-      cursor            = "#e0e0e0";  # base05
-      cursor_text_color = "#000000";  # base00
+      cursor            = "#d4be98";
+      cursor_text_color = "#32302f";
 
-      selection_background = "#505050";  # base02
-      selection_foreground = "#e0e0e0";  # base05
+      selection_background = "#45403d";
+      selection_foreground = "#d4be98";
 
       # normal
-      color0 = "#000000";  # base00 black
-      color1 = "#fb0120";  # base08 red
-      color2 = "#a1c659";  # base0B green
-      color3 = "#fda331";  # base0A yellow
-      color4 = "#6fb3d2";  # base0D blue
-      color5 = "#d381c3";  # base0E magenta
-      color6 = "#76c7b7";  # base0C cyan
-      color7 = "#e0e0e0";  # base05 white
+      color0 = "#665c54";  # black
+      color1 = "#ea6962";  # red
+      color2 = "#a9b665";  # green
+      color3 = "#d8a657";  # yellow
+      color4 = "#7daea3";  # blue
+      color5 = "#d3869b";  # magenta
+      color6 = "#89b482";  # cyan
+      color7 = "#d4be98";  # white
 
       # bright
-      color8  = "#b0b0b0";  # base03
-      color9  = "#fb0120";  # base08
-      color10 = "#a1c659";  # base0B
-      color11 = "#fda331";  # base0A
-      color12 = "#6fb3d2";  # base0D
-      color13 = "#d381c3";  # base0E
-      color14 = "#76c7b7";  # base0C
-      color15 = "#ffffff";  # base07
+      color8  = "#928374";  # bright black
+      color9  = "#ea6962";  # bright red
+      color10 = "#a9b665";  # bright green
+      color11 = "#d8a657";  # bright yellow
+      color12 = "#7daea3";  # bright blue
+      color13 = "#d3869b";  # bright magenta
+      color14 = "#89b482";  # bright cyan
+      color15 = "#d4be98";  # bright white
     };
   };
 }

@@ -1,3 +1,7 @@
+#nixos-rebuild
+alias thoth='sudo nixos-rebuild switch --flake ".#thoth"'
+alias horus='sudo nixos-rebuild switch --flake ".#horus"'
+
 #day to day
 alias r='. ~/.zshrc'
 alias h='cd ~'
@@ -27,7 +31,6 @@ alias spotify='spotify_player'
 alias tor='docker run --rm --detach --name tor --publish 127.0.0.1:9050:9050 tor:local'
 #tmux & tmuxp
 alias t='tmux'
-alias dev='tmuxp load ~/.config/tmuxp/debian-desktop.yaml'
 alias kali='tmuxp load ~/.config/tmuxp/security.yaml'
 alias dev='tmuxp load ~/.config/tmuxp/dev.yaml'
 
@@ -51,9 +54,3 @@ alias py-virt='python3 -m venv ./venv && source ./venv/bin/activate'
 alias freeze='pip freeze > requirements.txt'
 alias py-install='pip install -r requirements.txt'
 alias py-list='pipx list | grep package'
-
-#starship
-alias yeskube="sed -i '/^\[kubernetes\]$/,/^\[/{s/^disabled = true/disabled = false/;}' ~/.config/starship.toml"
-alias nokube="sed -i '/^\[kubernetes\]$/,/^\[/{s/^disabled = false/disabled = true/;}' ~/.config/starship.toml"
-
-

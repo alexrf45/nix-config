@@ -1,19 +1,16 @@
 # SOPS configuration — maps secret files to the age key(s) that can decrypt them.
 #
-# Setup (run on the machine, not in CI):
-#   1. Generate your age key:
-#        age-keygen -o ~/.config/sops/age/keys.txt
-#   2. Copy the public key from the output (age1...) and paste it below.
-#   3. Create a secrets file:
-#        sops secrets/nitro5.yaml
-#   4. The age key file MUST NOT be committed to this repo.
+# thoth uses its SSH host key as the age decryption key (Option A).
+# To get the age public key, run on thoth:
+#   cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age
+# Paste the output (age1...) in place of the CHANGEME placeholder below,
+# then re-encrypt: sops updatekeys secrets/thoth.yaml
 #
-# Re-encryption (when adding a new key or rotating):
-#   sops updatekeys secrets/nitro5.yaml
+# Re-encryption (when rotating or adding a key):
+#   sops updatekeys secrets/thoth.yaml
 #
 creation_rules:
-  - path_regex: secrets/nitro5\.yaml$
+  - path_regex: secrets/thoth\.yaml$
     key_groups:
       - age:
-          # REPLACE with your actual age public key (age1...)
-          - age1REPLACE_WITH_YOUR_AGE_PUBLIC_KEY
+          - age1gzcf5npkkwtg3cr03euj8m99lay3une4c6uqpzs3gxpeg9qmsp5stww3dl

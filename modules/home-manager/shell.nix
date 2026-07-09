@@ -19,8 +19,10 @@
       share = true;
     };
 
+    dotDir = config.home.homeDirectory;
+
     # Zsh options — mirrors dotfiles .zshrc setopt block
-    initExtra = ''
+    initContent = ''
       setopt AUTO_CD
       setopt AUTO_PUSHD
       setopt EXTENDED_GLOB
@@ -61,9 +63,6 @@
       # Auto-activate Python virtualenv on directory change
       autoload -Uz add-zsh-hook
       add-zsh-hook chpwd auto_venv
-
-      # kubectl completion
-      source <(kubectl completion zsh) 2>/dev/null || true
     '';
   };
 
@@ -84,7 +83,6 @@
     ".zsh/aliases.zsh".source   = ../../dotfiles/zsh/aliases.zsh;
     ".zsh/git.zsh".source       = ../../dotfiles/zsh/git.zsh;
     ".zsh/docker.zsh".source    = ../../dotfiles/zsh/docker.zsh;
-    ".zsh/kube.zsh".source      = ../../dotfiles/zsh/kube.zsh;
     ".zsh/aws.zsh".source       = ../../dotfiles/zsh/aws.zsh;
     ".zsh/tf.zsh".source        = ../../dotfiles/zsh/tf.zsh;
     ".zsh/python.zsh".source    = ../../dotfiles/zsh/python.zsh;

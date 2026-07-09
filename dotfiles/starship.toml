@@ -2,7 +2,7 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[╭─infra────❯](white) $kubernetes $terraform $aws $gcloud $azure
+[╭─infra────❯](white) $terraform $aws $gcloud $azure
 [┣─project──❯](white) $directory$git_branch $git_status $git_commit $golang $python
 [╰](white)$character
 """
@@ -103,27 +103,6 @@ disabled = false
 
 [terraform]
 format = " [🔧 $version]($style) "
-
-[kubernetes]
-format = '[k8s: $context \($namespace\)]($style) '
-disabled = false
-style = "dimmed purple"
-
-
-[[kubernetes.contexts]]
-context_pattern = "^admin@abydos$"
-context_alias = "test"
-style = "dimmed red"
-
-[[kubernetes.contexts]]
-context_pattern = "^admin@memphis$"
-context_alias = "dev"
-style = "dimmed yellow"
-
-[[kubernetes.contexts]]
-context_pattern = "^admin@horus$"
-context_alias = "prod"
-style = "italic purple"
 
 [azure]
 disabled = false

@@ -2,14 +2,15 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./disk.nix
+    ./storage.nix
+    ./luks-data-drive.nix
 
     # NixOS system modules
     ../../modules/nixos/nix-settings.nix
-    ../../modules/nixos/hardware.nix
+    ../../modules/nixos/hardware-intel.nix   # Intel Iris Xe (thoth-specific)
     ../../modules/nixos/networking.nix
     ../../modules/nixos/security.nix
-    ../../modules/nixos/desktop.nix
+    ../../modules/nixos/desktop-x11.nix      # Xorg + i3 (thoth-specific)
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
@@ -35,12 +36,21 @@
         extraSpecialArgs = {
           inherit inputs outputs pkgs-unstable;
         };
-        users.fr3d = import ../../home-manager/horus/fr3d;
+        users.fr3d = import ../../home-manager/thoth/fr3d;
       };
     }
   ];
 
-  networking.hostName = "horus";
+  networking.hostName = "thoth";
+
+  # Tailscale mesh VPN (mirrors the Debian tailscale setup).
+  services.tailscale.enable = true;
+
+  # libvirt/KVM + virt-manager (mirrors the Debian QEMU/libvirt setup).
+  # Docker is already enabled by modules/nixos/virtualisation.nix.
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  users.users.fr3d.extraGroups = [ "libvirtd" "kvm" ];
 
   # Set once during initial install — never change after activation
   system.stateVersion = "25.11";

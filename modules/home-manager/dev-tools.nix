@@ -18,17 +18,6 @@
     tmuxp                        # tmuxp session manager
 
     # -----------------------------------------------------------------------
-    # Kubernetes / Home Lab
-    # -----------------------------------------------------------------------
-    kubectl
-    k9s
-    kubecolor        # Colorized kubectl output
-    kubectx          # kubectx / kubens
-    kubernetes-helm
-    fluxcd
-    krew             # kubectl plugin manager
-
-    # -----------------------------------------------------------------------
     # Infrastructure / IaC
     # -----------------------------------------------------------------------
     terraform
@@ -95,7 +84,6 @@
 
   home.sessionPath = [
     "$HOME/go/bin"
-    "$HOME/.krew/bin"
     "$HOME/.local/bin"
   ];
 }

@@ -87,6 +87,17 @@
       ];
     };
 
+    # Security-research daily driver — Intel i5-1155G7 laptop, i3 (X11).
+    nixosConfigurations.thoth = nixpkgs.lib.nixosSystem {
+      inherit system;
+      specialArgs = {
+        inherit inputs outputs pkgs-unstable;
+      };
+      modules = [
+        ./hosts/thoth
+      ];
+    };
+
     # -------------------------------------------------------------------------
     # Security devShells — disposable, per-engagement toolchains modeled on the
     # SCRT container variants (https://github.com/alexrf45/SCRT).
