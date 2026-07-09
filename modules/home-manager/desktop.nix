@@ -6,7 +6,7 @@ let
   up    = "l";
   right = "semicolon";
   term  = "kitty";
-  menu  = "wofi --show drun";
+  menu  = "wmenu-run";
 
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 in
@@ -136,23 +136,10 @@ in
         { command = "kitty"; }
       ];
 
-      # i3status via swaybar
+      # waybar replaces the old i3bar/i3blocks status bar.
       bars = [{
-        statusCommand = "${pkgs.i3status}/bin/i3status";
+        command = "${pkgs.waybar}/bin/waybar";
         position = "top";
-        fonts = {
-          names = [ "Iosevka Nerd Font Mono" ];
-          size = 11.0;
-        };
-        colors = {
-          background = "#000000";
-          statusline = "#e0e0e0";
-          separator = "#505050";
-          focusedWorkspace = { border = "#6fb3d2"; background = "#6fb3d2"; text = "#000000"; };
-          activeWorkspace = { border = "#303030"; background = "#303030"; text = "#e0e0e0"; };
-          inactiveWorkspace = { border = "#000000"; background = "#000000"; text = "#b0b0b0"; };
-          urgentWorkspace = { border = "#fb0120"; background = "#fb0120"; text = "#ffffff"; };
-        };
       }];
     };
 
@@ -175,24 +162,13 @@ in
     '';
   };
 
-<<<<<<< HEAD
-  # -----------------------------------------------------------------------
-  # i3status config — base16-bright colours, Nerd Font icons
-  # -----------------------------------------------------------------------
-  xdg.configFile."i3status/config".source = ../../dotfiles/i3status/config;
-
-  # -----------------------------------------------------------------------
-  # Wallpaper + lock screen images (referenced by swaybg / swaylock above)
-  # -----------------------------------------------------------------------
-=======
->>>>>>> dev
   xdg.configFile."pictures/skull.jpg" = { source = ../../dotfiles/pictures/skull.jpg; force = true; };
   xdg.configFile."pictures/sky.png"   = { source = ../../dotfiles/pictures/sky.png;   force = true; };
 
   services.mako.enable = true;
 
   home.packages = with pkgs; [
-    i3status               # Status bar for swaybar
+    waybar                 # Status bar (replaces i3blocks/i3status)
     wofi                   # App launcher (rofi replacement)
     wl-clipboard           # wl-copy / wl-paste (replaces xclip)
     wlr-randr              # Output management (replaces xrandr)

@@ -8,11 +8,7 @@
 
     font = {
       name = "Iosevka Nerd Font Mono";
-<<<<<<< HEAD
       size = 14;
-=======
-      size = 13;
->>>>>>> dev
     };
 
     settings = {
