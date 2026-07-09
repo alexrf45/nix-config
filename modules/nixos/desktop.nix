@@ -17,6 +17,7 @@
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+    extraOptions = [ "--unsupported-gpu" ];
     extraPackages = with pkgs; [
       swaylock      # Screen locker
       swayidle      # Idle management (lock/DPMS)
