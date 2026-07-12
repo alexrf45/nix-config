@@ -42,10 +42,6 @@ alias public='curl wtfismyip.com/text'
 alias htb='sudo openvpn ~/.config/openvpn/lab_fr3d1eeT.ovpn'
 alias vpn='sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn'
 
-#aws-vault
-alias av='aws-vault exec $1 --duration=2h'
-alias avs='aws-vault exec $1 --no-session'
-alias avu='aws-vault login $1'
 
 #python3
 

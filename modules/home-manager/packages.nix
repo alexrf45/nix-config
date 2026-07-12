@@ -120,7 +120,6 @@
   # -----------------------------------------------------------------------
   home.sessionVariables = {
     AWS_REGION           = "us-east-1";
-    AWS_VAULT_BACKEND    = "pass";
     AWS_CLI_AUTO_PROMPT  = "on-partial";
     DOCKER_BUILDKIT      = "1";
     FZF_COMPLETION_TRIGGER = "..";
