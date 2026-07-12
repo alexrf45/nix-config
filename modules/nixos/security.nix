@@ -35,7 +35,10 @@
   # 1Password system integration
   # polkitPolicyOwners grants fr3d permission to use the SSH agent and GUI
   # -----------------------------------------------------------------------
-  programs._1password.enable = true;
+  programs._1password = {
+    enable = true;
+    package = pkgs._1password-cli-beta;
+  };
   programs._1password-gui = {
     enable = true;
     polkitPolicyOwners = [ "fr3d" ];
