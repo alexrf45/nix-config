@@ -25,6 +25,10 @@
   # Allow unfree packages system-wide (NVIDIA, 1password, etc.)
   nixpkgs.config.allowUnfree = true;
 
+  # nix-ld — run dynamically linked binaries (e.g. Terraform providers
+  # downloaded from registries) that expect a standard FHS interpreter.
+  programs.nix-ld.enable = true;
+
   # Useful system-level utilities available to all users
   environment.systemPackages = with pkgs; [
     git
