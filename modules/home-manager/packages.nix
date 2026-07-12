@@ -120,9 +120,23 @@
   # -----------------------------------------------------------------------
   home.sessionVariables = {
     AWS_REGION           = "us-east-1";
+    AWS_PROFILE          = "default";
     AWS_CLI_AUTO_PROMPT  = "on-partial";
     DOCKER_BUILDKIT      = "1";
     FZF_COMPLETION_TRIGGER = "..";
     FZF_COMPLETION_OPTS    = "--border --info=inline";
   };
+
+  # -----------------------------------------------------------------------
+  # AWS config — profile definitions (no secrets, credentials via 1Password)
+  # -----------------------------------------------------------------------
+  home.file.".aws/config".text = ''
+    [default]
+    region = us-east-1
+    output = json
+
+    [profile personal]
+    region = us-east-1
+    output = json
+  '';
 }

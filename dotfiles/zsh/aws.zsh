@@ -1,5 +1,11 @@
 #aws cli aliases — credentials injected via 1Password CLI plugin
 alias aws='op plugin run -- aws'
+
+# Switch AWS profile: `awsp personal` or `awsp default`
+awsp() {
+  export AWS_PROFILE="${1:-default}"
+  echo "Switched to AWS profile: $AWS_PROFILE"
+}
 alias ec2-check='op plugin run -- aws ec2 describe-instances --query "Reservations[*].Instances[*].{PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Name:Tags[?Key=='Name']|[0].Value,Type:InstanceType,Status:State.Name,VpcId:VpcId,Id:InstanceId}" --filters "Name=instance-state-name,Values=running" --output table'
 alias s3-list="op plugin run -- aws s3api list-buckets | jq -r '.Buckets[].Name'"
 alias vpc-check='op plugin run -- aws ec2 --output text --query "Vpcs[*].{VpcId:VpcId,Name:Tags[?Key=='Environment'].Value|[0],CidrBlock:CidrBlock}" describe-vpcs'
