@@ -60,11 +60,6 @@
   };
 
   # -----------------------------------------------------------------------
-  # Starship config — mirrors .config/starship.toml from dotfiles
-  # -----------------------------------------------------------------------
-  xdg.configFile."starship.toml".source = ../../dotfiles/starship.toml;
-
-  # -----------------------------------------------------------------------
   # tmuxp session files — placed at ~/.config/tmuxp/
   # Aliases in aliases.zsh reference these paths
   # -----------------------------------------------------------------------
