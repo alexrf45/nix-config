@@ -61,12 +61,10 @@
 
   # -----------------------------------------------------------------------
   # tmuxp session files — placed at ~/.config/tmuxp/
-  # Aliases in aliases.zsh reference these paths
   # -----------------------------------------------------------------------
-  xdg.configFile."tmuxp/homelab.yaml".source = ../../tmuxp/homelab.yaml;
-  xdg.configFile."tmuxp/security.yaml".source = ../../tmuxp/security.yaml;
-  xdg.configFile."tmuxp/dev.yaml".source      = ../../tmuxp/dev.yaml;
-  xdg.configFile."tmuxp/ctf.yaml".source      = ../../tmuxp/ctf.yaml;
+  xdg.configFile."tmuxp/htb.yaml".source = ../../tmuxp/htb.yaml;
+  xdg.configFile."tmuxp/dev.yaml".source = ../../tmuxp/dev.yaml;
+  xdg.configFile."tmuxp/ctf.yaml".source = ../../tmuxp/ctf.yaml;
 
   # -----------------------------------------------------------------------
   # Firefox — managed via programs module for profile/settings control
