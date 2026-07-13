@@ -188,7 +188,67 @@ in
   };
 
   # i3status config file (referenced by the bar's status_command above).
-  xdg.configFile."i3/i3status.conf".source = ../../dotfiles/i3/i3status.conf;
+  xdg.configFile."i3/i3status.conf".text = ''
+    # i3status — drives the i3bar for the thoth X11 session.
+    general {
+            colors = true
+            markup = "pango"
+            interval = 5
+            color_good = "#a1c659"
+            color_bad = "#fb0120"
+            color_degraded = "#fda331"
+    }
+
+    order += "wireless wlp1s0"
+    order += "ethernet tailscale0"
+    order += "cpu_usage"
+    order += "memory"
+    order += "battery 0"
+    order += "cpu_temperature 0"
+    order += "disk /"
+    order += "tztime local"
+
+    wireless wlp1s0 {
+            format_up = " %essid %quality"
+            format_down = " down"
+    }
+
+    ethernet tailscale0 {
+            format_up = " %ip"
+            format_down = ""
+    }
+
+    cpu_usage {
+            format = " %usage"
+    }
+
+    memory {
+            format = " %used"
+            threshold_degraded = "10%"
+            format_degraded = " %free"
+    }
+
+    battery 0 {
+            format = "%status %percentage"
+            status_chr = "⚡"
+            status_bat = "BAT"
+            status_full = "FULL"
+            integer_battery_capacity = true
+            low_threshold = 15
+    }
+
+    cpu_temperature 0 {
+            format = " %degrees°C"
+    }
+
+    disk "/" {
+            format = " %free"
+    }
+
+    tztime local {
+            format = "%A, %d %B %Y %H:%M:%S"
+    }
+  '';
 
   # Wallpapers used by i3 (background) and i3lock (lock screen).
   xdg.configFile."pictures/dark-waves.jpg" = { source = ../../dotfiles/pictures/dark-waves.jpg; force = true; };

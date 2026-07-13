@@ -17,4 +17,4 @@ windows:
   - window_name: vpn
     layout: tiled
     panes:
-      - echo "Connect VPN: sudo openvpn ~/.config/openvpn/<profile>.ovpn"
+      - echo sudo openvpn ~/.config/openvpn/<profile>.ovpn"
