@@ -380,13 +380,14 @@
         detect_extensions = [ "py" ];
       };
 
-      # VPN indicator — only shown when a tun/tap/wg interface is up
-      # Displays tunnel IP, useful during HTB/CTF to know your tun0 address
+      # VPN indicator — only shown when an OpenVPN tun interface is active.
+      # Uses `ip link show type tun` to query kernel interface type directly,
+      # avoiding name-pattern matching that would catch Tailscale (wireguard type).
       custom.vpn = {
-        command = ''ip addr show | grep -E '^[0-9]+: (tun|tap|wg)' -A 2 | grep 'inet ' | head -1 | awk '{print $2}' | cut -d'/' -f1'';
-        when = ''ip addr show | grep -qE '^[0-9]+: (tun|tap|wg)' '';
+        when   = "ip link show type tun 2>/dev/null | grep -q .";
+        command = "ip -4 addr show type tun 2>/dev/null | awk '/inet /{print $2; exit}' | cut -d/ -f1";
         format = "[vpn:$output]($style) ";
-        style = "bold cyan";
+        style  = "bold cyan";
       };
 
       # Disabled — not needed in daily prompt
