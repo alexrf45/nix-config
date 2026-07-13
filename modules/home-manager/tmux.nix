@@ -14,17 +14,18 @@
       set -g default-command "${pkgs.zsh}/bin/zsh"
 
       unbind C-b
-      set -g prefix C-Space
-      bind C-Space send-prefix
+      set -g prefix C-a
+      bind C-a send-prefix
 
+      set -g mouse on
       set -g set-clipboard on
       set -g visual-activity off
       set -gq allow-passthrough on
-
+      set -g history-limit 50000
+      
       bind t set-option status
 
-      set-window-option -g automatic-rename on
-      set-option -g automatic-rename-format '#{b:pane_current_path}'
+      set-window-option -g automatic-rename off
       set-option -g set-titles on
 
       set -g default-terminal "tmux-256color"
@@ -32,7 +33,6 @@
 
       set -g status-keys vi
       setw -g mode-keys vi
-      set -g mouse on
       set -g renumber-windows on
       set -g base-index 1
       setw -g pane-base-index 1
@@ -76,10 +76,16 @@
       set -g status-position top
       set -g status-interval 1
 
+
+
       set -g @plugin 'tmux-plugins/tpm'
       set -g @plugin 'tmux-plugins/tmux-sensible'
+      set -g @plugin 'tmux-plugins/tmux-resurrect'
       set -g @plugin 'tmux-plugins/tmux-continuum'
       set -g @continuum-restore 'on'
+      set -g @plugin 'egel/tmux-gruvbox'
+      set -g @tmux-gruvbox 'dark'
+      set -g @plugin 'christoomey/vim-tmux-navigator'
       set -g @plugin 'tmux-plugins/tmux-logging'
       set -g @plugin 'sainnhe/tmux-fzf'
       set -g @logging-path "$HOME/.logs"
