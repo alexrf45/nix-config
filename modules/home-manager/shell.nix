@@ -335,7 +335,13 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      format = "[╭](bold white) $directory$git_branch$git_status$python$custom.vpn\n[╰](bold white)$character\n";
+      # ''${custom.vpn} escapes to the literal ${custom.vpn} that starship expects.
+      # Using $custom.vpn (no braces) causes starship to render $custom (all custom
+      # modules) followed by the literal text ".vpn" — the braced form is required.
+      format = ''
+        [╭](bold white) $directory$git_branch$git_status$python''${custom.vpn}
+        [╰](bold white)$character
+      '';
       scan_timeout = 10;
       add_newline = true;
 
@@ -380,14 +386,14 @@
         detect_extensions = [ "py" ];
       };
 
-      # VPN indicator — only shown when an OpenVPN tun interface is active.
-      # Uses `ip link show type tun` to query kernel interface type directly,
-      # avoiding name-pattern matching that would catch Tailscale (wireguard type).
+      # VPN indicator — shown only when an OpenVPN tunnel (tun0, tun1, …) is up.
+      # Matches interface NAMES starting with "tun[digit]" so Tailscale (tailscale0)
+      # is never caught, regardless of its kernel interface type.
       custom.vpn = {
-        when   = "ip link show type tun 2>/dev/null | grep -q .";
-        command = "ip -4 addr show type tun 2>/dev/null | awk '/inet /{print $2; exit}' | cut -d/ -f1";
-        format = "[vpn:$output]($style) ";
-        style  = "bold cyan";
+        when    = "ip link show | grep -qE '^[0-9]+: tun[0-9]'";
+        command = "ip -4 addr | awk '/^[0-9]+: tun[0-9]/{found=1} found && /inet /{print $2; exit}' | cut -d/ -f1";
+        format  = "[vpn:$output]($style) ";
+        style   = "bold cyan";
       };
 
       # Disabled — not needed in daily prompt
