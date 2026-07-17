@@ -66,6 +66,7 @@
     # Unstable packages (accessed via pkgs.unstable.*)
     # -----------------------------------------------------------------------
     pkgs-unstable.claude-code
+    pkgs-unstable.devenv         # per-project dev environments (devenv.nix)
     _1password-gui-beta
   ] ++ (with pkgs-unstable; [
     # Any additional unstable packages
