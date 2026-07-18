@@ -34,7 +34,7 @@
 
     # ── Testing / quality ─────────────────────────────────────────────────
     py-test = {
-      exec        = "python -m pytest -v ''${@}";
+      exec        = ''python -m pytest -v "$@"'';
       description = "Run pytest (extra args forwarded)";
     };
     py-lint = {
