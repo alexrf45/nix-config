@@ -63,7 +63,7 @@
     # cloud-nuke            # Available in nixpkgs-unstable
 
     # -----------------------------------------------------------------------
-    # Unstable packages (accessed via pkgs.unstable.*)
+    # Unstable packages (accessed via pkgs-unstable.*)
     # -----------------------------------------------------------------------
     pkgs-unstable.claude-code
     pkgs-unstable.devenv         # per-project dev environments (devenv.nix)
@@ -71,6 +71,16 @@
   ] ++ (with pkgs-unstable; [
     # Any additional unstable packages
   ]);
+
+  # -----------------------------------------------------------------------
+  # direnv — auto-activates .envrc on cd; nix-direnv adds `use flake` and
+  # `use devenv` support (nix-direnv 3.0+ supports devenv natively).
+  # -----------------------------------------------------------------------
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
 
   # -----------------------------------------------------------------------
   # Go environment variables

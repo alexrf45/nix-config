@@ -19,8 +19,7 @@
   # automatically every time the shell is entered or requirements change.
   # -------------------------------------------------------------------------
   languages.python = {
-    enable  = true;
-    version = "3.13";
+    enable = true;
     venv = {
       enable       = true;
       requirements = ./requirements.txt;
