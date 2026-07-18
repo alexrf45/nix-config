@@ -342,7 +342,7 @@
         cd "$name" || return 1
 
         echo "→ Initializing Python devenv template"
-        nix flake init -t /home/fr3d/nix-config#python || return 1
+        nix flake init -t '/home/fr3d/nix-config#python' || return 1
 
         echo "→ Starting devenv shell (first run installs packages, may take a moment)"
         devenv shell
