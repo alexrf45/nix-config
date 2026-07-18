@@ -1,0 +1,33 @@
+# ── HTTP / REST APIs ──────────────────────────────────────────────────────────
+requests                # battle-tested sync HTTP client
+httpx[http2]            # async-capable client with HTTP/2 support
+aiohttp                 # async HTTP client + server
+python-dotenv           # load .env files into os.environ
+
+# ── Web scraping / parsing ────────────────────────────────────────────────────
+beautifulsoup4          # HTML/XML parser (pairs with lxml or html.parser)
+lxml                    # fast C-backed XML/HTML parser backend for bs4
+playwright              # browser automation (run `browser-install` once after setup)
+
+# ── Data analysis / visualisation ────────────────────────────────────────────
+pandas                  # data frames + CSV/JSON/SQL ingestion
+numpy                   # numerical arrays
+matplotlib              # plotting
+seaborn                 # statistical visualisation on top of matplotlib
+rich                    # pretty terminal output: tables, progress bars, logging
+
+# ── Security research ─────────────────────────────────────────────────────────
+scapy                   # packet crafting + network analysis
+cryptography            # low-level crypto primitives (AES, RSA, ECDSA, X.509, …)
+paramiko                # SSH client/server in pure Python
+dnspython               # DNS queries and zone manipulation
+python-nmap             # nmap wrapper for programmatic scans
+
+# ── Docker SDK ────────────────────────────────────────────────────────────────
+docker                  # Python SDK for the Docker daemon API
+
+# ── Dev / testing ─────────────────────────────────────────────────────────────
+pytest                  # test runner
+pytest-asyncio          # async test support
+ruff                    # linter + formatter (replaces flake8/black/isort)
+ipython                 # enhanced REPL

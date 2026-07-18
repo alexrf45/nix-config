@@ -77,6 +77,21 @@
   {
     formatter.${system} = nixpkgs.legacyPackages.${system}.alejandra;
 
+    # -------------------------------------------------------------------------
+    # Project templates — bootstrap a new project with:
+    #   nix flake init -t /path/to/nix-config#python
+    # -------------------------------------------------------------------------
+    templates = {
+      python = {
+        path        = ./templates/python;
+        description = "Python devenv: security research, APIs, scraping, data analysis + Docker";
+      };
+      mkdocs = {
+        path        = ./templates/mkdocs;
+        description = "MkDocs documentation site for Cloudflare Pages";
+      };
+    };
+
     overlays = import ./overlays { inherit inputs; };
 
     nixosConfigurations.horus = nixpkgs.lib.nixosSystem {

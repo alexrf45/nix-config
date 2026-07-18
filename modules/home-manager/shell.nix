@@ -321,6 +321,33 @@
         done
       }
 
+      # Bootstrap a new Python devenv project:
+      #   pydev <name>   — create dir, init flake template, drop into devenv shell
+      #   pydev <name>   — if dir exists, just enter the devenv shell
+      pydev() {
+        if [[ -z "$1" ]]; then
+          echo "Usage: pydev <project-name>"
+          return 1
+        fi
+        local name="$1"
+
+        if [[ -d "$name" ]]; then
+          echo "→ '$name' already exists — entering devenv shell"
+          cd "$name" && devenv shell
+          return
+        fi
+
+        echo "→ Creating $PWD/$name"
+        mkdir -p "$name" || return 1
+        cd "$name" || return 1
+
+        echo "→ Initializing Python devenv template"
+        nix flake init -t /home/fr3d/nix-config#python || return 1
+
+        echo "→ Starting devenv shell (first run installs packages, may take a moment)"
+        devenv shell
+      }
+
       autoload -Uz add-zsh-hook
       add-zsh-hook chpwd auto_venv
     '';
