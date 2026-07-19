@@ -142,7 +142,7 @@
         name = "ad";
         banner = "Active Directory / Windows ($RUBEUS $CERTIFY $WINPEAS $NISHANG_DIR)";
         extra = with pkgs-sec; [
-          impacket netexec bloodhound evil-winrm kerbrute responder
+          python3Packages.impacket netexec bloodhound evil-winrm kerbrute responder
           enum4linux-ng samba openldap krb5
           # Vendored (not in nixpkgs) — see pkgs/ and overlays/additions.nix
           sharpcollection nishang winpeas linpeas pspy
