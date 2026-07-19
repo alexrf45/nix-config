@@ -11,7 +11,7 @@
     ../../../modules/home-manager/tmux.nix
     ../../../modules/home-manager/git.nix
     ../../../modules/home-manager/desktop.nix
-    ../../../modules/home-manager/dev-tools.nix
+    ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/security.nix
     ../../../modules/home-manager/ssh.nix
@@ -27,13 +27,6 @@
   systemd.user.startServices = "sd-switch";
 
   programs.home-manager.enable = true;
-
-  # direnv — per-project nix shells (python venvs, go workspaces, etc.)
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-    enableZshIntegration = true;
-  };
 
   # XDG base directory spec
   xdg = {
