@@ -130,26 +130,28 @@
         banner = "recon + web fuzzing";
         extra = with pkgs-sec; [
           subfinder httpx katana nuclei dnsx naabu amass
-          ffuf gobuster feroxbuster wfuzz
+          # wfuzz dropped 2026-07: dead upstream (last release 2021), its
+          # helpers/file_func.py imports pkg_resources which Python 3.14 no
+          # longer ships. ffuf/feroxbuster/gobuster cover the same ground.
+          ffuf gobuster feroxbuster
           sqlmap whatweb wpscan
-          waybackurls gau gron
+          waybackurls gau gron unfurl
           mitmproxy cewl crunch
-          # unfurl  # verify attr (`nix search nixpkgs unfurl`) then enable
         ];
       };
 
       ad = mkSecShell {
         name = "ad";
-        banner = "Active Directory / Windows ($RUBEUS $CERTIFY $WINPEAS $NISHANG_DIR)";
+        # \\$ so the banner advertises the variable names rather than having
+        # bash expand them into store paths in the echo below.
+        banner = "Active Directory / Windows (\\$RUBEUS \\$CERTIFY \\$WINPEAS \\$NISHANG_DIR)";
         extra = with pkgs-sec; [
           python3Packages.impacket netexec bloodhound evil-winrm kerbrute responder
           enum4linux-ng samba openldap krb5
           # Vendored (not in nixpkgs) — see pkgs/ and overlays/additions.nix
           sharpcollection nishang winpeas linpeas pspy
-          # Verify these attr names (`nix search nixpkgs <name>`) then enable:
-          # python3Packages.ldapdomaindump
-          # bloodhound-py   # may be python3Packages.bloodhound-py
-          # certipy-ad
+          # `certipy` is the top-level attr; it builds certipy-ad.
+          certipy python3Packages.ldapdomaindump python3Packages.bloodhound-py
         ];
       };
 
@@ -160,8 +162,12 @@
           steghide foremost binwalk volatility3 sqlitebrowser testdisk sleuthkit
           zsteg stegseek outguess
           fcrackzip pdfcrack hashid john hashcat
-          seclists wordlists
-          # name-that-hash  # verify attr name then enable
+          seclists
+          # `wordlists` pulls wfuzz by default, which no longer builds on
+          # Python 3.14 (see the web shell). Override `lists` to drop it — the
+          # wordlists/wordlists_path helpers and rockyou/seclists/nmap survive.
+          (wordlists.override { lists = [ nmap rockyou seclists ]; })
+          nth  # name-that-hash
         ];
       };
 
