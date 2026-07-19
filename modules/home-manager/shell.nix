@@ -88,25 +88,25 @@
       gcloud    = "docker run --rm --volumes-from gcloud-config gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud";
       juiceshop = "docker run --name juiceshop -d --rm -p 3000:3000 bkimminich/juice-shop";
 
-      # Git
+      # Git — shell shortcuts pointing to git aliases (defined in git.nix)
       g        = "git";
-      ga       = "git add";
-      gaa      = "git add --all";
-      gb       = "git branch";
-      gbd      = "git branch -d";
-      gcb      = "git checkout -b";
-      gc       = "git clone";
-      gcl      = "git clone --recurse-modules";
-      clean    = "git reset --hard && git clean -dfxx";
-      checkout = "git checkout";
-      gpl      = "git pull";
-      gp       = "git push";
-      gs       = "git status";
-      gt       = "git tag";
-      gptf     = "git push --follow-tags";
-      glog     = "git log --date-order --pretty=\"format:%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset\"";
-      gl       = "glog --graph";
-      gla      = "gl --all";
+      ga       = "git a";
+      gaa      = "git aa";
+      gb       = "git b";
+      gbd      = "git bd";
+      gcb      = "git cb";
+      gc       = "git cl";
+      gcl      = "git clr";
+      clean    = "git nuke";
+      checkout = "git co";
+      gpl      = "git pl";
+      gp       = "git p";
+      gs       = "git s";
+      gt       = "git t";
+      gptf     = "git ptf";
+      glog     = "git lg";
+      gl       = "git lgg";
+      gla      = "git lga";
 
       # AWS — credentials via 1Password CLI plugin
       aws      = "op plugin run -- aws";
@@ -245,15 +245,6 @@
 
       timestamp() {
         date +%Y%m%d-%T
-      }
-
-      git-new() {
-        [ -d "$1" ] || mkdir "$1" &&
-          cd "$1" &&
-          git init &&
-          touch .gitignore &&
-          git add .gitignore &&
-          git commit -m "Add .gitignore."
       }
 
       web-server() {

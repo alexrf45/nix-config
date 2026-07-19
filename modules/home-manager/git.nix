@@ -35,6 +35,27 @@
         };
       };
 
+      alias = {
+        a    = "add";
+        aa   = "add --all";
+        b    = "branch";
+        bd   = "branch -d";
+        cb   = "checkout -b";
+        cl   = "clone";
+        clr  = "clone --recurse-modules";
+        co   = "checkout";
+        pl   = "pull";
+        p    = "push";
+        s    = "status";
+        t    = "tag";
+        ptf  = "push --follow-tags";
+        nuke = "!git reset --hard && git clean -dfxx";
+        lg   = "log --date-order --pretty=format:'%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'";
+        lgg  = "lg --graph";
+        lga  = "lg --graph --all";
+        new  = "!f() { [ -d \"$1\" ] || mkdir \"$1\" && cd \"$1\" && git init && touch .gitignore && git add .gitignore && git commit -m 'Add .gitignore.'; }; f";
+      };
+
       column.ui = "auto";
       branch.sort = "-committerdate";
       tag.sort = "version:refname";
