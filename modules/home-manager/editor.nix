@@ -1,11 +1,14 @@
-{ pkgs, lib, ... }:
 {
+  pkgs,
+  lib,
+  ...
+}: {
   # -----------------------------------------------------------------------
   # Neovim — package installed by Nix, config expressed inline in Nix
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: gruvbox-material dark soft
+  # Theme: flow.nvim mono (dark, pink fluo accent)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -31,8 +34,8 @@
       ripgrep
       fd
       tree-sitter
-      gcc      # Required by nvim-treesitter to compile parsers
-      nodejs   # Required by many mason-installed LSPs
+      gcc # Required by nvim-treesitter to compile parsers
+      nodejs # Required by many mason-installed LSPs
     ];
   };
 
@@ -83,7 +86,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "gruvbox-material", "habamax" },
+        colorscheme = { "flow-mono", "habamax" },
       },
       checker = {
         enabled = true,
@@ -160,16 +163,27 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- gruvbox-material dark soft
+    -- flow.nvim — mono variant (grey syntax + pink fluo accent)
     return {
-      "sainnhe/gruvbox-material",
+      "0xstepit/flow.nvim",
       lazy = false,
       priority = 1000,
       config = function()
-        vim.g.gruvbox_material_background = "soft"
-        vim.g.gruvbox_material_foreground = "material"
-        vim.g.gruvbox_material_better_performance = 1
-        vim.cmd.colorscheme("gruvbox-material")
+        require("flow").setup({
+          theme = {
+            style = "dark",
+            contrast = "default",
+            transparent = false,
+          },
+          colors = {
+            mode = "default",
+            fluo = "pink",
+          },
+          ui = {
+            borders = "none",
+          },
+        })
+        vim.cmd.colorscheme("flow-mono")
       end,
     }
   '';
@@ -253,59 +267,59 @@
   '';
 
   xdg.configFile."nvim/lua/plugins/mini-plugins.lua".text = ''
-    return {
-      -- Disable snacks dashboard so it doesn't conflict with mini.starter on startup.
-      {
-        "folke/snacks.nvim",
-        opts = { dashboard = { enabled = false } },
-      },
-
-      -- Override mini.starter opts (LazyExtras ui.mini-starter handles the setup).
-      {
-        "nvim-mini/mini.starter",
-        opts = {
-          header = [[
-.         .                                  .*%@@@@@%+.                               .
-     .                      .        .      +@@@#+=+%@@@=.  .       .
-                  .                       .+@@%.     :@@@:     .                     .
-               .                          .%@@:       =@@*          . .      .
-    .                      .              :@@@        :@@%              .
-           .  .               .           :%@@.       :@@%  .             .     . .   .
-               . .       .                .#@@=.      -@@*              .  .
-.     .    . .      .        .             :@@%:     .%@@-        ..
-                    ..      ..  .           =@@%.   .#@@*.             ..       .        .
-.      .                .   =@@*-.           -@@@=.-@@@=          .:-#@@.              .
-                          . =@@@@@@@@*=-:::::::#@@@@@+:::::::-+#@@@@@@@@.                   .      .
-                   .    .   =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.                     .
-             .              =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.
-                            =@%*=:             =@@@@@:            .-+#%@.       .              .
-            .          .                .      =@@@@@:
-                                               =@@@@@:.             .
-  ..              .                            =@@@@@:                     .    .       .
-                                 .             =@@@@@:                                          .
-.             .      .          .              =@@@@@:                 .   .
-       .        .           .                  =@@@@@:                                           .
-         .                .                   .=@@@@@:                         ..
-                                               =@@@@@:    .          .              .
-                                               =@@@@@: .                        ..
-                       .     .                 =@@@@@:..    . .
-                .                    .  .   .  *@@@@@-            .   .
-.                   . .                       .%@@@@@+
-                          .   .   .       .   :@@@@@@@.       .                                   .
-                                             .#@@@@@@@*.                 .                    .
-          .     .  .  .                 .   .+@@@@@@@@@-         .  .                         .
-.             .              .              -@@@@@@@@@@@:                                         .
-        ]],
-          footer = "welcome",
-          items = {
-            { name = "Edit new buffer", action = "enew",              section = "Commands" },
-            { name = "Terminal",        action = "terminal",           section = "Commands" },
-            { name = "Files",           action = "FzfLua files",      section = "Files" },
-            { name = "Recent Files",    action = "FzfLua oldfiles",   section = "Files" },
+        return {
+          -- Disable snacks dashboard so it doesn't conflict with mini.starter on startup.
+          {
+            "folke/snacks.nvim",
+            opts = { dashboard = { enabled = false } },
           },
-        },
-      },
-    }
+
+          -- Override mini.starter opts (LazyExtras ui.mini-starter handles the setup).
+          {
+            "nvim-mini/mini.starter",
+            opts = {
+              header = [[
+    .         .                                  .*%@@@@@%+.                               .
+         .                      .        .      +@@@#+=+%@@@=.  .       .
+                      .                       .+@@%.     :@@@:     .                     .
+                   .                          .%@@:       =@@*          . .      .
+        .                      .              :@@@        :@@%              .
+               .  .               .           :%@@.       :@@%  .             .     . .   .
+                   . .       .                .#@@=.      -@@*              .  .
+    .     .    . .      .        .             :@@%:     .%@@-        ..
+                        ..      ..  .           =@@%.   .#@@*.             ..       .        .
+    .      .                .   =@@*-.           -@@@=.-@@@=          .:-#@@.              .
+                              . =@@@@@@@@*=-:::::::#@@@@@+:::::::-+#@@@@@@@@.                   .      .
+                       .    .   =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.                     .
+                 .              =@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.
+                                =@%*=:             =@@@@@:            .-+#%@.       .              .
+                .          .                .      =@@@@@:
+                                                   =@@@@@:.             .
+      ..              .                            =@@@@@:                     .    .       .
+                                     .             =@@@@@:                                          .
+    .             .      .          .              =@@@@@:                 .   .
+           .        .           .                  =@@@@@:                                           .
+             .                .                   .=@@@@@:                         ..
+                                                   =@@@@@:    .          .              .
+                                                   =@@@@@: .                        ..
+                           .     .                 =@@@@@:..    . .
+                    .                    .  .   .  *@@@@@-            .   .
+    .                   . .                       .%@@@@@+
+                              .   .   .       .   :@@@@@@@.       .                                   .
+                                                 .#@@@@@@@*.                 .                    .
+              .     .  .  .                 .   .+@@@@@@@@@-         .  .                         .
+    .             .              .              -@@@@@@@@@@@:                                         .
+            ]],
+              footer = "welcome",
+              items = {
+                { name = "Edit new buffer", action = "enew",              section = "Commands" },
+                { name = "Terminal",        action = "terminal",           section = "Commands" },
+                { name = "Files",           action = "FzfLua files",      section = "Files" },
+                { name = "Recent Files",    action = "FzfLua oldfiles",   section = "Files" },
+              },
+            },
+          },
+        }
   '';
 
   xdg.configFile."nvim/lua/plugins/markdown-preview.lua".text = ''
@@ -643,7 +657,7 @@
   # get stuck in a bad git checkout state (e.g. "untracked files would be
   # overwritten by checkout"). The bootstrap in lua/config/lazy.lua re-clones
   # it automatically on the next nvim launch.
-  home.activation.clearLazyNvim = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.clearLazyNvim = lib.hm.dag.entryAfter ["writeBoundary"] ''
     rm -rf "$HOME/.local/share/nvim/lazy/lazy.nvim"
   '';
 }
