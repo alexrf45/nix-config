@@ -1,0 +1,4 @@
+# Sourced by every scrt devShell. `scrt new` fills these in.
+ENGAGEMENT=@ENGAGEMENT@
+RHOST=
+LHOST=

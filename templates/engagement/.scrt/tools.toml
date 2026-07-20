@@ -1,0 +1,29 @@
+# Toolset for this engagement — read at Nix eval time by flake.nix.
+#
+# `base` (nmap, masscan, socat, netcat, proxychains, chisel, openvpn, dns/http
+# utils, jq/rg/fd/bat…) is ALWAYS included. Below you opt into add-on categories.
+# Edit, then `git add -A` (flakes only see tracked files) and `cd` back in / run
+# `direnv reload`. An empty/missing categories list is an error on purpose.
+#
+# Categories:
+#   web        subfinder httpx katana nuclei ffuf gobuster feroxbuster sqlmap wpscan …
+#   ad         impacket netexec bloodhound evil-winrm kerbrute responder certipy + vendored SharpCollection/nishang/winpeas/linpeas/pspy
+#   forensics  steghide binwalk volatility3 sleuthkit stegseek john hashcat seclists …
+#   pwn        radare2 ropgadget one_gadget gdb gef pwntools z3 …
+#   osint      theHarvester recon-ng dnsrecon fierce sherlock maigret holehe
+#   cloud      awscli2 azure-cli gcloud kubectl trivy prowler scoutsuite pacu kube-hunter kubescape
+#   wireless   aircrack-ng wifite2 reaverwps bully hcxtools hcxdumptool bettercap kismet cowpatty
+#   mobile     apktool jadx dex2jar frida-tools objection scrcpy apksigner apkeep
+#   c2         metasploit havoc starkiller sliver   (heavy — sliver server is ~267MB)
+
+# Uncomment and edit for this box, e.g.:
+#   categories = ["web", "osint"]
+categories = []
+
+# Individual tools by nixpkgs attr name, for one-offs not worth a category:
+#   extra = ["gowitness", "kiterunner"]
+extra = []
+
+# Trim tools from the assembled set, matched by runtime/derivation name:
+#   exclude = ["wpscan"]
+exclude = []

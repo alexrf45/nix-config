@@ -115,30 +115,72 @@ sudo nixos-rebuild switch --flake .#horus
 
 ## Security devShells (CTF / pentesting)
 
-Disposable per-engagement toolchains modeled on [SCRT](https://github.com/alexrf45/SCRT),
-exposed as flake `devShells` (defined in `flake.nix` from `pkgs-sec` = unstable + unfree +
-the `additions` overlay). Tools are NOT installed into the system profile — enter a shell:
+Disposable toolchains modeled on [SCRT](https://github.com/alexrf45/SCRT), built in
+`flake.nix` from `pkgs-sec` (unstable + unfree + the `additions` overlay). Tools are NOT
+installed into the system profile.
+
+**The engagement directory is the unit of disposability, not the shell.** `scrt new`
+scaffolds one; `cd` in and direnv activates the pinned toolset; `rm -rf` and it's gone.
+The per-directory `flake.lock` records the exact toolset a box was solved with.
 
 ```bash
-nix develop .#web        # recon + web fuzzing (ProjectDiscovery, ffuf, sqlmap, wpscan, …)
-nix develop .#ad         # Active Directory / Windows (impacket, netexec, bloodhound, …)
-nix develop .#forensics  # forensics / stego / cracking (vol3, steghide, john, seclists, …)
-nix develop .#ctf        # pwn / RE / crypto (radare2, ropgadget, gdb+gef, pwntools, z3) [= default]
+scrt new <name> [rhost] [lhost]   # → $SCRT_ROOT/<name>, default /home/data/engagements
+scrt ls
 ```
 
+The scaffold is `templates/engagement` (`nix flake init -t ~/nix-config#engagement` is the
+same thing without the RHOST/LHOST fill-in): `flake.nix` + `flake.lock` pinning the toolset,
+`.envrc`, `.scrt/env`, `.scrt/tools.toml`, `README.md`, and `scans/ loot/ exploits/ www/ notes/`.
+`loot/` and `scans/` are gitignored by default — they routinely hold credentials.
+
+**Each engagement composes ONE shell from its `.scrt/tools.toml`** (`scrt.lib.mkEngagement`,
+read via `builtins.fromTOML` at eval time). `base` (recon/pivoting/file utils) is always on;
+you opt into add-on categories, plus `extra` individual pkgs and `exclude` (by tool name):
+
+```toml
+categories = ["web", "osint"]   # base always included; empty/missing = eval error, by design
+extra      = ["gowitness"]
+exclude    = ["wpscan"]
+```
+
+Categories: `web ad forensics pwn osint cloud wireless mobile c2`. Because `tools.toml` is
+read from the git-tracked flake source, it must be committed — `scrt`'s `git add -A` handles
+the initial track; later edits are live on the next `direnv reload`.
+
+The **parent** flake still exposes the per-category shells directly (handy ad-hoc, and the CI
+canary), plus the `full` default and the `ctf`→`pwn` alias:
+
+```bash
+nix develop ~/nix-config           # full kit
+nix develop ~/nix-config#web       # base + a single category (web/ad/forensics/pwn/osint/…)
+```
+
+Each bundle is also a buildable output, so a broken leaf is caught before it bites mid-box:
+
+```bash
+nix build .#sec-all      # or .#sec-web, .#sec-c2, … — run before landing a flake update
+```
+
+This matters because `mkShell` is all-or-nothing: one dead package out of ~40 fast-moving
+Python security tools takes down a whole shell (see commit `74f02f1`, where `wfuzz` killed
+both `.#web` and — via the `wordlists` aggregate — `.#forensics`).
+
 Pwn basics (`pwntools`, `gdb`, `gef`, `binutils`) also live always-on in `dev-tools.nix`.
-The `.#ad` shell exports `$RUBEUS`, `$CERTIFY`, `$WINPEAS`, `$NISHANG_DIR` for the vendored
-Windows tools. Always-on ergonomics (independent of any shell): pentest zsh aliases +
+Every shell exports `$RUBEUS`, `$CERTIFY`, `$WINPEAS`, `$NISHANG_DIR` for the vendored
+Windows tools, and sources `.scrt/env` (→ `$RHOST`, `$LHOST`, `$ENGAGEMENT`) when entered
+from an engagement directory. Always-on ergonomics (independent of any shell): pentest zsh aliases +
 `~/.proxychains/proxychains.conf` (`modules/home-manager/security.nix`), a `ctf` tmuxp
 session (`tmuxp load ctf`), and unprivileged Wireshark capture (`programs.wireshark`, user in
 the `wireshark` group). The firewall already opens TCP 22/8080/8000 for serving payloads.
 
 ### Vendored security tools (not in nixpkgs)
 
-`pkgs/{linpeas,winpeas,pspy,sharpcollection,nishang}.nix` pin upstream release assets with
-SRI hashes and are registered in `overlays/additions.nix`. To bump a version: follow the
+`pkgs/{linpeas,winpeas,pspy,sharpcollection,nishang,sliver}.nix` pin upstream release assets
+with SRI hashes and are registered in `overlays/additions.nix`. To bump a version: follow the
 update header in each file (resolve the new tag/commit, recompute the hash with
 `nix-prefetch-url <url>` or `curl -sSL <url> | openssl dgst -sha256 -binary | base64`).
+`sliver` ships prebuilt Go binaries (server ~267MB) — patched via `autoPatchelfHook`. `PoshC2`
+is a deferred follow-up (Python packaging; not yet vendored).
 
 ## Git Workflow
 

@@ -1,0 +1,12 @@
+# Loot and scan output are engagement artifacts, not source. Track them
+# deliberately (git add -f) rather than by default — they routinely contain
+# credentials, and this repo is a scratch pad, not a vault.
+loot/*
+scans/*
+.direnv/
+
+# Keep the directories themselves — both in this template (or `nix flake init`
+# would scaffold an engagement missing two of its five dirs) and in a live
+# engagement, where an empty scans/ is still where scans go.
+!loot/.gitkeep
+!scans/.gitkeep
