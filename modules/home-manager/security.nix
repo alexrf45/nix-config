@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, outputs, ... }:
 {
   # -----------------------------------------------------------------------
   # Pentest/CTF ergonomics — always present regardless of which devShell
@@ -6,8 +6,14 @@
   # tooling lives in those shells; this module is just the muscle memory.
   # -----------------------------------------------------------------------
 
-  # proxychains is small and used often enough to keep on the host.
-  home.packages = [ pkgs.proxychains-ng ];
+  home.packages = [
+    # proxychains is small and used often enough to keep on the host.
+    pkgs.proxychains-ng
+
+    # `scrt` — scaffold/manage engagement directories (scrt new|ls|fix). Built
+    # from pkgs-sec, so it pins to the flake's resolved toolset at rebuild time.
+    outputs.packages.${pkgs.stdenv.hostPlatform.system}.scrt
+  ];
 
   # proxychains-ng config — mirrors SCRT's resources/proxychains.conf.
   # ~/.proxychains/proxychains.conf is checked by proxychains-ng before the
