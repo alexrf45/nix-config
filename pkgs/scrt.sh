@@ -13,9 +13,8 @@
 set -euo pipefail
 
 SCRT_ROOT="${SCRT_ROOT:-/home/data/engagements}"
-# `dev` while the engagement workflow is under user testing; drop the branch
-# suffix once it lands on main. Keep in sync with templates/engagement/flake.nix.
-SCRT_FLAKE="${SCRT_FLAKE:-github:alexrf45/nix-config/dev}"
+# Tracks the default branch (main). Keep in sync with templates/engagement/flake.nix.
+SCRT_FLAKE="${SCRT_FLAKE:-github:alexrf45/nix-config}"
 
 usage() {
   cat <<'EOF'

@@ -5,9 +5,8 @@
   # toolset revision this box was solved with, so the environment can be
   # reproduced months later when writing it up.
   #
-  # Pinned to `dev` while the engagement workflow is being user-tested — `main`
-  # does not carry it yet. Flip back to the default branch once testing is green.
-  inputs.scrt.url = "github:alexrf45/nix-config/dev";
+  # Tracks the default branch (main). Keep in sync with SCRT_FLAKE in pkgs/scrt.sh.
+  inputs.scrt.url = "github:alexrf45/nix-config";
 
   outputs = { self, scrt, ... }: {
     # One shell, composed from this engagement's .scrt/tools.toml: the categories
