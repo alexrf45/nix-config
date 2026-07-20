@@ -115,20 +115,49 @@ sudo nixos-rebuild switch --flake .#horus
 
 ## Security devShells (CTF / pentesting)
 
-Disposable per-engagement toolchains modeled on [SCRT](https://github.com/alexrf45/SCRT),
-exposed as flake `devShells` (defined in `flake.nix` from `pkgs-sec` = unstable + unfree +
-the `additions` overlay). Tools are NOT installed into the system profile — enter a shell:
+Disposable toolchains modeled on [SCRT](https://github.com/alexrf45/SCRT), built in
+`flake.nix` from `pkgs-sec` (unstable + unfree + the `additions` overlay). Tools are NOT
+installed into the system profile.
+
+**The engagement directory is the unit of disposability, not the shell.** `scrt new`
+scaffolds one; `cd` in and direnv activates the pinned toolset; `rm -rf` and it's gone.
+The per-directory `flake.lock` records the exact toolset a box was solved with.
 
 ```bash
-nix develop .#web        # recon + web fuzzing (ProjectDiscovery, ffuf, sqlmap, wpscan, …)
-nix develop .#ad         # Active Directory / Windows (impacket, netexec, bloodhound, …)
-nix develop .#forensics  # forensics / stego / cracking (vol3, steghide, john, seclists, …)
-nix develop .#ctf        # pwn / RE / crypto (radare2, ropgadget, gdb+gef, pwntools, z3) [= default]
+scrt new <name> [rhost] [lhost]   # → $SCRT_ROOT/<name>, default /home/data/engagements
+scrt ls
 ```
 
+The scaffold is `templates/engagement` (`nix flake init -t ~/nix-config#engagement` is the
+same thing without the RHOST/LHOST fill-in): `flake.nix` + `flake.lock` pinning the toolset,
+`.envrc`, `.scrt/env`, `README.md`, and `scans/ loot/ exploits/ www/ notes/`. `loot/` and
+`scans/` are gitignored by default — they routinely hold credentials.
+
+Shells are one **base** kit (recon/pivoting/file utils) plus opt-in add-on bundles:
+
+```bash
+nix develop              # full kit — the default; no switching shells mid-box
+nix develop .#web        # base + recon/fuzzing (ProjectDiscovery, ffuf, sqlmap, wpscan, …)
+nix develop .#ad         # base + Active Directory / Windows (impacket, netexec, bloodhound, …)
+nix develop .#forensics  # base + forensics / stego / cracking (vol3, steghide, john, …)
+nix develop .#pwn        # base + pwn / RE / crypto (radare2, ropgadget, gdb+gef, pwntools, z3)
+                         # `.#ctf` is kept as an alias for `.#pwn`
+```
+
+Each bundle is also a buildable output, so a broken leaf is caught before it bites mid-box:
+
+```bash
+nix build .#sec-all      # or .#sec-web, .#sec-ad, … — run before landing a flake update
+```
+
+This matters because `mkShell` is all-or-nothing: one dead package out of ~40 fast-moving
+Python security tools takes down a whole shell (see commit `74f02f1`, where `wfuzz` killed
+both `.#web` and — via the `wordlists` aggregate — `.#forensics`).
+
 Pwn basics (`pwntools`, `gdb`, `gef`, `binutils`) also live always-on in `dev-tools.nix`.
-The `.#ad` shell exports `$RUBEUS`, `$CERTIFY`, `$WINPEAS`, `$NISHANG_DIR` for the vendored
-Windows tools. Always-on ergonomics (independent of any shell): pentest zsh aliases +
+Every shell exports `$RUBEUS`, `$CERTIFY`, `$WINPEAS`, `$NISHANG_DIR` for the vendored
+Windows tools, and sources `.scrt/env` (→ `$RHOST`, `$LHOST`, `$ENGAGEMENT`) when entered
+from an engagement directory. Always-on ergonomics (independent of any shell): pentest zsh aliases +
 `~/.proxychains/proxychains.conf` (`modules/home-manager/security.nix`), a `ctf` tmuxp
 session (`tmuxp load ctf`), and unprivileged Wireshark capture (`programs.wireshark`, user in
 the `wireshark` group). The firewall already opens TCP 22/8080/8000 for serving payloads.
