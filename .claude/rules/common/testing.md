@@ -1,29 +1,13 @@
-# Testing Requirements
+# Verifying changes
 
-## Minimum Test Coverage: 80%
+There is no unit-test suite — verification means **evaluating and building**.
 
-Test Types (ALL required):
-1. **Unit Tests** - Individual functions, utilities, components
-2. **Integration Tests** - API endpoints, database operations
-3. **E2E Tests** - Critical user flows (framework chosen per language)
+- `nix flake check` — evaluate all flake outputs.
+- `nixos-rebuild build --flake .#<host>` — dry-build a host before `switch` (no sudo needed).
+- `nix build .#sec-all` (or `.#sec-<cat>`) — security devShell canary. **Run before landing a
+  `nix flake update`**: `mkShell` is all-or-nothing, so one dead leaf breaks a whole bundle.
+- `nix build .#scrt` — also runs shellcheck on the scrt scaffolder.
+- Engagement/toolset changes: test against the working tree with
+  `--override-input scrt path:$HOME/nix-config` before pushing (engagements pin the GitHub flake).
 
-## Test-Driven Development
-
-MANDATORY workflow:
-1. Write test first (RED)
-2. Run test - it should FAIL
-3. Write minimal implementation (GREEN)
-4. Run test - it should PASS
-5. Refactor (IMPROVE)
-6. Verify coverage (80%+)
-
-## Troubleshooting Test Failures
-
-1. Use **tdd-guide** agent
-2. Check test isolation
-3. Verify mocks are correct
-4. Fix implementation, not tests (unless tests are wrong)
-
-## Agent Support
-
-- **tdd-guide** - Use PROACTIVELY for new features, enforces write-tests-first
+On a build failure, isolate with `nix log <drv>` and bisect bundles with `nix build .#sec-<cat>`.

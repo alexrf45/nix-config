@@ -1,50 +1,18 @@
-# Agent Orchestration
+# Agents
 
-## Available Agents
+Agents defined in `.claude/agents/`:
 
-Located in `~/.claude/agents/`:
+| Agent | Use for |
+|-------|---------|
+| **planner** | Implementation planning for larger features/refactors |
+| **security-reviewer** | Secrets, boot/GPU, and security-devShell changes |
+| **refactor-cleaner** | Dead-code / duplication cleanup |
+| **doc-updater** | Updating docs / codemaps |
+| **docs-lookup** | Library / API docs via Context7 |
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| planner | Implementation planning | Complex features, refactoring |
-| architect | System design | Architectural decisions |
-| tdd-guide | Test-driven development | New features, bug fixes |
-| code-reviewer | Code review | After writing code |
-| security-reviewer | Security analysis | Before commits |
-| build-error-resolver | Fix build errors | When build fails |
-| e2e-runner | E2E testing | Critical user flows |
-| refactor-cleaner | Dead code cleanup | Code maintenance |
-| doc-updater | Documentation | Updating docs |
-| rust-reviewer | Rust code review | Rust projects |
+Guidance:
 
-## Immediate Agent Usage
-
-No user prompt needed:
-1. Complex feature requests - Use **planner** agent
-2. Code just written/modified - Use **code-reviewer** agent
-3. Bug fix or new feature - Use **tdd-guide** agent
-4. Architectural decision - Use **architect** agent
-
-## Parallel Task Execution
-
-ALWAYS use parallel Task execution for independent operations:
-
-```markdown
-# GOOD: Parallel execution
-Launch 3 agents in parallel:
-1. Agent 1: Security analysis of auth module
-2. Agent 2: Performance review of cache system
-3. Agent 3: Type checking of utilities
-
-# BAD: Sequential when unnecessary
-First agent 1, then agent 2, then agent 3
-```
-
-## Multi-Perspective Analysis
-
-For complex problems, use split role sub-agents:
-- Factual reviewer
-- Senior engineer
-- Security expert
-- Consistency reviewer
-- Redundancy checker
+- Use parallel, read-only exploration agents when a question spans many files or the scope is
+  uncertain; prefer inline work for small, well-scoped changes.
+- Don't spawn agents unless the task genuinely needs them or the user asks — each starts cold.
+- See also the `dispatching-parallel-agents` skill.
