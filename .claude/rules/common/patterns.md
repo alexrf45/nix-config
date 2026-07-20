@@ -1,31 +1,18 @@
-# Common Patterns
+# Patterns
 
-## Skeleton Projects
+For structural guidance, use the skills rather than inventing patterns:
 
-When implementing new functionality:
-1. Search for battle-tested skeleton projects
-2. Use parallel agents to evaluate options:
-   - Security assessment
-   - Extensibility analysis
-   - Relevance scoring
-   - Implementation planning
-3. Clone best match as foundation
-4. Iterate within proven structure
+- **`nixos-patterns`** — flake layouts, multi-host splits, Home Manager layout, overlays,
+  secrets placement, template-style examples.
+- **`nixos-best-practices`** — idiomatic module/option practice.
+- **`security-engagements`** — disposable engagement devShells, `.scrt/tools.toml`, vendoring.
+- **`encryption`** — SOPS/age workflows.
 
-## Design Patterns
+## Repo conventions
 
-### Repository Pattern
-
-Encapsulate data access behind a consistent interface:
-- Define standard operations: findAll, findById, create, update, delete
-- Concrete implementations handle storage details (database, API, file, etc.)
-- Business logic depends on the abstract interface, not the storage mechanism
-- Enables easy swapping of data sources and simplifies testing with mocks
-
-### API Response Format
-
-Use a consistent envelope for all API responses:
-- Include a success/status indicator
-- Include the data payload (nullable on error)
-- Include an error message field (nullable on success)
-- Include metadata for paginated responses (total, page, limit)
+- Host-split modules (`*.nix` vs `*-intel.nix` / `*-x11.nix` / `*-i3.nix`).
+- Two overlays: `overlays/unstable-packages.nix` (exposes `pkgs.unstable.*`) and
+  `overlays/additions.nix` (registers vendored `pkgs/*.nix`).
+- Vendored derivations pinned by SRI hash with an update header.
+- Security tools as `secBundles` in `flake.nix`, each with a `packages.sec-<cat>` build canary
+  and composed per engagement via `scrt.lib.mkEngagement`.

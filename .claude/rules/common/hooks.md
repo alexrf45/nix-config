@@ -1,30 +1,14 @@
-# Hooks System
+# Hooks & settings
 
-## Hook Types
+Claude Code settings live in `~/.claude/settings.json` (global) and `.claude/settings.local.json`
+(repo). Notable for this repo:
 
-- **PreToolUse**: Before tool execution (validation, parameter modification)
-- **PostToolUse**: After tool execution (auto-format, checks)
-- **Stop**: When session ends (final verification)
+- Commit attribution is **disabled** globally (no Co-Authored-By trailer).
+- Automated behaviors ("whenever X, do Y") require **hooks** in settings.json — the harness runs
+  them, not the model, so they can't live in memory/preferences. Use the `update-config` skill to
+  edit settings.
+- Hook types: `PreToolUse` (validate/modify before a tool runs), `PostToolUse` (e.g. auto-format),
+  `Stop` (final checks).
 
-## Auto-Accept Permissions
-
-Use with caution:
-- Enable for trusted, well-defined plans
-- Disable for exploratory work
-- Never use dangerously-skip-permissions flag
-- Configure `allowedTools` in `~/.claude.json` instead
-
-## TodoWrite Best Practices
-
-Use TodoWrite tool to:
-- Track progress on multi-step tasks
-- Verify understanding of instructions
-- Enable real-time steering
-- Show granular implementation steps
-
-Todo list reveals:
-- Out of order steps
-- Missing items
-- Extra unnecessary items
-- Wrong granularity
-- Misinterpreted requirements
+Keep an eye on permission prompts; add trusted read-only commands to the repo settings allowlist
+rather than disabling permission checks wholesale.
