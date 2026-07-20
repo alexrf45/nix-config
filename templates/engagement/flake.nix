@@ -10,8 +10,16 @@
   inputs.scrt.url = "github:alexrf45/nix-config/dev";
 
   outputs = { self, scrt, ... }: {
-    # Inherit every shell from the toolset flake: `default` (full kit) plus
-    # the per-domain variants for a lighter closure.
-    devShells = scrt.devShells;
+    # One shell, composed from this engagement's .scrt/tools.toml: the categories
+    # (web/ad/forensics/pwn/osint/cloud/wireless/mobile/c2), plus any `extra`
+    # packages and minus any `exclude`d ones. base recon/pivoting is always on.
+    #
+    # No tools.toml (or an empty one) errors on purpose — every box declares its
+    # own kit. `pathExists`/`readFile` see the git-tracked flake source, so
+    # tools.toml must be committed (scrt's `git add -A` handles that).
+    devShells.x86_64-linux.default =
+      if builtins.pathExists ./.scrt/tools.toml
+      then scrt.lib.mkEngagement (builtins.fromTOML (builtins.readFile ./.scrt/tools.toml))
+      else throw "scrt: no .scrt/tools.toml — declare tool categories (see README)";
   };
 }

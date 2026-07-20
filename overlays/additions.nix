@@ -12,4 +12,5 @@ final: prev: {
   pspy           = final.callPackage ../pkgs/pspy.nix { };
   sharpcollection = final.callPackage ../pkgs/sharpcollection.nix { };
   nishang        = final.callPackage ../pkgs/nishang.nix { };
+  sliver         = final.callPackage ../pkgs/sliver.nix { };
 }

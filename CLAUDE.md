@@ -130,24 +130,35 @@ scrt ls
 
 The scaffold is `templates/engagement` (`nix flake init -t ~/nix-config#engagement` is the
 same thing without the RHOST/LHOST fill-in): `flake.nix` + `flake.lock` pinning the toolset,
-`.envrc`, `.scrt/env`, `README.md`, and `scans/ loot/ exploits/ www/ notes/`. `loot/` and
-`scans/` are gitignored by default — they routinely hold credentials.
+`.envrc`, `.scrt/env`, `.scrt/tools.toml`, `README.md`, and `scans/ loot/ exploits/ www/ notes/`.
+`loot/` and `scans/` are gitignored by default — they routinely hold credentials.
 
-Shells are one **base** kit (recon/pivoting/file utils) plus opt-in add-on bundles:
+**Each engagement composes ONE shell from its `.scrt/tools.toml`** (`scrt.lib.mkEngagement`,
+read via `builtins.fromTOML` at eval time). `base` (recon/pivoting/file utils) is always on;
+you opt into add-on categories, plus `extra` individual pkgs and `exclude` (by tool name):
+
+```toml
+categories = ["web", "osint"]   # base always included; empty/missing = eval error, by design
+extra      = ["gowitness"]
+exclude    = ["wpscan"]
+```
+
+Categories: `web ad forensics pwn osint cloud wireless mobile c2`. Because `tools.toml` is
+read from the git-tracked flake source, it must be committed — `scrt`'s `git add -A` handles
+the initial track; later edits are live on the next `direnv reload`.
+
+The **parent** flake still exposes the per-category shells directly (handy ad-hoc, and the CI
+canary), plus the `full` default and the `ctf`→`pwn` alias:
 
 ```bash
-nix develop              # full kit — the default; no switching shells mid-box
-nix develop .#web        # base + recon/fuzzing (ProjectDiscovery, ffuf, sqlmap, wpscan, …)
-nix develop .#ad         # base + Active Directory / Windows (impacket, netexec, bloodhound, …)
-nix develop .#forensics  # base + forensics / stego / cracking (vol3, steghide, john, …)
-nix develop .#pwn        # base + pwn / RE / crypto (radare2, ropgadget, gdb+gef, pwntools, z3)
-                         # `.#ctf` is kept as an alias for `.#pwn`
+nix develop ~/nix-config           # full kit
+nix develop ~/nix-config#web       # base + a single category (web/ad/forensics/pwn/osint/…)
 ```
 
 Each bundle is also a buildable output, so a broken leaf is caught before it bites mid-box:
 
 ```bash
-nix build .#sec-all      # or .#sec-web, .#sec-ad, … — run before landing a flake update
+nix build .#sec-all      # or .#sec-web, .#sec-c2, … — run before landing a flake update
 ```
 
 This matters because `mkShell` is all-or-nothing: one dead package out of ~40 fast-moving
@@ -164,10 +175,12 @@ the `wireshark` group). The firewall already opens TCP 22/8080/8000 for serving 
 
 ### Vendored security tools (not in nixpkgs)
 
-`pkgs/{linpeas,winpeas,pspy,sharpcollection,nishang}.nix` pin upstream release assets with
-SRI hashes and are registered in `overlays/additions.nix`. To bump a version: follow the
+`pkgs/{linpeas,winpeas,pspy,sharpcollection,nishang,sliver}.nix` pin upstream release assets
+with SRI hashes and are registered in `overlays/additions.nix`. To bump a version: follow the
 update header in each file (resolve the new tag/commit, recompute the hash with
 `nix-prefetch-url <url>` or `curl -sSL <url> | openssl dgst -sha256 -binary | base64`).
+`sliver` ships prebuilt Go binaries (server ~267MB) — patched via `autoPatchelfHook`. `PoshC2`
+is a deferred follow-up (Python packaging; not yet vendored).
 
 ## Git Workflow
 

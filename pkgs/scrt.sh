@@ -81,7 +81,8 @@ EOF
   echo "scrt: engagement '$name' ready at $dir"
   [ -n "$rhost" ] || echo "scrt: RHOST unset — set it in $dir/.scrt/env"
   [ -n "$lhost" ] || echo "scrt: LHOST unset (no tun0?) — set it in $dir/.scrt/env"
-  echo "scrt: cd $dir  (direnv will activate the toolset)"
+  echo "scrt: declare tool categories in $dir/.scrt/tools.toml (empty = error),"
+  echo "scrt: then cd $dir to activate the toolset"
 }
 
 # Repair an engagement scaffolded before `scrt new` learned to stage the tree:

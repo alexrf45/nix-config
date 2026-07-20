@@ -50,7 +50,12 @@
     # sharpcollection, nishang) resolve as pkgs-sec.<name>.
     pkgs-sec = import nixpkgs-unstable {
       inherit system;
-      config.allowUnfree = true;
+      config = {
+        allowUnfree = true;
+        # apksigner (mobile bundle) pulls the Android SDK build-tools, which are
+        # gated behind the Android SDK license.
+        android_sdk.accept_license = true;
+      };
       overlays = [ outputs.overlays.additions ];
     };
 
@@ -109,6 +114,41 @@
         binwalk seclists
         # ghidra  # large (~1GB closure); enable for the GUI decompiler
       ];
+
+      # Passive/people/domain intel.
+      osint = [
+        theharvester recon-ng dnsrecon fierce
+        sherlock maigret holehe
+      ];
+
+      # Cloud + container attack and audit.
+      cloud = [
+        awscli2 azure-cli google-cloud-sdk kubectl
+        # kube-hunter dropped: archived upstream, and 0.6.8 imports pkg_resources
+        # which modern Python no longer ships (same failure class as wfuzz).
+        # trivy + kubescape cover k8s scanning.
+        trivy prowler scoutsuite pacu kubescape
+      ];
+
+      # Wi-Fi / RF. Needs a capable adapter at runtime; packaging it does not.
+      wireless = [
+        aircrack-ng wifite2 reaverwps bully
+        hcxtools hcxdumptool bettercap kismet cowpatty
+      ];
+
+      # Android / iOS reverse engineering.
+      mobile = [
+        apktool jadx dex2jar frida-tools objection
+        scrcpy apksigner apkeep
+      ];
+
+      # Command-and-control / adversary emulation. `sliver` is vendored (not in
+      # nixpkgs) — see pkgs/sliver.nix; its server binary is ~267MB, so this
+      # bundle is heavy by design and opt-in only.
+      c2 = [
+        metasploit havoc starkiller
+        sliver
+      ];
     };
 
     # Every bundle except `base`, which is implicit in each shell.
@@ -118,11 +158,13 @@
     # add-ons named is the full kit — the domain split was a Docker image-size
     # artifact that buys little against a shared, deduped Nix store, and it
     # creates real friction when a target needs tools from two categories.
-    mkSecShell = { name, addOns, banner }:
+    # Shared shell assembly over an explicit package list: the env exports
+    # ($RUBEUS/$CERTIFY/$WINPEAS/$NISHANG_DIR for the vendored Windows tools) and
+    # the `.scrt/env` sourcing that every scrt shell needs.
+    mkSecShellFromPackages = { name, packages, banner ? "custom kit" }:
       pkgs-sec.mkShell {
         name = "scrt-${name}";
-        packages = secBundles.base ++ builtins.concatLists
-          (map (a: secBundles.${a}) addOns);
+        inherit packages;
         shellHook = ''
           export WINPEAS=${pkgs-sec.winpeas}/bin/winPEASx64.exe
           export RUBEUS=${pkgs-sec.sharpcollection}/bin/Rubeus.exe
@@ -138,6 +180,38 @@
             echo "── scrt:${name} ── ${banner}"
           fi
         '';
+      };
+
+    # base + named add-on bundles.
+    mkSecShell = { name, addOns, banner }:
+      mkSecShellFromPackages {
+        inherit name banner;
+        packages = secBundles.base
+          ++ builtins.concatLists (map (a: secBundles.${a}) addOns);
+      };
+
+    # Per-engagement shell driven by a `.scrt/tools.toml`. `categories` selects
+    # add-on bundles (base is always included); `extra` adds individual pkgs-sec
+    # attrs; `exclude` trims by derivation name. Consumed by the engagement
+    # template via the exposed `lib.mkEngagement` output.
+    mkEngagement = { categories ? [], extra ? [], exclude ? [] }:
+      let
+        known = builtins.attrNames secBundles;
+        bad = builtins.filter (c: !builtins.elem c known) categories;
+        checked =
+          if categories == []
+          then throw "scrt: .scrt/tools.toml lists no categories — set e.g. categories = [ \"web\" ]"
+          else if bad != []
+          then throw "scrt: unknown categories in .scrt/tools.toml: ${builtins.concatStringsSep ", " bad} (known: ${builtins.concatStringsSep ", " known})"
+          else categories;
+        cats = [ "base" ] ++ checked;
+        catPkgs = builtins.concatLists (map (c: secBundles.${c}) cats);
+        extraPkgs = map (n: pkgs-sec.${n}) extra;
+        keep = p: !builtins.elem (pkgs-sec.lib.getName p) exclude;
+      in mkSecShellFromPackages {
+        name = "engagement";
+        banner = "engagement kit (${builtins.concatStringsSep "+" checked})";
+        packages = builtins.filter keep (catPkgs ++ extraPkgs);
       };
   in
   {
@@ -163,6 +237,12 @@
     };
 
     overlays = import ./overlays { inherit inputs; };
+
+    # Builder consumed by scaffolded engagements (templates/engagement/flake.nix)
+    # to compose a single devShell from a per-directory .scrt/tools.toml. It
+    # closes over pkgs-sec for x86_64-linux, so this lib is system-specific
+    # rather than a portable, cross-system flake lib.
+    lib.mkEngagement = mkEngagement;
 
     nixosConfigurations.horus = nixpkgs.lib.nixosSystem {
       inherit system;
