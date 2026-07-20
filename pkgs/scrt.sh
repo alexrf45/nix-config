@@ -22,6 +22,7 @@ usage() {
 scrt — disposable engagement directories
 
   scrt new <name> [rhost] [lhost]   scaffold and activate a new engagement
+  scrt fix <name>                   stage an existing engagement's flake into git
   scrt ls                           list existing engagements
 
 Env:
@@ -73,6 +74,7 @@ EOF
   # A git repo per engagement makes the notes/loot diffable and the whole thing
   # trivially archivable once the box is retired.
   git init -q
+  git add -A          # flakes only see git-tracked files; stage them or `use flake` errors
   direnv allow
 
   echo
@@ -80,6 +82,27 @@ EOF
   [ -n "$rhost" ] || echo "scrt: RHOST unset — set it in $dir/.scrt/env"
   [ -n "$lhost" ] || echo "scrt: LHOST unset (no tun0?) — set it in $dir/.scrt/env"
   echo "scrt: cd $dir  (direnv will activate the toolset)"
+}
+
+# Repair an engagement scaffolded before `scrt new` learned to stage the tree:
+# an untracked flake.nix in a git work tree is invisible to the flake evaluator,
+# so `use flake` errors until the files are added.
+cmd_fix() {
+  local name="${1:-}"
+  if [ -z "$name" ]; then
+    echo "scrt: fix requires a name" >&2
+    usage >&2
+    exit 2
+  fi
+
+  local dir="$SCRT_ROOT/$name"
+  [ -d "$dir" ]           || { echo "scrt: $dir does not exist" >&2; exit 1; }
+  [ -f "$dir/flake.nix" ] || { echo "scrt: $dir has no flake.nix — not an engagement dir" >&2; exit 1; }
+
+  cd "$dir"
+  [ -d .git ] || git init -q
+  git add -A
+  echo "scrt: '$name' flake tracked — 'cd $dir' now activates the toolset"
 }
 
 cmd_ls() {
@@ -92,6 +115,7 @@ cmd_ls() {
 
 case "${1:-}" in
   new)          shift; cmd_new "$@" ;;
+  fix)          shift; cmd_fix "$@" ;;
   ls|list)      cmd_ls ;;
   -h|--help|"") usage ;;
   *)            echo "scrt: unknown command '$1'" >&2; usage >&2; exit 2 ;;
