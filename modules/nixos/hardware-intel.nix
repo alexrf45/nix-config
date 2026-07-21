@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # -----------------------------------------------------------------------
   # Boot
   # -----------------------------------------------------------------------
@@ -15,7 +19,7 @@
     kernelPackages = pkgs.linuxPackages;
 
     kernelParams = [
-      "mem_sleep_default=deep"   # S3 deep sleep for better suspend
+      "mem_sleep_default=deep" # S3 deep sleep for better suspend
     ];
   };
 
@@ -32,12 +36,15 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      intel-media-driver     # iHD VA-API driver (Tiger Lake/Iris Xe)
-      vpl-gpu-rt             # oneVPL runtime for hardware video encode/decode
+      intel-media-driver # iHD VA-API driver (Tiger Lake/Iris Xe)
+      vpl-gpu-rt # oneVPL runtime for hardware video encode/decode
     ];
   };
 
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = ["modesetting"];
+
+  # Intel Iris Xe → iHD VA-API driver for hardware video decode.
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
   # -----------------------------------------------------------------------
   # Firmware
@@ -54,20 +61,20 @@
     powerOnBoot = true;
     settings = {
       General = {
-        Experimental = "true";         # Battery level reporting
-        FastConnectable = "true";      # Faster reconnect on resume/boot
+        Experimental = "true"; # Battery level reporting
+        FastConnectable = "true"; # Faster reconnect on resume/boot
         JustWorksRepairing = "always"; # Skip re-pair prompt for known devices
       };
-      Policy.AutoEnable = "true";      # Keep adapter enabled after suspend
-      LE.MinConnectionInterval = 7;    # Tighten BLE interval (headphones)
+      Policy.AutoEnable = "true"; # Keep adapter enabled after suspend
+      LE.MinConnectionInterval = 7; # Tighten BLE interval (headphones)
     };
   };
 
   # -----------------------------------------------------------------------
   # Laptop power management — mirrors the Debian tlp/thermald setup.
   # -----------------------------------------------------------------------
-  services.thermald.enable = true;   # Intel thermal management daemon
-  services.tlp.enable = true;        # Battery/power tuning (conflicts with power-profiles-daemon)
+  services.thermald.enable = true; # Intel thermal management daemon
+  services.tlp.enable = true; # Battery/power tuning (conflicts with power-profiles-daemon)
 
   # Lid close does nothing — keep running when docked to external monitor.
   services.logind.lidSwitch = "ignore";

@@ -1,5 +1,12 @@
-{ inputs, outputs, pkgs, pkgs-unstable, config, lib, ... }:
 {
+  inputs,
+  outputs,
+  pkgs,
+  pkgs-unstable,
+  config,
+  lib,
+  ...
+}: {
   imports = [
     # SOPS home-manager module (for user-level secrets if needed)
     inputs.sops-nix.homeManagerModules.sops
@@ -10,7 +17,7 @@
     ../../../modules/home-manager/editor.nix
     ../../../modules/home-manager/tmux.nix
     ../../../modules/home-manager/git.nix
-    ../../../modules/home-manager/desktop-i3.nix   # i3 (X11) — thoth-specific
+    ../../../modules/home-manager/desktop-i3.nix # i3 (X11) — shared with horus
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/security.nix
@@ -18,9 +25,15 @@
   ];
 
   home = {
-    username    = "fr3d";
+    username = "fr3d";
     homeDirectory = "/home/fr3d";
-    stateVersion = "24.11";   # Set once — never change
+    stateVersion = "24.11"; # Set once — never change
+  };
+
+  # i3 per-host knobs (shared modules/home-manager/desktop-i3.nix).
+  local.i3 = {
+    wirelessInterface = "wlp1s0";
+    primaryOutput = "HDMI-1"; # dock: external HDMI primary, laptop panel off
   };
 
   # Reload systemd user services on Home Manager activation
@@ -35,14 +48,14 @@
       enable = true;
       createDirectories = false;
       setSessionVariables = false;
-      desktop    = "/dev/null";
-      documents  = "/dev/null";
-      download   = "${config.home.homeDirectory}/.downloads";
-      music      = "/dev/null";
-      pictures   = "/dev/null";
+      desktop = "/dev/null";
+      documents = "/dev/null";
+      download = "${config.home.homeDirectory}/.downloads";
+      music = "/dev/null";
+      pictures = "/dev/null";
       publicShare = "/dev/null";
-      templates  = "/dev/null";
-      videos     = "/dev/null";
+      templates = "/dev/null";
+      videos = "/dev/null";
     };
   };
 
@@ -58,7 +71,7 @@
     slack
     vlc
     obs-studio
-    remmina          # RDP/VNC client
+    remmina # RDP/VNC client
     gimp
   ];
 

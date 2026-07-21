@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   # -----------------------------------------------------------------------
   # Boot
   # -----------------------------------------------------------------------
@@ -14,8 +18,8 @@
     kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
-      "amd_pstate=active"        # AMD P-state driver (Ryzen power management)
-      "mem_sleep_default=deep"   # S3 deep sleep for better suspend
+      "amd_pstate=active" # AMD P-state driver (Ryzen power management)
+      "mem_sleep_default=deep" # S3 deep sleep for better suspend
     ];
 
     extraModprobeConfig = ''
@@ -35,19 +39,22 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      rocmPackages.clr           # ROCm OpenCL runtime
+      rocmPackages.clr # ROCm OpenCL runtime
     ];
   };
 
+  # AMD iGPU drives the display pipeline → radeonsi VA-API for hardware decode.
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "radeonsi";
+
   # NVIDIA driver (proprietary)
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    modesetting.enable = true;         # Required for PRIME offload
-    powerManagement.enable = true;     # Reliable suspend/resume
+    modesetting.enable = true; # Required for PRIME offload
+    powerManagement.enable = true; # Reliable suspend/resume
     powerManagement.finegrained = false;
-    open = false;                      # Proprietary driver
+    open = false; # Proprietary driver
     nvidiaSettings = true;
 
     # PRIME offload: NVIDIA dGPU only runs when invoked via `nvidia-offload <cmd>`
@@ -55,7 +62,7 @@
     prime = {
       offload = {
         enable = true;
-        enableOffloadCmd = true;   # Installs `nvidia-offload` wrapper
+        enableOffloadCmd = true; # Installs `nvidia-offload` wrapper
       };
       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       # PLACEHOLDERS — replace with actual values from:
@@ -65,8 +72,8 @@
       #   06:00.0 VGA: AMD Radeon   → amdgpuBusId = "PCI:6:0:0"
       #   01:00.0 3D: NVIDIA        → nvidiaBusId  = "PCI:1:0:0"
       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      amdgpuBusId = "PCI:4:0:0";   # PLACEHOLDER
-      nvidiaBusId  = "PCI:1:0:0";  # PLACEHOLDER
+      amdgpuBusId = "PCI:4:0:0"; # PLACEHOLDER
+      nvidiaBusId = "PCI:1:0:0"; # PLACEHOLDER
     };
   };
 
@@ -82,7 +89,7 @@
   # -----------------------------------------------------------------------
   # Firmware
   # -----------------------------------------------------------------------
-  hardware.enableRedistributableFirmware = true;   # WiFi, BT, etc.
+  hardware.enableRedistributableFirmware = true; # WiFi, BT, etc.
 
   # -----------------------------------------------------------------------
   # Bluetooth
@@ -92,12 +99,12 @@
     powerOnBoot = true;
     settings = {
       General = {
-        Experimental = "true";         # Battery level reporting
-        FastConnectable = "true";      # Faster reconnect on resume/boot
+        Experimental = "true"; # Battery level reporting
+        FastConnectable = "true"; # Faster reconnect on resume/boot
         JustWorksRepairing = "always"; # Skip re-pair prompt for known devices
       };
-      Policy.AutoEnable = "true";      # Keep adapter enabled after suspend
-      LE.MinConnectionInterval = 7;    # Tighten BLE interval (headphones)
+      Policy.AutoEnable = "true"; # Keep adapter enabled after suspend
+      LE.MinConnectionInterval = 7; # Tighten BLE interval (headphones)
     };
   };
 }
