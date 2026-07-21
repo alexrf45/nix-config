@@ -1,5 +1,9 @@
-{ inputs, outputs, pkgs-unstable, ... }:
 {
+  inputs,
+  outputs,
+  pkgs-unstable,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./disk.nix
@@ -9,7 +13,7 @@
     ../../modules/nixos/hardware.nix
     ../../modules/nixos/networking.nix
     ../../modules/nixos/security.nix
-    ../../modules/nixos/desktop.nix
+    ../../modules/nixos/desktop-x11.nix # Xorg + i3 (aligned with thoth)
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix

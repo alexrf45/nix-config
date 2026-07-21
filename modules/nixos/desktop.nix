@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # -----------------------------------------------------------------------
   # GDM + Sway (Wayland)
   # -----------------------------------------------------------------------
@@ -17,15 +16,15 @@
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    extraOptions = [ "--unsupported-gpu" ];
+    extraOptions = ["--unsupported-gpu"];
     extraPackages = with pkgs; [
-      swaylock      # Screen locker
-      swayidle      # Idle management (lock/DPMS)
-      swaybg        # Wallpaper
-      grim          # Screenshot capture
-      slurp         # Region selection (for screenshots)
-      wl-clipboard  # Wayland clipboard (wl-copy / wl-paste)
-      wofi          # App launcher (Wayland-native)
+      swaylock # Screen locker
+      swayidle # Idle management (lock/DPMS)
+      swaybg # Wallpaper
+      grim # Screenshot capture
+      slurp # Region selection (for screenshots)
+      wl-clipboard # Wayland clipboard (wl-copy / wl-paste)
+      wofi # App launcher (Wayland-native)
     ];
   };
 
@@ -36,7 +35,7 @@
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-wlr   # wlroots backend for screen sharing under Sway
+      xdg-desktop-portal-wlr # wlroots backend for screen sharing under Sway
     ];
     config.common.default = "*";
   };
@@ -47,7 +46,7 @@
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      nerd-fonts.iosevka           # Primary terminal font (kitty config)
+      nerd-fonts.iosevka # Primary terminal font (kitty config)
       nerd-fonts.hack
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
@@ -57,17 +56,13 @@
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = [ "Iosevka Nerd Font Mono" ];
-        sansSerif  = [ "Noto Sans" ];
-        serif      = [ "Noto Serif" ];
+        monospace = ["Iosevka Nerd Font Mono"];
+        sansSerif = ["Noto Sans"];
+        serif = ["Noto Serif"];
       };
     };
   };
 
-  # -----------------------------------------------------------------------
-  # Session environment
-  # -----------------------------------------------------------------------
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "radeonsi";   # AMD VA-API hardware video decode
-  };
+  # VA-API hardware video decode is a per-GPU concern and lives in the host
+  # hardware module (radeonsi on horus's AMD iGPU).
 }

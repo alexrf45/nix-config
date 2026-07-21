@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # -----------------------------------------------------------------------
   # Xorg + i3 (X11) — faithful port of the Debian daily driver.
   # Per-user i3 keybindings/bars/startup live in
@@ -19,9 +18,9 @@
       enable = true;
       package = pkgs.i3;
       extraPackages = with pkgs; [
-        i3status      # Status line generator (drives the i3bar)
-        i3lock        # Screen locker
-        dmenu         # Fallback launcher (rofi is the primary via HM)
+        i3status # Status line generator (drives the i3bar)
+        i3lock # Screen locker
+        dmenu # Fallback launcher (rofi is the primary via HM)
       ];
     };
   };
@@ -52,28 +51,25 @@
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      nerd-fonts.jetbrains-mono    # Primary UI/terminal font (i3 + kitty)
-      nerd-fonts.ubuntu-mono       # i3bar font ("UbuntuMono Nerd Font")
+      nerd-fonts.jetbrains-mono # Primary UI/terminal font (i3 + kitty)
+      nerd-fonts.ubuntu-mono # i3bar font ("UbuntuMono Nerd Font")
       nerd-fonts.fira-code
       nerd-fonts.hack
-      font-awesome                 # i3blocks/i3status glyphs
+      font-awesome # i3blocks/i3status glyphs
       noto-fonts
       noto-fonts-color-emoji
+      nerd-fonts.iosevka # Terminal font referenced by kitty (terminal.nix)
       liberation_ttf
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
-        sansSerif  = [ "Noto Sans" ];
-        serif      = [ "Noto Serif" ];
+        monospace = ["JetBrainsMono Nerd Font Mono"];
+        sansSerif = ["Noto Sans"];
+        serif = ["Noto Serif"];
       };
     };
   };
 
-  # -----------------------------------------------------------------------
-  # Session environment — Intel VA-API hardware video decode.
-  # -----------------------------------------------------------------------
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "iHD";   # Intel Iris Xe hardware video decode
-  };
+  # VA-API hardware video decode is a per-GPU concern and lives in the host
+  # hardware module (LIBVA_DRIVER_NAME: iHD on thoth, radeonsi on horus).
 }
