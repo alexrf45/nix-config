@@ -1,5 +1,8 @@
-{ pkgs, pkgs-unstable, ... }:
 {
+  pkgs,
+  pkgs-unstable,
+  ...
+}: {
   # -----------------------------------------------------------------------
   # General user packages — CLI tools, utilities, fonts
   # -----------------------------------------------------------------------
@@ -8,15 +11,15 @@
     fd
     ripgrep
     bat
-    eza                  # Modern ls (replaces exa, which is archived)
-    zoxide               # Smart cd
-    delta                # Better git diff
+    eza # Modern ls (replaces exa, which is archived)
+    zoxide # Smart cd
+    delta # Better git diff
     jq
     yq-go
     tldr
     htop
     btop
-    ncdu                 # Disk usage browser
+    ncdu # Disk usage browser
     tree
 
     # File management
@@ -24,7 +27,10 @@
     p7zip
     unzip
     unrar
-    aria2                # Download manager (aria2c)
+    aria2 # Download manager (aria2c)
+
+    # Storage / disk health
+    smartmontools # smartctl — SMART health checks (internal + external disks)
 
     # Network tools
     dig
@@ -33,7 +39,7 @@
     ipcalc
 
     # Media
-    spotify-player       # TUI Spotify client (mirrors dotfiles `alias spotify`)
+    spotify-player # TUI Spotify client (mirrors dotfiles `alias spotify`)
 
     # Productivity
     lazygit
@@ -46,8 +52,7 @@
 
     # Web browsers
     brave
-    google-chrome    # CAC-authenticated DoD portals
-
+    google-chrome # CAC-authenticated DoD portals
   ];
 
   # -----------------------------------------------------------------------
@@ -112,12 +117,12 @@
   # Session environment (mirrors .zprofile)
   # -----------------------------------------------------------------------
   home.sessionVariables = {
-    AWS_REGION           = "us-east-1";
-    AWS_PROFILE          = "default";
-    AWS_CLI_AUTO_PROMPT  = "on-partial";
-    DOCKER_BUILDKIT      = "1";
+    AWS_REGION = "us-east-1";
+    AWS_PROFILE = "default";
+    AWS_CLI_AUTO_PROMPT = "on-partial";
+    DOCKER_BUILDKIT = "1";
     FZF_COMPLETION_TRIGGER = "..";
-    FZF_COMPLETION_OPTS    = "--border --info=inline";
+    FZF_COMPLETION_OPTS = "--border --info=inline";
   };
 
   # -----------------------------------------------------------------------
