@@ -28,10 +28,8 @@
     unzip
     unrar
     aria2 # Download manager (aria2c)
-
-    # Storage / disk health
     smartmontools # smartctl — SMART health checks (internal + external disks)
-
+    gsmartcontrol
     # Network tools
     dig
     whois
