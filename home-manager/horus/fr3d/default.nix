@@ -17,6 +17,7 @@
     ../../../modules/home-manager/tmux.nix
     ../../../modules/home-manager/git.nix
     ../../../modules/home-manager/desktop-i3.nix # i3 (X11) — aligned with thoth
+    ../../../modules/home-manager/gaming.nix # MangoHud, protonup-ng — horus only
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/security.nix
