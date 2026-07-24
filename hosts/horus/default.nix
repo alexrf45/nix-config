@@ -47,6 +47,9 @@
 
   networking.hostName = "horus";
 
+  # Tailscale mesh VPN (mirrors the Debian tailscale setup).
+  services.tailscale.enable = true;
+
   # Set once during initial install — never change after activation
   system.stateVersion = "25.11";
 }
