@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: flow.nvim mono (dark, pink fluo accent)
+  # Theme: moonfly (dark)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -86,7 +86,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "flow-mono", "habamax" },
+        colorscheme = { "moonfly", "habamax" },
       },
       checker = {
         enabled = true,
@@ -163,27 +163,14 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- flow.nvim — mono variant (grey syntax + pink fluo accent)
+    -- moonfly — github.com/bluz71/vim-moonfly-colors
     return {
-      "0xstepit/flow.nvim",
+      "bluz71/vim-moonfly-colors",
+      name = "moonfly",
       lazy = false,
       priority = 1000,
       config = function()
-        require("flow").setup({
-          theme = {
-            style = "dark",
-            contrast = "default",
-            transparent = false,
-          },
-          colors = {
-            mode = "default",
-            fluo = "pink",
-          },
-          ui = {
-            borders = "none",
-          },
-        })
-        vim.cmd.colorscheme("flow-mono")
+        vim.cmd.colorscheme("moonfly")
       end,
     }
   '';
