@@ -64,16 +64,11 @@
         enable = true;
         enableOffloadCmd = true; # Installs `nvidia-offload` wrapper
       };
-      # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      # PLACEHOLDERS — replace with actual values from:
-      #   lspci | grep -E 'VGA|3D'
-      # Format: "XX:YY.Z" → "PCI:XX:YY:Z"
-      # Example output:
-      #   06:00.0 VGA: AMD Radeon   → amdgpuBusId = "PCI:6:0:0"
-      #   01:00.0 3D: NVIDIA        → nvidiaBusId  = "PCI:1:0:0"
-      # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      amdgpuBusId = "PCI:5:0:0"; # PLACEHOLDER
-      nvidiaBusId = "PCI:1:0:0"; # PLACEHOLDER
+      # Confirmed via `lspci | grep -E 'VGA|3D'` on this machine:
+      #   05:00.0 VGA: AMD Renoir/Vega  → amdgpuBusId = "PCI:5:0:0"
+      #   01:00.0 3D:  NVIDIA TU117M    → nvidiaBusId  = "PCI:1:0:0"
+      amdgpuBusId = "PCI:5:0:0";
+      nvidiaBusId = "PCI:1:0:0";
     };
   };
 
