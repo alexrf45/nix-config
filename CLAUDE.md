@@ -7,7 +7,7 @@ select packages; Home Manager as an integrated module (`useGlobalPkgs`); secrets
 
 | Host    | Machine                | GPU                            | Desktop        | Role                           |
 |---------|------------------------|--------------------------------|----------------|--------------------------------|
-| `horus` | Acer Nitro 5           | AMD iGPU + NVIDIA (PRIME)      | Sway (Wayland) | primary workstation            |
+| `horus` | Acer Nitro 5           | AMD iGPU + NVIDIA (PRIME)      | i3 (X11) | primary workstation            |
 | `thoth` | Intel i5-1155G7        | Intel Iris Xe                  | i3 (X11)       | security-research daily driver |
 
 Build/switch: `sudo nixos-rebuild switch --flake .#<host>` (see the `/rebuild` command).

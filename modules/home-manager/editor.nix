@@ -129,6 +129,19 @@
     opt.isfname:append("@-@")
     opt.updatetime = 50
     opt.colorcolumn = "80"
+
+    -- Auto-open the vault's home MOC when launching nvim with no args from the vault
+    vim.api.nvim_create_autocmd("VimEnter", {
+      nested = true,
+      callback = function()
+        local vault = vim.fn.expand("~/notes")
+        if vim.fn.argc() == 0
+            and vim.fn.getcwd() == vault
+            and vim.fn.filereadable(vault .. "/moc_home.md") == 1 then
+          vim.cmd("edit " .. vim.fn.fnameescape(vault .. "/moc_home.md"))
+        end
+      end,
+    })
   '';
 
   xdg.configFile."nvim/lua/config/keymaps.lua".text = ''
@@ -369,6 +382,21 @@
     local function uuid() return os.date("%Y%m%d%H%M") end
     local function rfc3339() return os.date("%Y-%m-%dT%H:%M:%SZ") end
 
+    -- title → filename slug: lowercase, non-alphanumerics collapsed to "-", ~50 chars
+    local function slugify(title)
+      local s = title:lower():gsub("[^%w]+", "-")
+      s = s:gsub("^%-+", ""):gsub("%-+$", "")
+      s = s:sub(1, 50):gsub("%-+$", "")
+      return s
+    end
+
+    -- {uuid}-{slug} (bare uuid when the title yields no usable slug)
+    local function note_name(id, title)
+      local slug = slugify(title)
+      if slug == "" then return id end
+      return id .. "-" .. slug
+    end
+
     local function read_template(name)
       local path = vault .. "/templates/" .. name
       local f = io.open(path, "r")
@@ -404,12 +432,13 @@
       end
     end
 
-    local function from_template(template_name, prompt_text)
+    local function from_template(template_name, prompt_text, subdir)
       local title = vim.fn.input(prompt_text)
       if title == "" then return end
       local tmpl = read_template(template_name) or "# {{title}}\n\n"
       local content, id = fill_template(tmpl, title)
-      write_and_open(vault .. "/" .. id .. ".md", content)
+      local dir = subdir and (vault .. "/" .. subdir) or vault
+      write_and_open(dir .. "/" .. note_name(id, title) .. ".md", content)
     end
 
     -- ── pickers ──────────────────────────────────────────────────────────────────
@@ -423,12 +452,12 @@
     end
 
     function M.goto_today()
-      open_or_create(os.date("%Y-%m-%d") .. ".md", "daily.md", os.date("%Y-%m-%d"))
+      open_or_create("daily/" .. os.date("%Y-%m-%d") .. ".md", "daily.md", os.date("%Y-%m-%d"))
     end
 
     function M.goto_thisweek()
       local week = os.date("%Y-W%V")
-      open_or_create(week .. ".md", "weekly.md", week)
+      open_or_create("daily/" .. week .. ".md", "weekly.md", week)
     end
 
     function M.follow_link()
@@ -447,9 +476,9 @@
 
       local matches = vim.fn.globpath(vault, "**/*" .. vim.fn.escape(link, "[]()") .. "*.md", false, true)
       if #matches == 0 then
-        local tmpl = read_template("note.md") or "# {{title}}\n\n"
+        local tmpl = read_template("atomic.md") or "# {{title}}\n\n"
         local content, id = fill_template(tmpl, link)
-        write_and_open(vault .. "/" .. id .. ".md", content)
+        write_and_open(vault .. "/" .. note_name(id, link) .. ".md", content)
       elseif #matches == 1 then
         vim.cmd("edit " .. vim.fn.fnameescape(matches[1]))
       else
@@ -466,8 +495,11 @@
       end
     end
 
-    function M.new_note()  from_template("note.md", "Note title: ") end
-    function M.new_poem()  from_template("poem.md", "Poem title: ") end
+    function M.new_note()       from_template("atomic.md", "Note title: ") end
+    function M.new_fleeting()   from_template("note.md", "Fleeting note: ", "inbox") end
+    function M.new_literature() from_template("literature.md", "Literature note: ") end
+    function M.new_project()    from_template("project.md", "Project note: ") end
+    function M.new_poem()       from_template("poem.md", "Poem title: ", "writing") end
 
     function M.show_backlinks()
       local name = vim.fn.expand("%:t:r")
@@ -593,8 +625,11 @@
         { "Search notes", M.search_notes },
         { "Today's note", M.goto_today },
         { "Weekly note",  M.goto_thisweek },
-        { "New note",     M.new_note },
-        { "New poem",     M.new_poem },
+        { "New note",       M.new_note },
+        { "New fleeting",   M.new_fleeting },
+        { "New literature", M.new_literature },
+        { "New project",    M.new_project },
+        { "New poem",       M.new_poem },
         { "Follow link",  M.follow_link },
         { "Show tags",    M.show_tags },
         { "Backlinks",    M.show_backlinks },
@@ -628,7 +663,10 @@
           { "<leader>zd", function() M.goto_today() end,      desc = "Today's note" },
           { "<leader>zw", function() M.goto_thisweek() end,   desc = "Weekly note" },
           { "<leader>zz", function() M.follow_link() end,     desc = "Follow [[link]]" },
-          { "<leader>zn", function() M.new_note() end,        desc = "New note" },
+          { "<leader>zn", function() M.new_note() end,        desc = "New atomic note" },
+          { "<leader>zi", function() M.new_fleeting() end,    desc = "New fleeting note (inbox)" },
+          { "<leader>znl", function() M.new_literature() end, desc = "New literature note" },
+          { "<leader>znp", function() M.new_project() end,    desc = "New project note" },
           { "<leader>za", function() M.new_note() end,        desc = "New templated note" },
           { "<leader>zp", function() M.new_poem() end,        desc = "New poem" },
           { "<leader>zb", function() M.show_backlinks() end,  desc = "Backlinks" },
