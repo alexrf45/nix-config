@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: moonfly (dark)
+  # Theme: guts (dark)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -86,7 +86,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "moonfly", "habamax" },
+        colorscheme = { "guts", "habamax" },
       },
       checker = {
         enabled = true,
@@ -176,14 +176,14 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- moonfly — github.com/bluz71/vim-moonfly-colors
+    -- guts — github.com/vossenwout/guts.nvim
     return {
-      "bluz71/vim-moonfly-colors",
-      name = "moonfly",
+      "vossenwout/guts.nvim",
+      name = "guts",
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd.colorscheme("moonfly")
+        vim.cmd.colorscheme("guts")
       end,
     }
   '';
