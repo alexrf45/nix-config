@@ -2,11 +2,10 @@
 
 ## Builds
 
-- A broken flake input usually surfaces as one dead leaf — bisect with `nix build .#sec-<cat>`.
-- `nix log <drv>` for a failing build's output; `nixos-rebuild build` (not `switch`) to dry-run.
+- `nix flake check` surfaces an eval break; `nix log <drv>` for a failing build's output;
+  `nixos-rebuild build` (not `switch`) to dry-run a host.
 - `--override-input <name> path:<dir>` tests a local working tree without pushing.
-- Heavy closures are opt-in by design (e.g. the `c2` bundle pulls Sliver's ~267MB server) — don't
-  fold them into always-on modules.
+- Heavy closures are opt-in by design — don't fold large tools into always-on modules.
 
 ## Context
 

@@ -35,6 +35,13 @@
     whois
     traceroute
     ipcalc
+    nmap             # host/port discovery
+    netcat-gnu       # nc — connectivity checks / quick listeners
+    tcpdump          # packet capture for network debugging
+
+    # Debug / binutils (general development)
+    gdb
+    binutils         # objdump, strings, nm
 
     # Media
     spotify-player # TUI Spotify client (mirrors dotfiles `alias spotify`)
@@ -65,9 +72,7 @@
   # -----------------------------------------------------------------------
   # tmuxp session files — placed at ~/.config/tmuxp/
   # -----------------------------------------------------------------------
-  xdg.configFile."tmuxp/htb.yaml".source = ../../tmuxp/htb.yaml;
   xdg.configFile."tmuxp/dev.yaml".source = ../../tmuxp/dev.yaml;
-  xdg.configFile."tmuxp/ctf.yaml".source = ../../tmuxp/ctf.yaml;
 
   # -----------------------------------------------------------------------
   # Firefox — managed via programs module for profile/settings control

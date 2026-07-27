@@ -20,7 +20,6 @@
     ../../../modules/home-manager/desktop-i3.nix # i3 (X11) — shared with horus
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
-    ../../../modules/home-manager/security.nix
     ../../../modules/home-manager/ssh.nix
   ];
 

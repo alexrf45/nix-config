@@ -1,6 +1,6 @@
 # Python Devenv Reference
 
-Isolated, reproducible Python environments for security research, API development,
+Isolated, reproducible Python environments for API development,
 web scraping, and data analysis — with Docker image building built in.
 
 ---
@@ -68,7 +68,7 @@ All scripts below are available as shell commands once inside `devenv shell`.
 **Workflow for adding packages mid-session:**
 
 ```bash
-py-add shodan playwright-stealth   # installs + writes to requirements.txt immediately
+py-add polars httpx   # installs + writes to requirements.txt immediately
 ```
 
 Re-entering the shell later will re-sync from `requirements.txt` automatically.
@@ -139,14 +139,12 @@ python -c "from playwright.sync_api import sync_playwright; ..."
 | `seaborn` | Statistical visualisation on top of matplotlib |
 | `rich` | Pretty terminal output: tables, progress bars, syntax highlighting |
 
-### Security Research
+### Crypto / Networking
 | Package | Use |
 |---|---|
-| `scapy` | Packet crafting, sniffing, network analysis |
 | `cryptography` | AES, RSA, ECDSA, X.509, HMAC — full crypto primitive set |
 | `paramiko` | SSH client/server in pure Python |
 | `dnspython` | DNS queries, zone manipulation, DNSSEC |
-| `python-nmap` | Programmatic wrapper around nmap scans |
 
 ### Docker SDK
 | Package | Use |
@@ -187,7 +185,7 @@ Docker daemon and `docker-compose` are provided system-wide (not devenv-specific
 Edit `requirements.txt` directly, then re-enter the shell:
 
 ```bash
-echo "shodan" >> requirements.txt
+echo "polars" >> requirements.txt
 exit          # leave devenv shell
 devenv shell  # re-enter — pip-installs new package automatically
 ```
@@ -195,7 +193,7 @@ devenv shell  # re-enter — pip-installs new package automatically
 Or use `py-add` without leaving the shell:
 
 ```bash
-py-add shodan
+py-add polars
 ```
 
 ### Adding system (non-Python) tools
@@ -205,7 +203,7 @@ Edit `devenv.nix` and add packages to the `packages` list:
 ```nix
 packages = with pkgs; [
   git curl jq hadolint sqlite
-  nmap          # ← add here
+  imagemagick   # ← add here
   httpie        # ← and here
 ];
 ```
@@ -243,17 +241,19 @@ languages.python = {
 
 ## Common Workflows
 
-### Security research script
+### API / scraping script
 
 ```bash
-pydev recon-tool
+pydev api-tool
 # inside devenv shell:
-py-add shodan censys python-nmap
-cat > recon.py << 'EOF'
-import nmap
-nm = nmap.PortScanner()
-nm.scan('127.0.0.1', '22-443')
-print(nm.all_hosts())
+py-add httpx beautifulsoup4
+cat > fetch.py << 'EOF'
+import httpx
+from bs4 import BeautifulSoup
+
+r = httpx.get("https://example.com")
+soup = BeautifulSoup(r.text, "html.parser")
+print(soup.title.string)
 EOF
 py-test
 ```
