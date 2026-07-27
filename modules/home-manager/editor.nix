@@ -473,8 +473,24 @@
       if not link then
         vim.notify("No [[wiki link]] under cursor", vim.log.levels.WARN); return
       end
+      -- normalize: strip |alias, #heading, any relative path, and .md extension
+      link = vim.trim(link:match("^([^|#]*)") or "")
+      link = link:gsub("%.md$", "")
+      link = link:match("([^/]+)$") or link
+      if link == "" then
+        vim.notify("Link has no note target", vim.log.levels.WARN); return
+      end
 
-      local matches = vim.fn.globpath(vault, "**/*" .. vim.fn.escape(link, "[]()") .. "*.md", false, true)
+      local function find_matches(pat)
+        return vim.fn.globpath(vault, "**/*" .. vim.fn.escape(pat, "[]()") .. "*.md", false, true)
+      end
+
+      local matches = find_matches(link)
+      -- links and filenames may disagree on the -slug suffix; retry on the uuid alone
+      local uuid = link:match("^(%d%d%d%d%d%d%d%d%d%d%d%d)")
+      if #matches == 0 and uuid then
+        matches = find_matches(uuid)
+      end
       if #matches == 0 then
         local tmpl = read_template("atomic.md") or "# {{title}}\n\n"
         local content, id = fill_template(tmpl, link)
