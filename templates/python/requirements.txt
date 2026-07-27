@@ -16,12 +16,10 @@ matplotlib              # plotting
 seaborn                 # statistical visualisation on top of matplotlib
 rich                    # pretty terminal output: tables, progress bars, logging
 
-# ── Security research ─────────────────────────────────────────────────────────
-scapy                   # packet crafting + network analysis
+# ── Crypto / networking ───────────────────────────────────────────────────────
 cryptography            # low-level crypto primitives (AES, RSA, ECDSA, X.509, …)
 paramiko                # SSH client/server in pure Python
 dnspython               # DNS queries and zone manipulation
-python-nmap             # nmap wrapper for programmatic scans
 
 # ── Docker SDK ────────────────────────────────────────────────────────────────
 docker                  # Python SDK for the Docker daemon API

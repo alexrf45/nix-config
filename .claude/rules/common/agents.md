@@ -5,7 +5,7 @@ Agents defined in `.claude/agents/`:
 | Agent | Use for |
 |-------|---------|
 | **planner** | Implementation planning for larger features/refactors |
-| **security-reviewer** | Secrets, boot/GPU, and security-devShell changes |
+| **security-reviewer** | Secrets and boot/GPU changes |
 | **refactor-cleaner** | Dead-code / duplication cleanup |
 | **doc-updater** | Updating docs / codemaps |
 | **docs-lookup** | Library / API docs via Context7 |

@@ -6,7 +6,6 @@
     ./terraform.nix
     ./aws.nix
     ./secrets.nix
-    ./security.nix
     ./unstable.nix
   ];
 

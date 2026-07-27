@@ -3,6 +3,7 @@
   outputs,
   pkgs,
   pkgs-unstable,
+  config,
   lib,
   ...
 }: {
@@ -20,7 +21,6 @@
     ../../../modules/home-manager/gaming.nix # MangoHud, protonup-ng — horus only
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
-    ../../../modules/home-manager/security.nix
     ../../../modules/home-manager/ssh.nix
   ];
 

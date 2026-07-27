@@ -49,16 +49,22 @@
       code-auth = "export CLAUDE_CODE_OAUTH_TOKEN=$(op read \"op://Private/claude_api_token/credential\")";
       spotify  = "spotify_player";
 
-      # Network / VPN
-      tor     = "docker run --rm --detach --name tor --publish 127.0.0.1:9050:9050 tor:local";
-      weather = "curl https://wttr.in";
-      public  = "curl wtfismyip.com/text";
-      htb     = "sudo openvpn ~/.config/openvpn/lab_fr3d1eeT.ovpn";
-      vpn     = "sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn";
+      # Network / utils
+      tor       = "docker run --rm --detach --name tor --publish 127.0.0.1:9050:9050 tor:local";
+      weather   = "curl https://wttr.in";
+      public    = "curl wtfismyip.com/text";
+      vpn       = "sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn";
+      serve     = "python3 -m http.server 8000";       # serve cwd over HTTP :8000
+      servep    = "python3 -m http.server";            # servep <port>
+      ports     = "ss -tulpn";                          # listening sockets
+      myip      = "ip -4 -brief addr";
+      b64d      = "base64 -d";
+      b64e      = "base64";
+      urldecode = "python3 -c 'import sys,urllib.parse as u; print(u.unquote(sys.argv[1]))'";
+      urlencode = "python3 -c 'import sys,urllib.parse as u; print(u.quote(sys.argv[1]))'";
 
       # tmux / tmuxp
       t    = "tmux";
-      kali = "tmuxp load ~/.config/tmuxp/security.yaml";
       dev  = "tmuxp load ~/.config/tmuxp/dev.yaml";
 
       # Python
@@ -345,7 +351,7 @@
   };
 
   # -----------------------------------------------------------------------
-  # Starship prompt — minimal security-research layout
+  # Starship prompt — minimal layout
   # ╭ ~/path  branch ±~+?  (venv)  vpn:10.10.14.5
   # ╰ ❯
   # -----------------------------------------------------------------------
