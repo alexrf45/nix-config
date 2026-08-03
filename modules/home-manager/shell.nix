@@ -1,5 +1,8 @@
-{ pkgs, config, ... }:
 {
+  pkgs,
+  config,
+  ...
+}: {
   # -----------------------------------------------------------------------
   # Zsh — all aliases and functions managed in Nix; no sourced dotfiles
   # -----------------------------------------------------------------------
@@ -30,121 +33,122 @@
       horus = "sudo nixos-rebuild switch --flake \".#horus\"";
 
       # General
-      r        = ". ~/.zshrc";
-      h        = "cd ~";
-      v        = "nvim";
-      config   = "nvim ~/.vimrc";
-      q        = "exit";
-      edit     = "nvim";
-      c        = "clear";
-      get      = "curl -O -L";
-      dir      = "exa";
+      r = ". ~/.zshrc";
+      h = "cd ~";
+      v = "nvim";
+      config = "nvim ~/.vimrc";
+      q = "exit";
+      edit = "nvim";
+      c = "clear";
+      get = "curl -O -L";
+      dir = "exa";
       download = "aria2c";
-      l        = "ls -lh --color=auto --group-directories-first";
-      ls       = "ls -h --color=auto --group-directories-first";
-      la       = "ls -lah --color=auto --group-directories-first";
-      lsblk    = "lsblk | bat -l conf -p";
-      sensors  = "sensors | bat -l cpuinfo -p";
-      daily    = "bash $HOME/.config/scripts/daily.sh";
+      l = "ls -lh --color=auto --group-directories-first";
+      ls = "ls -h --color=auto --group-directories-first";
+      la = "ls -lah --color=auto --group-directories-first";
+      lsblk = "lsblk | bat -l conf -p";
+      sensors = "sensors | bat -l cpuinfo -p";
+      daily = "bash $HOME/.config/scripts/daily.sh";
       code-auth = "export CLAUDE_CODE_OAUTH_TOKEN=$(op read \"op://Private/claude_api_token/credential\")";
-      spotify  = "spotify_player";
+      lifeos = "bun $HOME/.claude/LIFEOS/TOOLS/lifeos.ts"; # LifeOS launcher (loads its system prompt from ~/.claude/LIFEOS)
+      spotify = "spotify_player";
 
       # Network / utils
-      tor       = "docker run --rm --detach --name tor --publish 127.0.0.1:9050:9050 tor:local";
-      weather   = "curl https://wttr.in";
-      public    = "curl wtfismyip.com/text";
-      vpn       = "sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn";
-      serve     = "python3 -m http.server 8000";       # serve cwd over HTTP :8000
-      servep    = "python3 -m http.server";            # servep <port>
-      ports     = "ss -tulpn";                          # listening sockets
-      myip      = "ip -4 -brief addr";
-      b64d      = "base64 -d";
-      b64e      = "base64";
+      tor = "docker run --rm --detach --name tor --publish 127.0.0.1:9050:9050 tor:local";
+      weather = "curl https://wttr.in";
+      public = "curl wtfismyip.com/text";
+      vpn = "sudo openvpn ~/.config/openvpn/us-ny-599.protonvpn.udp.ovpn";
+      serve = "python3 -m http.server 8000"; # serve cwd over HTTP :8000
+      servep = "python3 -m http.server"; # servep <port>
+      ports = "ss -tulpn"; # listening sockets
+      myip = "ip -4 -brief addr";
+      b64d = "base64 -d";
+      b64e = "base64";
       urldecode = "python3 -c 'import sys,urllib.parse as u; print(u.unquote(sys.argv[1]))'";
       urlencode = "python3 -c 'import sys,urllib.parse as u; print(u.quote(sys.argv[1]))'";
 
       # tmux / tmuxp
-      t    = "tmux";
-      dev  = "tmuxp load ~/.config/tmuxp/dev.yaml";
+      t = "tmux";
+      dev = "tmuxp load ~/.config/tmuxp/dev.yaml";
 
       # Python
-      py         = "python3";
-      py-virt    = "python3 -m venv ./venv && source ./venv/bin/activate";
-      freeze     = "pip freeze > requirements.txt";
+      py = "python3";
+      py-virt = "python3 -m venv ./venv && source ./venv/bin/activate";
+      freeze = "pip freeze > requirements.txt";
       py-install = "pip install -r requirements.txt";
-      py-list    = "pipx list | grep package";
+      py-list = "pipx list | grep package";
 
       # Docker
-      d       = "docker";
-      db      = "docker build";
-      dimls   = "docker image ls";
-      dim     = "docker image";
-      dc      = "docker container";
-      dnt     = "docker network";
+      d = "docker";
+      db = "docker build";
+      dimls = "docker image ls";
+      dim = "docker image";
+      dc = "docker container";
+      dnt = "docker network";
       # Unprivileged shell in current dir — subshell expansions run at invocation time
-      ds      = "docker run --rm -v \"$(pwd):$(pwd)\" -w \"$(pwd)\" -u \"$(id -u):$(id -g)\" -it debian:13-slim";
+      ds = "docker run --rm -v \"$(pwd):$(pwd)\" -w \"$(pwd)\" -u \"$(id -u):$(id -g)\" -it debian:13-slim";
       kali-root = "docker run --tty --interactive kalilinux/kali-rolling /bin/bash";
-      dup     = "docker compose up -d";
-      down    = "docker compose down";
-      dnuke   = "docker system prune -af && docker volume prune -f";
-      lzd     = "docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v /yourpath:/.config/jesseduffield/lazydocker lazyteam/lazydocker";
-      portainer      = "docker run --name portainer -p 9000:9000 -d -v \"/var/run/docker.sock:/var/run/docker.sock\" portainer/portainer-ce:latest";
-      portainerstop  = "docker stop portainer";
+      dup = "docker compose up -d";
+      down = "docker compose down";
+      dnuke = "docker system prune -af && docker volume prune -f";
+      lzd = "docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v /yourpath:/.config/jesseduffield/lazydocker lazyteam/lazydocker";
+      portainer = "docker run --name portainer -p 9000:9000 -d -v \"/var/run/docker.sock:/var/run/docker.sock\" portainer/portainer-ce:latest";
+      portainerstop = "docker stop portainer";
       portainerstart = "docker start portainer";
-      gcloud    = "docker run --rm --volumes-from gcloud-config gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud";
+      gcloud = "docker run --rm --volumes-from gcloud-config gcr.io/google.com/cloudsdktool/google-cloud-cli gcloud";
       juiceshop = "docker run --name juiceshop -d --rm -p 3000:3000 bkimminich/juice-shop";
 
       # Git — shell shortcuts pointing to git aliases (defined in git.nix)
-      g        = "git";
-      ga       = "git a";
-      gaa      = "git aa";
-      gb       = "git b";
-      gbd      = "git bd";
-      gcb      = "git cb";
-      gc       = "git cl";
-      gcl      = "git clr";
-      clean    = "git nuke";
+      g = "git";
+      ga = "git a";
+      gaa = "git aa";
+      gb = "git b";
+      gbd = "git bd";
+      gcb = "git cb";
+      gc = "git cl";
+      gcl = "git clr";
+      clean = "git nuke";
       checkout = "git co";
-      gpl      = "git pl";
-      gp       = "git p";
-      gs       = "git s";
-      gt       = "git t";
-      gptf     = "git ptf";
-      glog     = "git lg";
-      gl       = "git lgg";
-      gla      = "git lga";
+      gpl = "git pl";
+      gp = "git p";
+      gs = "git s";
+      gt = "git t";
+      gptf = "git ptf";
+      glog = "git lg";
+      gl = "git lgg";
+      gla = "git lga";
 
       # AWS — credentials via 1Password CLI plugin
-      aws      = "op plugin run -- aws";
+      aws = "op plugin run -- aws";
       ec2-check = "op plugin run -- aws ec2 describe-instances --query 'Reservations[*].Instances[*].{PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress,Name:Tags[?Key==`Name`]|[0].Value,Type:InstanceType,Status:State.Name,VpcId:VpcId,Id:InstanceId}' --filters 'Name=instance-state-name,Values=running' --output table";
-      s3-list  = "op plugin run -- aws s3api list-buckets | jq -r '.Buckets[].Name'";
+      s3-list = "op plugin run -- aws s3api list-buckets | jq -r '.Buckets[].Name'";
       vpc-check = "op plugin run -- aws ec2 --output text --query 'Vpcs[*].{VpcId:VpcId,Name:Tags[?Key==`Environment`].Value|[0],CidrBlock:CidrBlock}' describe-vpcs";
       s3-delete = "op plugin run -- aws s3api delete-bucket --bucket $BUCKET";
       iam-access-id-admin = "op plugin run -- aws iam get-user --user-name account-admin | jq -r '.User | .UserId'";
-      aws-nuke  = "cloud-nuke aws --exclude-resource-type s3 --exclude-resource-type iam --exclude-resource-type secretsmanager --exclude-resource-type dynamodb";
-      aws-inspect       = "cloud-nuke inspect-aws";
+      aws-nuke = "cloud-nuke aws --exclude-resource-type s3 --exclude-resource-type iam --exclude-resource-type secretsmanager --exclude-resource-type dynamodb";
+      aws-inspect = "cloud-nuke inspect-aws";
       aws-services-list = "~/.config/scripts/services.sh";
       aws-services-cost = "~/.config/scripts/service-cost.sh";
-      aws-current-cost  = "~/.config/scripts/awscurrentcost.sh";
-      aws-cost-overall  = "~/.config/scripts/awscost.sh";
+      aws-current-cost = "~/.config/scripts/awscurrentcost.sh";
+      aws-cost-overall = "~/.config/scripts/awscost.sh";
       s3-backend-delete = "~/.config/scripts/s3-delete.sh";
       s3-file-list = "op plugin run -- aws s3api list-objects --query 'Contents[].Key' --output text";
-      ami-search   = "op plugin run -- aws ec2 describe-images --owner self amazon --filters 'Name=architecture,Values=x86_64' 'Name=name,Values=ubuntu/images/hvm-ssd/*' 'Name=root-device-type,Values=ebs' --output table";
-      s3-create    = "python3 ~/.config/scripts/s3.py";
+      ami-search = "op plugin run -- aws ec2 describe-images --owner self amazon --filters 'Name=architecture,Values=x86_64' 'Name=name,Values=ubuntu/images/hvm-ssd/*' 'Name=root-device-type,Values=ebs' --output table";
+      s3-create = "python3 ~/.config/scripts/s3.py";
 
       # Terraform — credentials via 1Password CLI plugin
-      tf    = "op plugin run -- terraform";
-      tfi   = "op plugin run -- terraform init";
-      tfir  = "op plugin run -- terraform init -backend-config=\"remote.tfbackend\" -upgrade";
+      tf = "op plugin run -- terraform";
+      tfi = "op plugin run -- terraform init";
+      tfir = "op plugin run -- terraform init -backend-config=\"remote.tfbackend\" -upgrade";
       tflint = "terraform fmt && terraform validate";
-      tfv   = "terraform validate";
-      tfp   = "op plugin run -- terraform plan";
-      tfa   = "op plugin run -- terraform apply";
-      tfs   = "op plugin run -- terraform state";
+      tfv = "terraform validate";
+      tfp = "op plugin run -- terraform plan";
+      tfa = "op plugin run -- terraform apply";
+      tfs = "op plugin run -- terraform state";
       tfsls = "op plugin run -- terraform state list";
-      tfo   = "op plugin run -- terraform output";
-      tfd   = "op plugin run -- terraform destroy";
-      cost  = "infracost breakdown --path=.";
+      tfo = "op plugin run -- terraform output";
+      tfd = "op plugin run -- terraform destroy";
+      cost = "infracost breakdown --path=.";
     };
 
     # -------------------------------------------------------------------
@@ -406,28 +410,28 @@
       python = {
         format = ''[(\($virtualenv\))]($style) '';
         style = "bold yellow";
-        python_binary = [ "./venv/bin/python" "python" "python3" ];
-        detect_extensions = [ "py" ];
+        python_binary = ["./venv/bin/python" "python" "python3"];
+        detect_extensions = ["py"];
       };
 
       # VPN indicator — shown only when an OpenVPN tunnel (tun0, tun1, …) is up.
       # Matches interface NAMES starting with "tun[digit]" so Tailscale (tailscale0)
       # is never caught, regardless of its kernel interface type.
       custom.vpn = {
-        when    = "ip link show | grep -qE '^[0-9]+: tun[0-9]'";
+        when = "ip link show | grep -qE '^[0-9]+: tun[0-9]'";
         command = "ip -4 addr | awk '/^[0-9]+: tun[0-9]/{found=1} found && /inet /{print $2; exit}' | cut -d/ -f1";
-        format  = "[vpn:$output]($style) ";
-        style   = "bold cyan";
+        format = "[vpn:$output]($style) ";
+        style = "bold cyan";
       };
 
       # Disabled — not needed in daily prompt
-      aws.disabled       = true;
-      gcloud.disabled    = true;
+      aws.disabled = true;
+      gcloud.disabled = true;
       terraform.disabled = true;
-      azure.disabled     = true;
-      time.disabled      = true;
-      pulumi.disabled    = true;
-      golang.disabled    = true;
+      azure.disabled = true;
+      time.disabled = true;
+      pulumi.disabled = true;
+      golang.disabled = true;
     };
   };
 
@@ -437,6 +441,9 @@
   home.file = {
     # Overwrite pre-NixOS .zprofile — it had bare > characters that zsh
     # interpreted as redirects, creating junk files in $HOME on every login.
-    ".zprofile" = { text = "# Managed by Home Manager — do not edit\n"; force = true; };
+    ".zprofile" = {
+      text = "# Managed by Home Manager — do not edit\n";
+      force = true;
+    };
   };
 }
