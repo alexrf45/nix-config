@@ -21,9 +21,7 @@
         verbose = true;
       };
 
-      # emacsclient -t opens emacs in terminal; falls back to new emacs if no server.
-      # Keep nvim here if you prefer a fast terminal editor for commit messages.
-      core.editor = "emacsclient -t -a emacs";
+      core.editor = "nvim";
 
       pull.rebase = true;
 
@@ -78,4 +76,15 @@
   xdg.configFile."git/allowed_signers".text = ''
     fonalex45@gmail.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL12pfw++v9LFlLvug4OaZ9biScTIq8hcm6uiYM9kO4j
   '';
+
+  # -----------------------------------------------------------------------
+  # GitHub CLI — system of record for the LifeOS Work System (issues)
+  # -----------------------------------------------------------------------
+  programs.gh = {
+    enable = true;
+    settings = {
+      git_protocol = "ssh";
+      editor = "nvim";
+    };
+  };
 }
