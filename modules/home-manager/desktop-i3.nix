@@ -179,7 +179,7 @@ in {
 
         startup = [
           {
-            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/dark-waves.jpg";
+            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/golden-mountains.png";
             always = true;
             notification = false;
           }
@@ -303,8 +303,8 @@ in {
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
-    xdg.configFile."pictures/dark-waves.jpg" = {
-      source = ../../dotfiles/pictures/dark-waves.jpg;
+    xdg.configFile."pictures/golden-mountains.png" = {
+      source = ../../dotfiles/pictures/golden-mountains.png;
       force = true;
     };
     xdg.configFile."pictures/sky.png" = {
