@@ -15,6 +15,7 @@
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
     ../../modules/nixos/syncthing.nix
+    ../../modules/nixos/searxng.nix          # private metasearch for Kindly MCP (thoth-only)
 
     # SOPS-nix system module
     inputs.sops-nix.nixosModules.sops

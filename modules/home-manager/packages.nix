@@ -8,6 +8,7 @@
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
     # Shell enhancements
+    uv # Python package/venv manager — runs the Kindly web-search MCP via uvx
     fd
     ripgrep
     bat
