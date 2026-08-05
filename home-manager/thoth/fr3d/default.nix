@@ -68,6 +68,7 @@
   home.packages = with pkgs; [
     discord
     slack
+    zoom-us # video conferencing (virtual hearings, meetings)
     vlc
     obs-studio
     remmina # RDP/VNC client
