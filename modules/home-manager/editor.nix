@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: guts (dark)
+  # Theme: cendre (dark)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -86,7 +86,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "guts", "habamax" },
+        colorscheme = { "cendre", "habamax" },
       },
       checker = {
         enabled = true,
@@ -176,14 +176,15 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- guts — github.com/vossenwout/guts.nvim
+    -- cendre — github.com/Aejkatappaja/cendre (dark only)
     return {
-      "vossenwout/guts.nvim",
-      name = "guts",
+      "Aejkatappaja/cendre",
+      name = "cendre",
       lazy = false,
       priority = 1000,
       config = function()
-        vim.cmd.colorscheme("guts")
+        require("cendre").setup({ background = "soft" }) -- "hard" | "medium" | "soft"
+        vim.cmd.colorscheme("cendre")
       end,
     }
   '';
