@@ -26,15 +26,16 @@ templates/             flake templates (python, mkdocs)
 secrets/               SOPS-encrypted .yaml (age)
 ```
 
-Shared modules split into host variants where hardware/desktop differ — e.g. `hardware.nix` vs
-`hardware-intel.nix`, `desktop.nix` (Sway) vs `desktop-x11.nix` (i3), HM `desktop.nix` vs `desktop-i3.nix`.
+Shared modules split into host variants where hardware differs — e.g. `hardware.nix` vs
+`hardware-intel.nix`. Both hosts now run i3 (X11) via `desktop-x11.nix` + HM `desktop-i3.nix`; the
+Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but unused (Wayland fallback).
 
 ## Key design decisions
 
 - nixpkgs `nixos-26.05` stable + `nixos-unstable` overlay for select packages.
 - Home Manager integrated (`useGlobalPkgs = true`); overlays declared in `hosts/<host>/default.nix`, not in home.nix.
 - horus GPU: NVIDIA PRIME offload (AMD drives the display, NVIDIA on demand).
-- Sound: PipeWire + WirePlumber; Display: GDM + Sway (horus) / i3 (thoth).
+- Sound: PipeWire + WirePlumber; Display: i3 (X11) on both hosts (horus aligned to thoth). Sway modules kept but unused.
 - Secrets: SOPS + age (key at `~/.config/sops/age/keys.txt`, never in the repo → `/run/secrets/` after activation).
 
 > **Note:** the security-research tooling (CTF/pentest devShells, `secBundles`, the `scrt`
