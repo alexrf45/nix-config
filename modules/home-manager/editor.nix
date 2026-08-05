@@ -36,6 +36,7 @@
       tree-sitter
       gcc # Required by nvim-treesitter to compile parsers
       nodejs # Required by many mason-installed LSPs
+      yarn # Required to build markdown-preview.nvim (build = "cd app && yarn install")
     ];
   };
 
