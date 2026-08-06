@@ -322,7 +322,7 @@ in {
       module-margin = 1
       font-0 = Iosevka Nerd Font Mono:size=11;3
       font-1 = Iosevka Nerd Font Mono:size=13;4
-      font-2 = Iosevka Nerd Font Mono:size=19;6
+      font-2 = Iosevka Nerd Font Mono:size=15;7
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
