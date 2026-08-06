@@ -320,9 +320,9 @@ in {
       border-size = 0
       padding = 2
       module-margin = 1
-      font-0 = Iosevka Nerd Font Mono:size=10;2
-      font-1 = Iosevka Nerd Font Mono:size=11;3
-      font-2 = Iosevka Nerd Font Mono:size=14;5
+      font-0 = UbuntuMono Nerd Font:size=11;2
+      font-1 = UbuntuMono Nerd Font:size=12;2
+      font-2 = UbuntuMono Nerd Font:size=13;3
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
