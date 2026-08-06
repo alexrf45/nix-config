@@ -251,6 +251,10 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
+          # Drop the title bar on floating windows too (tiled ones are already
+          # borderless via window.titlebar = false); keep the 2px cendre edge.
+          default_floating_border pixel 2
+
           # Window borders — cendre. Fields: border background text indicator child_border
           client.focused          ${cendre.accent}  ${cendre.accent}  ${cendre.base}    ${cendre.accent}  ${cendre.accent}
           client.focused_inactive ${cendre.overlay} ${cendre.mantle}  ${cendre.subtext} ${cendre.overlay} ${cendre.overlay}
