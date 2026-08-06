@@ -41,21 +41,6 @@
     cyan = "#4e89a2";
     urgent = "#d25780"; # bright red
   };
-
-  # Nerd Font glyphs via JSON \u escapes — deterministic bytes. Literal PUA
-  # glyphs get mangled when the source is edited, so never inline them.
-  ico = {
-    lcap = builtins.fromJSON ''""''; # rounded left pill cap
-    rcap = builtins.fromJSON ''""''; # rounded right pill cap
-    cpu = builtins.fromJSON ''""''; # microchip
-    mem = builtins.fromJSON ''""''; # database
-    temp = builtins.fromJSON ''""''; # thermometer
-    disk = builtins.fromJSON ''""''; # hdd
-    wifi = builtins.fromJSON ''""''; # wifi
-    battChg = builtins.fromJSON ''""''; # bolt (charging)
-    batt = builtins.fromJSON ''""''; # battery full
-    battLow = builtins.fromJSON ''""''; # battery empty
-  };
 in {
   # -----------------------------------------------------------------------
   # Per-host knobs — the i3 config below is shared between horus and thoth;
@@ -84,20 +69,6 @@ in {
       type = lib.types.str;
       default = "eDP-1";
       description = "Internal laptop panel output (xrandr name).";
-    };
-
-    batteryName = lib.mkOption {
-      type = lib.types.str;
-      default = "BAT0";
-      example = "BAT1";
-      description = "Battery device name under /sys/class/power_supply for the polybar battery module.";
-    };
-
-    acAdapter = lib.mkOption {
-      type = lib.types.str;
-      default = "AC";
-      example = "ADP1";
-      description = "AC adapter device name under /sys/class/power_supply for the polybar battery module.";
     };
   };
 
@@ -244,7 +215,7 @@ in {
             notification = false;
           }
           {
-            command = "$HOME/.config/polybar/launch.sh";
+            command = "$HOME/.config/eww/launch.sh";
             always = true;
             notification = false;
           }
@@ -289,239 +260,25 @@ in {
         '';
     };
 
-    # Polybar launcher — killed and relaunched on i3 start/reload.
-    xdg.configFile."polybar/launch.sh" = {
+    # eww bar — cendre pills via GTK CSS border-radius. Config in dotfiles/eww.
+    xdg.configFile."eww/eww.yuck".source = ../../dotfiles/eww/eww.yuck;
+    xdg.configFile."eww/eww.scss".source = ../../dotfiles/eww/eww.scss;
+    xdg.configFile."eww/launch.sh" = {
+      source = ../../dotfiles/eww/launch.sh;
       executable = true;
-      text = ''
-        #!/usr/bin/env bash
-        pkill -x polybar
-        while pgrep -x polybar >/dev/null; do sleep 0.2; done
-        polybar main &
-      '';
     };
-
-    # Polybar bar — GNOME-style: a solid cendre bar with each module in a
-    # rounded "pill" (powerline round caps in surface over the base bar),
-    # monochrome accent icons, centered clock. Modules mirror the old
-    # i3status set. Round caps use font-2 via %{T3}; pill body is the label
-    # background, so caps sit on the base bar and read as rounded ends.
-    xdg.configFile."polybar/config.ini".text = ''
-      [bar/main]
-      width = 99%
-      offset-x = 0.5%
-      offset-y = 5pt
-      height = 24pt
-      radius = 10
-      bottom = false
-      fixed-center = true
-      background = ${cendre.base}
-      foreground = ${cendre.text}
-      line-size = 2pt
-      border-size = 0
-      padding = 2
-      module-margin = 1
-      font-0 = UbuntuMono Nerd Font:size=11;2
-      font-1 = UbuntuMono Nerd Font:size=11;2
-      font-2 = UbuntuMono Nerd Font:size=24;3
-      modules-left = i3
-      modules-center = date
-      modules-right = cpu memory temperature filesystem wireless wired battery
-      tray-position = right
-      tray-background = ${cendre.base}
-      tray-padding = 2
-      tray-maxsize = 18
-      cursor-click = pointer
-      enable-ipc = true
-      wm-restack = i3
-
-      [module/i3]
-      type = internal/i3
-      pin-workspaces = true
-      show-urgent = true
-      index-sort = true
-      enable-click = true
-      enable-scroll = true
-      wrapping-scroll = false
-      format = <label-state> <label-mode>
-      label-mode-padding = 2
-      label-mode-foreground = ${cendre.base}
-      label-mode-background = ${cendre.yellow}
-      label-focused = %index%
-      label-focused-background = ${cendre.accent}
-      label-focused-foreground = ${cendre.base}
-      label-focused-padding = 2
-      label-visible = %index%
-      label-visible-foreground = ${cendre.text}
-      label-visible-padding = 2
-      label-unfocused = %index%
-      label-unfocused-foreground = ${cendre.muted}
-      label-unfocused-padding = 2
-      label-urgent = %index%
-      label-urgent-background = ${cendre.urgent}
-      label-urgent-foreground = ${cendre.base}
-      label-urgent-padding = 2
-
-      [module/date]
-      type = internal/date
-      interval = 1
-      date = %A, %d %B %Y
-      time = %H:%M:%S
-      format = <label>
-      format-prefix = %{T3}${ico.lcap}%{T-}
-      format-prefix-foreground = ${cendre.surface}
-      format-suffix = %{T3}${ico.rcap}%{T-}
-      format-suffix-foreground = ${cendre.surface}
-      label = %{F${cendre.accent}}󰃰%{F-}  %date%   %time%
-      label-background = ${cendre.surface}
-      label-foreground = ${cendre.text}
-      label-padding = 2
-
-      [module/cpu]
-      type = internal/cpu
-      interval = 2
-      format = <label>
-      format-prefix = %{T3}${ico.lcap}%{T-}
-      format-prefix-foreground = ${cendre.surface}
-      format-suffix = %{T3}${ico.rcap}%{T-}
-      format-suffix-foreground = ${cendre.surface}
-      label = %{F${cendre.blue}}${ico.cpu}%{F-}  %percentage%%
-      label-background = ${cendre.surface}
-      label-foreground = ${cendre.text}
-      label-padding = 2
-
-      [module/memory]
-      type = internal/memory
-      interval = 2
-      format = <label>
-      format-prefix = %{T3}${ico.lcap}%{T-}
-      format-prefix-foreground = ${cendre.surface}
-      format-suffix = %{T3}${ico.rcap}%{T-}
-      format-suffix-foreground = ${cendre.surface}
-      label = %{F${cendre.green}}${ico.mem}%{F-}  %gb_used%
-      label-background = ${cendre.surface}
-      label-foreground = ${cendre.text}
-      label-padding = 2
-
-      [module/temperature]
-      type = internal/temperature
-      interval = 2
-      thermal-zone = 0
-      warn-temperature = 80
-      format = <label>
-      format-prefix = %{T3}${ico.lcap}%{T-}
-      format-prefix-foreground = ${cendre.surface}
-      format-suffix = %{T3}${ico.rcap}%{T-}
-      format-suffix-foreground = ${cendre.surface}
-      format-warn = <label-warn>
-      format-warn-prefix = %{T3}${ico.lcap}%{T-}
-      format-warn-prefix-foreground = ${cendre.surface}
-      format-warn-suffix = %{T3}${ico.rcap}%{T-}
-      format-warn-suffix-foreground = ${cendre.surface}
-      label = %{F${cendre.yellow}}${ico.temp}%{F-}  %temperature-c%
-      label-background = ${cendre.surface}
-      label-foreground = ${cendre.text}
-      label-padding = 2
-      label-warn = %{F${cendre.red}}${ico.temp}%{F-}  %temperature-c%
-      label-warn-background = ${cendre.surface}
-      label-warn-foreground = ${cendre.red}
-      label-warn-padding = 2
-
-      [module/filesystem]
-      type = internal/fs
-      interval = 30
-      mount-0 = /
-      format-mounted = <label-mounted>
-      format-mounted-prefix = %{T3}${ico.lcap}%{T-}
-      format-mounted-prefix-foreground = ${cendre.surface}
-      format-mounted-suffix = %{T3}${ico.rcap}%{T-}
-      format-mounted-suffix-foreground = ${cendre.surface}
-      label-mounted = %{F${cendre.magenta}}${ico.disk}%{F-}  %free%
-      label-mounted-background = ${cendre.surface}
-      label-mounted-foreground = ${cendre.text}
-      label-mounted-padding = 2
-      label-unmounted =
-
-      [module/wireless]
-      type = internal/network
-      interface = ${cfg.wirelessInterface}
-      interval = 5
-      format-connected = <label-connected>
-      format-connected-prefix = %{T3}${ico.lcap}%{T-}
-      format-connected-prefix-foreground = ${cendre.surface}
-      format-connected-suffix = %{T3}${ico.rcap}%{T-}
-      format-connected-suffix-foreground = ${cendre.surface}
-      label-connected = %{F${cendre.cyan}}${ico.wifi}%{F-}  %essid% %signal%%
-      label-connected-background = ${cendre.surface}
-      label-connected-foreground = ${cendre.text}
-      label-connected-padding = 2
-      format-disconnected = <label-disconnected>
-      format-disconnected-prefix = %{T3}${ico.lcap}%{T-}
-      format-disconnected-prefix-foreground = ${cendre.surface}
-      format-disconnected-suffix = %{T3}${ico.rcap}%{T-}
-      format-disconnected-suffix-foreground = ${cendre.surface}
-      label-disconnected = %{F${cendre.muted}}󰤭 down%{F-}
-      label-disconnected-background = ${cendre.surface}
-      label-disconnected-padding = 2
-
-      [module/wired]
-      type = internal/network
-      interface = tailscale0
-      interval = 5
-      format-connected = <label-connected>
-      format-connected-prefix = %{T3}${ico.lcap}%{T-}
-      format-connected-prefix-foreground = ${cendre.surface}
-      format-connected-suffix = %{T3}${ico.rcap}%{T-}
-      format-connected-suffix-foreground = ${cendre.surface}
-      label-connected = %{F${cendre.cyan}}󰛳%{F-}  %local_ip%
-      label-connected-background = ${cendre.surface}
-      label-connected-foreground = ${cendre.text}
-      label-connected-padding = 2
-      format-disconnected =
-      label-disconnected =
-
-      [module/battery]
-      type = internal/battery
-      battery = ${cfg.batteryName}
-      adapter = ${cfg.acAdapter}
-      full-at = 99
-      low-at = 15
-      format-charging = <label-charging>
-      format-charging-prefix = %{T3}${ico.lcap}%{T-}
-      format-charging-prefix-foreground = ${cendre.surface}
-      format-charging-suffix = %{T3}${ico.rcap}%{T-}
-      format-charging-suffix-foreground = ${cendre.surface}
-      label-charging = %{F${cendre.green}}${ico.battChg}%{F-}  %percentage%%
-      label-charging-background = ${cendre.surface}
-      label-charging-foreground = ${cendre.text}
-      label-charging-padding = 2
-      format-discharging = <label-discharging>
-      format-discharging-prefix = %{T3}${ico.lcap}%{T-}
-      format-discharging-prefix-foreground = ${cendre.surface}
-      format-discharging-suffix = %{T3}${ico.rcap}%{T-}
-      format-discharging-suffix-foreground = ${cendre.surface}
-      label-discharging = %{F${cendre.yellow}}${ico.batt}%{F-}  %percentage%%
-      label-discharging-background = ${cendre.surface}
-      label-discharging-foreground = ${cendre.text}
-      label-discharging-padding = 2
-      format-full = <label-full>
-      format-full-prefix = %{T3}${ico.lcap}%{T-}
-      format-full-prefix-foreground = ${cendre.surface}
-      format-full-suffix = %{T3}${ico.rcap}%{T-}
-      format-full-suffix-foreground = ${cendre.surface}
-      label-full = %{F${cendre.green}}${ico.batt}%{F-}  %percentage%%
-      label-full-background = ${cendre.surface}
-      label-full-foreground = ${cendre.text}
-      label-full-padding = 2
-      format-low = <label-low>
-      format-low-prefix = %{T3}${ico.lcap}%{T-}
-      format-low-prefix-foreground = ${cendre.surface}
-      format-low-suffix = %{T3}${ico.rcap}%{T-}
-      format-low-suffix-foreground = ${cendre.surface}
-      label-low = %{F${cendre.red}}${ico.battLow}%{F-}  %percentage%%
-      label-low-background = ${cendre.surface}
-      label-low-foreground = ${cendre.red}
-      label-low-padding = 2
-    '';
+    xdg.configFile."eww/scripts/workspaces.sh" = {
+      source = ../../dotfiles/eww/scripts/workspaces.sh;
+      executable = true;
+    };
+    xdg.configFile."eww/scripts/wifi.sh" = {
+      source = ../../dotfiles/eww/scripts/wifi.sh;
+      executable = true;
+    };
+    xdg.configFile."eww/scripts/tailscale.sh" = {
+      source = ../../dotfiles/eww/scripts/tailscale.sh;
+      executable = true;
+    };
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
     xdg.configFile."pictures/golden-mountains.png" = {
@@ -623,10 +380,7 @@ in {
 
     # X11 desktop runtime tools.
     home.packages = with pkgs; [
-      (polybar.override {
-        i3Support = true;
-        pulseSupport = true;
-      }) # Status bar (cendre)
+      eww # Status bar (cendre pills)
       feh # Wallpaper setter
       picom # Compositor
       flameshot # Screenshot tool (Mod+p)
