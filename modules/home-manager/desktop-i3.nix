@@ -18,6 +18,29 @@
   refresh = "killall -SIGUSR1 i3status";
 
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
+
+  # -----------------------------------------------------------------------
+  # cendre palette (soft) — single source of truth for i3 borders, polybar,
+  # and rofi. Lifted from the kitty/neovim theme so the whole X11 session
+  # reads as one system. github.com/Aejkatappaja/cendre
+  # -----------------------------------------------------------------------
+  cendre = {
+    base = "#231f1d"; # background
+    mantle = "#1a1716"; # darker surface (inactive tab bg)
+    surface = "#2d2725"; # color0 / raised
+    text = "#e6d5c2"; # foreground
+    subtext = "#a09384"; # color7 / dim text
+    muted = "#73665b"; # color8 / disabled
+    overlay = "#443c39"; # inactive border
+    accent = "#ea9875"; # cursor / active accent (salmon)
+    red = "#d1766e";
+    green = "#99af6b";
+    yellow = "#fcba81";
+    blue = "#58bdff";
+    magenta = "#9480ba";
+    cyan = "#4e89a2";
+    urgent = "#d25780"; # bright red
+  };
 in {
   # -----------------------------------------------------------------------
   # Per-host knobs — the i3 config below is shared between horus and thoth;
@@ -68,12 +91,15 @@ in {
         };
 
         gaps = {
-          inner = 4;
-          outer = 2;
+          inner = 8;
+          outer = 4;
           smartGaps = true;
         };
 
-        window.border = 0;
+        # Thin borderless-title edge; cendre accent on the focused window is
+        # the focus indicator (picom rounds these corners to match).
+        window.border = 2;
+        window.titlebar = false;
 
         keybindings = {
           "${mod}+Return" = "exec ${term}";
@@ -189,6 +215,11 @@ in {
             notification = false;
           }
           {
+            command = "$HOME/.config/eww/launch.sh";
+            always = true;
+            notification = false;
+          }
+          {
             command = "i3-msg 'workspace 1; exec kitty'";
             notification = false;
           }
@@ -206,25 +237,15 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          bar {
-             position top
-             mode hide
-             font pango:UbuntuMono Nerd Font 10
-             height 17
-             tray_output none
-             i3bar_command i3bar --transparency
-             status_command i3status -c ~/.config/i3/i3status.conf
-             colors {
-                    statusline #e0e0e0
-                    background #32302f
-                    focused_workspace #81a2be #000000 #81a2be
-                   }
-            }
+          # Drop the title bar on floating windows too (tiled ones are already
+          # borderless via window.titlebar = false); keep the 2px cendre edge.
+          default_floating_border pixel 2
 
-          client.focused          #010202 #010202 #FFFFFF #00DA8E
-          client.focused_inactive #333333 #5F676A #ffffff #484e50
-          client.unfocused        #333333 #424242 #888888 #292d2e
-          client.urgent           #C10004 #900000 #ffffff #900000
+          # Window borders — cendre. Fields: border background text indicator child_border
+          client.focused          ${cendre.accent}  ${cendre.accent}  ${cendre.base}    ${cendre.accent}  ${cendre.accent}
+          client.focused_inactive ${cendre.overlay} ${cendre.mantle}  ${cendre.subtext} ${cendre.overlay} ${cendre.overlay}
+          client.unfocused        ${cendre.surface} ${cendre.mantle}  ${cendre.muted}   ${cendre.surface} ${cendre.surface}
+          client.urgent           ${cendre.urgent}  ${cendre.urgent}  ${cendre.base}    ${cendre.urgent}  ${cendre.urgent}
 
           # Disable screen blanking / DPMS (mirrors the old `xset s off -dpms`).
           exec_always --no-startup-id xset s off
@@ -239,68 +260,25 @@ in {
         '';
     };
 
-    # i3status config file (referenced by the bar's status_command above).
-    xdg.configFile."i3/i3status.conf".text = ''
-      # i3status — drives the i3bar for the thoth X11 session.
-      general {
-              colors = true
-              markup = "pango"
-              interval = 5
-              color_good = "#a1c659"
-              color_bad = "#fb0120"
-              color_degraded = "#fda331"
-      }
-
-      order += "wireless ${cfg.wirelessInterface}"
-      order += "ethernet tailscale0"
-      order += "cpu_usage"
-      order += "memory"
-      order += "battery 0"
-      order += "cpu_temperature 0"
-      order += "disk /"
-      order += "tztime local"
-
-      wireless ${cfg.wirelessInterface} {
-              format_up = " %essid %quality"
-              format_down = " down"
-      }
-
-      ethernet tailscale0 {
-              format_up = " %ip"
-              format_down = ""
-      }
-
-      cpu_usage {
-              format = " %usage"
-      }
-
-      memory {
-              format = " %used"
-              threshold_degraded = "10%"
-              format_degraded = " %free"
-      }
-
-      battery 0 {
-              format = "%status %percentage"
-              status_chr = "⚡"
-              status_bat = "BAT"
-              status_full = "FULL"
-              integer_battery_capacity = true
-              low_threshold = 15
-      }
-
-      cpu_temperature 0 {
-              format = " %degrees°C"
-      }
-
-      disk "/" {
-              format = " %free"
-      }
-
-      tztime local {
-              format = "%A, %d %B %Y %H:%M:%S"
-      }
-    '';
+    # eww bar — cendre pills via GTK CSS border-radius. Config in dotfiles/eww.
+    xdg.configFile."eww/eww.yuck".source = ../../dotfiles/eww/eww.yuck;
+    xdg.configFile."eww/eww.scss".source = ../../dotfiles/eww/eww.scss;
+    xdg.configFile."eww/launch.sh" = {
+      source = ../../dotfiles/eww/launch.sh;
+      executable = true;
+    };
+    xdg.configFile."eww/scripts/workspaces.sh" = {
+      source = ../../dotfiles/eww/scripts/workspaces.sh;
+      executable = true;
+    };
+    xdg.configFile."eww/scripts/wifi.sh" = {
+      source = ../../dotfiles/eww/scripts/wifi.sh;
+      executable = true;
+    };
+    xdg.configFile."eww/scripts/tailscale.sh" = {
+      source = ../../dotfiles/eww/scripts/tailscale.sh;
+      executable = true;
+    };
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
     xdg.configFile."pictures/golden-mountains.png" = {
@@ -316,7 +294,7 @@ in {
     xdg.configFile."picom.conf".text = ''
       backend = "glx";
       vsync = true;
-      corner-radius = 6;
+      corner-radius = 10;
       shadow = true;
       shadow-radius = 12;
       shadow-opacity = 0.5;
@@ -327,11 +305,74 @@ in {
       active-opacity = 1.0;
     '';
 
-    # rofi launcher — base16 dark theme to match kitty/i3.
+    # rofi launcher — cendre theme, rounded to match picom/polybar (10px).
     programs.rofi = {
       enable = true;
       terminal = "${pkgs.kitty}/bin/kitty";
-      theme = "Arc-Dark";
+      font = "Iosevka Nerd Font Mono 12";
+      theme = let
+        inherit (config.lib.formats.rasi) mkLiteral;
+      in {
+        "*" = {
+          bg = mkLiteral cendre.base;
+          bg-alt = mkLiteral cendre.mantle;
+          fg = mkLiteral cendre.text;
+          fg-dim = mkLiteral cendre.subtext;
+          accent = mkLiteral cendre.accent;
+          urgent = mkLiteral cendre.urgent;
+          background-color = mkLiteral "transparent";
+          text-color = mkLiteral "@fg";
+        };
+
+        "window" = {
+          background-color = mkLiteral "@bg";
+          border = mkLiteral "2px";
+          border-color = mkLiteral "@accent";
+          border-radius = mkLiteral "10px";
+          width = mkLiteral "38%";
+          padding = mkLiteral "12px";
+        };
+
+        "mainbox" = {
+          spacing = mkLiteral "10px";
+          children = map mkLiteral ["inputbar" "listview"];
+        };
+
+        "inputbar" = {
+          background-color = mkLiteral "@bg-alt";
+          border-radius = mkLiteral "8px";
+          padding = mkLiteral "8px 12px";
+          spacing = mkLiteral "8px";
+          children = map mkLiteral ["prompt" "entry"];
+        };
+
+        "prompt".text-color = mkLiteral "@accent";
+        "entry".placeholder = "search";
+        "entry".placeholder-color = mkLiteral "@fg-dim";
+
+        "listview" = {
+          lines = mkLiteral "8";
+          columns = mkLiteral "1";
+          spacing = mkLiteral "4px";
+          scrollbar = mkLiteral "false";
+          fixed-height = mkLiteral "false";
+        };
+
+        "element" = {
+          padding = mkLiteral "8px 12px";
+          border-radius = mkLiteral "8px";
+          spacing = mkLiteral "10px";
+        };
+        "element normal.normal".text-color = mkLiteral "@fg";
+        "element alternate.normal".text-color = mkLiteral "@fg";
+        "element selected.normal" = {
+          background-color = mkLiteral "@accent";
+          text-color = mkLiteral "@bg";
+        };
+        "element urgent.normal".text-color = mkLiteral "@urgent";
+        "element-icon".size = mkLiteral "1.1em";
+        "element-text".vertical-align = mkLiteral "0.5";
+      };
     };
 
     # dunst notification daemon (replaces xfce4-notifyd/notification-daemon).
@@ -339,6 +380,7 @@ in {
 
     # X11 desktop runtime tools.
     home.packages = with pkgs; [
+      eww # Status bar (cendre pills)
       feh # Wallpaper setter
       picom # Compositor
       flameshot # Screenshot tool (Mod+p)
