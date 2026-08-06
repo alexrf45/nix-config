@@ -321,8 +321,8 @@ in {
       padding = 2
       module-margin = 1
       font-0 = UbuntuMono Nerd Font:size=11;2
-      font-1 = UbuntuMono Nerd Font:size=12;2
-      font-2 = UbuntuMono Nerd Font:size=13;3
+      font-1 = UbuntuMono Nerd Font:size=11;2
+      font-2 = UbuntuMono Nerd Font:size=18;3
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
@@ -374,7 +374,7 @@ in {
       label = %{F${cendre.accent}}󰃰%{F-}  %date%   %time%
       label-background = ${cendre.surface}
       label-foreground = ${cendre.text}
-      label-padding = 1
+      label-padding = 2
 
       [module/cpu]
       type = internal/cpu
@@ -387,7 +387,7 @@ in {
       label = %{F${cendre.blue}}${ico.cpu}%{F-}  %percentage%%
       label-background = ${cendre.surface}
       label-foreground = ${cendre.text}
-      label-padding = 1
+      label-padding = 2
 
       [module/memory]
       type = internal/memory
@@ -400,7 +400,7 @@ in {
       label = %{F${cendre.green}}${ico.mem}%{F-}  %gb_used%
       label-background = ${cendre.surface}
       label-foreground = ${cendre.text}
-      label-padding = 1
+      label-padding = 2
 
       [module/temperature]
       type = internal/temperature
@@ -420,11 +420,11 @@ in {
       label = %{F${cendre.yellow}}${ico.temp}%{F-}  %temperature-c%
       label-background = ${cendre.surface}
       label-foreground = ${cendre.text}
-      label-padding = 1
+      label-padding = 2
       label-warn = %{F${cendre.red}}${ico.temp}%{F-}  %temperature-c%
       label-warn-background = ${cendre.surface}
       label-warn-foreground = ${cendre.red}
-      label-warn-padding = 1
+      label-warn-padding = 2
 
       [module/filesystem]
       type = internal/fs
@@ -438,7 +438,7 @@ in {
       label-mounted = %{F${cendre.magenta}}${ico.disk}%{F-}  %free%
       label-mounted-background = ${cendre.surface}
       label-mounted-foreground = ${cendre.text}
-      label-mounted-padding = 1
+      label-mounted-padding = 2
       label-unmounted =
 
       [module/wireless]
@@ -453,7 +453,7 @@ in {
       label-connected = %{F${cendre.cyan}}${ico.wifi}%{F-}  %essid% %signal%%
       label-connected-background = ${cendre.surface}
       label-connected-foreground = ${cendre.text}
-      label-connected-padding = 1
+      label-connected-padding = 2
       format-disconnected = <label-disconnected>
       format-disconnected-prefix = %{T3}${ico.lcap}%{T-}
       format-disconnected-prefix-foreground = ${cendre.surface}
@@ -461,7 +461,7 @@ in {
       format-disconnected-suffix-foreground = ${cendre.surface}
       label-disconnected = %{F${cendre.muted}}󰤭 down%{F-}
       label-disconnected-background = ${cendre.surface}
-      label-disconnected-padding = 1
+      label-disconnected-padding = 2
 
       [module/wired]
       type = internal/network
@@ -475,7 +475,7 @@ in {
       label-connected = %{F${cendre.cyan}}󰛳%{F-}  %local_ip%
       label-connected-background = ${cendre.surface}
       label-connected-foreground = ${cendre.text}
-      label-connected-padding = 1
+      label-connected-padding = 2
       format-disconnected =
       label-disconnected =
 
@@ -493,7 +493,7 @@ in {
       label-charging = %{F${cendre.green}}${ico.battChg}%{F-}  %percentage%%
       label-charging-background = ${cendre.surface}
       label-charging-foreground = ${cendre.text}
-      label-charging-padding = 1
+      label-charging-padding = 2
       format-discharging = <label-discharging>
       format-discharging-prefix = %{T3}${ico.lcap}%{T-}
       format-discharging-prefix-foreground = ${cendre.surface}
@@ -502,7 +502,7 @@ in {
       label-discharging = %{F${cendre.yellow}}${ico.batt}%{F-}  %percentage%%
       label-discharging-background = ${cendre.surface}
       label-discharging-foreground = ${cendre.text}
-      label-discharging-padding = 1
+      label-discharging-padding = 2
       format-full = <label-full>
       format-full-prefix = %{T3}${ico.lcap}%{T-}
       format-full-prefix-foreground = ${cendre.surface}
@@ -511,7 +511,7 @@ in {
       label-full = %{F${cendre.green}}${ico.batt}%{F-}  %percentage%%
       label-full-background = ${cendre.surface}
       label-full-foreground = ${cendre.text}
-      label-full-padding = 1
+      label-full-padding = 2
       format-low = <label-low>
       format-low-prefix = %{T3}${ico.lcap}%{T-}
       format-low-prefix-foreground = ${cendre.surface}
@@ -520,7 +520,7 @@ in {
       label-low = %{F${cendre.red}}${ico.battLow}%{F-}  %percentage%%
       label-low-background = ${cendre.surface}
       label-low-foreground = ${cendre.red}
-      label-low-padding = 1
+      label-low-padding = 2
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
