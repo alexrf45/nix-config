@@ -18,6 +18,29 @@
   refresh = "killall -SIGUSR1 i3status";
 
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
+
+  # -----------------------------------------------------------------------
+  # cendre palette (soft) — single source of truth for i3 borders, polybar,
+  # and rofi. Lifted from the kitty/neovim theme so the whole X11 session
+  # reads as one system. github.com/Aejkatappaja/cendre
+  # -----------------------------------------------------------------------
+  cendre = {
+    base = "#231f1d"; # background
+    mantle = "#1a1716"; # darker surface (inactive tab bg)
+    surface = "#2d2725"; # color0 / raised
+    text = "#e6d5c2"; # foreground
+    subtext = "#a09384"; # color7 / dim text
+    muted = "#73665b"; # color8 / disabled
+    overlay = "#443c39"; # inactive border
+    accent = "#ea9875"; # cursor / active accent (salmon)
+    red = "#d1766e";
+    green = "#99af6b";
+    yellow = "#fcba81";
+    blue = "#58bdff";
+    magenta = "#9480ba";
+    cyan = "#4e89a2";
+    urgent = "#d25780"; # bright red
+  };
 in {
   # -----------------------------------------------------------------------
   # Per-host knobs — the i3 config below is shared between horus and thoth;
@@ -47,6 +70,20 @@ in {
       default = "eDP-1";
       description = "Internal laptop panel output (xrandr name).";
     };
+
+    batteryName = lib.mkOption {
+      type = lib.types.str;
+      default = "BAT0";
+      example = "BAT1";
+      description = "Battery device name under /sys/class/power_supply for the polybar battery module.";
+    };
+
+    acAdapter = lib.mkOption {
+      type = lib.types.str;
+      default = "AC";
+      example = "ADP1";
+      description = "AC adapter device name under /sys/class/power_supply for the polybar battery module.";
+    };
   };
 
   config = {
@@ -68,12 +105,15 @@ in {
         };
 
         gaps = {
-          inner = 4;
-          outer = 2;
+          inner = 8;
+          outer = 4;
           smartGaps = true;
         };
 
-        window.border = 0;
+        # Thin borderless-title edge; cendre accent on the focused window is
+        # the focus indicator (picom rounds these corners to match).
+        window.border = 2;
+        window.titlebar = false;
 
         keybindings = {
           "${mod}+Return" = "exec ${term}";
@@ -189,6 +229,11 @@ in {
             notification = false;
           }
           {
+            command = "$HOME/.config/polybar/launch.sh";
+            always = true;
+            notification = false;
+          }
+          {
             command = "i3-msg 'workspace 1; exec kitty'";
             notification = false;
           }
@@ -206,25 +251,11 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          bar {
-             position top
-             mode hide
-             font pango:UbuntuMono Nerd Font 10
-             height 17
-             tray_output none
-             i3bar_command i3bar --transparency
-             status_command i3status -c ~/.config/i3/i3status.conf
-             colors {
-                    statusline #e0e0e0
-                    background #32302f
-                    focused_workspace #81a2be #000000 #81a2be
-                   }
-            }
-
-          client.focused          #010202 #010202 #FFFFFF #00DA8E
-          client.focused_inactive #333333 #5F676A #ffffff #484e50
-          client.unfocused        #333333 #424242 #888888 #292d2e
-          client.urgent           #C10004 #900000 #ffffff #900000
+          # Window borders — cendre. Fields: border background text indicator child_border
+          client.focused          ${cendre.accent}  ${cendre.accent}  ${cendre.base}    ${cendre.accent}  ${cendre.accent}
+          client.focused_inactive ${cendre.overlay} ${cendre.mantle}  ${cendre.subtext} ${cendre.overlay} ${cendre.overlay}
+          client.unfocused        ${cendre.surface} ${cendre.mantle}  ${cendre.muted}   ${cendre.surface} ${cendre.surface}
+          client.urgent           ${cendre.urgent}  ${cendre.urgent}  ${cendre.base}    ${cendre.urgent}  ${cendre.urgent}
 
           # Disable screen blanking / DPMS (mirrors the old `xset s off -dpms`).
           exec_always --no-startup-id xset s off
@@ -239,67 +270,169 @@ in {
         '';
     };
 
-    # i3status config file (referenced by the bar's status_command above).
-    xdg.configFile."i3/i3status.conf".text = ''
-      # i3status — drives the i3bar for the thoth X11 session.
-      general {
-              colors = true
-              markup = "pango"
-              interval = 5
-              color_good = "#a1c659"
-              color_bad = "#fb0120"
-              color_degraded = "#fda331"
-      }
+    # Polybar launcher — killed and relaunched on i3 start/reload.
+    xdg.configFile."polybar/launch.sh" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        pkill -x polybar
+        while pgrep -x polybar >/dev/null; do sleep 0.2; done
+        polybar main &
+      '';
+    };
 
-      order += "wireless ${cfg.wirelessInterface}"
-      order += "ethernet tailscale0"
-      order += "cpu_usage"
-      order += "memory"
-      order += "battery 0"
-      order += "cpu_temperature 0"
-      order += "disk /"
-      order += "tztime local"
+    # Polybar bar — cendre palette, floating with rounded corners (radius 10
+    # to match picom). Modules mirror the retired i3status set 1:1.
+    xdg.configFile."polybar/config.ini".text = ''
+      [bar/main]
+      width = 99%
+      offset-x = 0.5%
+      offset-y = 4pt
+      height = 28pt
+      radius = 10
+      bottom = false
+      fixed-center = true
+      background = ${cendre.base}
+      foreground = ${cendre.text}
+      line-size = 2pt
+      border-size = 0
+      padding-left = 1
+      padding-right = 1
+      module-margin = 1
+      separator = %{F${cendre.overlay}}·%{F-}
+      font-0 = Iosevka Nerd Font Mono:size=11;3
+      font-1 = Iosevka Nerd Font Mono:size=13;3
+      modules-left = i3
+      modules-center = date
+      modules-right = cpu memory temperature filesystem wireless wired battery
+      tray-position = right
+      tray-background = ${cendre.base}
+      tray-padding = 2
+      cursor-click = pointer
+      enable-ipc = true
+      wm-restack = i3
 
-      wireless ${cfg.wirelessInterface} {
-              format_up = " %essid %quality"
-              format_down = " down"
-      }
+      [module/i3]
+      type = internal/i3
+      pin-workspaces = true
+      show-urgent = true
+      index-sort = true
+      enable-click = true
+      enable-scroll = true
+      wrapping-scroll = false
+      format = <label-state> <label-mode>
+      label-mode-padding = 1
+      label-mode-foreground = ${cendre.base}
+      label-mode-background = ${cendre.yellow}
+      label-focused = %index%
+      label-focused-background = ${cendre.accent}
+      label-focused-foreground = ${cendre.base}
+      label-focused-padding = 1
+      label-visible = %index%
+      label-visible-foreground = ${cendre.text}
+      label-visible-padding = 1
+      label-unfocused = %index%
+      label-unfocused-foreground = ${cendre.subtext}
+      label-unfocused-padding = 1
+      label-urgent = %index%
+      label-urgent-background = ${cendre.urgent}
+      label-urgent-foreground = ${cendre.base}
+      label-urgent-padding = 1
 
-      ethernet tailscale0 {
-              format_up = " %ip"
-              format_down = ""
-      }
+      [module/date]
+      type = internal/date
+      interval = 1
+      date = %A, %d %B %Y
+      time = %H:%M:%S
+      label = %date%  %time%
+      label-foreground = ${cendre.text}
+      format-prefix = "󰃰 "
+      format-prefix-foreground = ${cendre.accent}
 
-      cpu_usage {
-              format = " %usage"
-      }
+      [module/cpu]
+      type = internal/cpu
+      interval = 2
+      format-prefix = " "
+      format-prefix-foreground = ${cendre.blue}
+      label = %percentage%%
 
-      memory {
-              format = " %used"
-              threshold_degraded = "10%"
-              format_degraded = " %free"
-      }
+      [module/memory]
+      type = internal/memory
+      interval = 2
+      format-prefix = " "
+      format-prefix-foreground = ${cendre.green}
+      label = %gb_used%
 
-      battery 0 {
-              format = "%status %percentage"
-              status_chr = "⚡"
-              status_bat = "BAT"
-              status_full = "FULL"
-              integer_battery_capacity = true
-              low_threshold = 15
-      }
+      [module/temperature]
+      type = internal/temperature
+      interval = 2
+      thermal-zone = 0
+      warn-temperature = 80
+      format = <label>
+      format-prefix = " "
+      format-prefix-foreground = ${cendre.yellow}
+      format-warn = <label-warn>
+      format-warn-prefix = " "
+      format-warn-prefix-foreground = ${cendre.red}
+      label = %temperature-c%
+      label-warn = %temperature-c%
+      label-warn-foreground = ${cendre.red}
 
-      cpu_temperature 0 {
-              format = " %degrees°C"
-      }
+      [module/filesystem]
+      type = internal/fs
+      interval = 30
+      mount-0 = /
+      format-mounted = <label-mounted>
+      format-mounted-prefix = " "
+      format-mounted-prefix-foreground = ${cendre.magenta}
+      label-mounted = %free%
+      label-unmounted =
 
-      disk "/" {
-              format = " %free"
-      }
+      [module/wireless]
+      type = internal/network
+      interface = ${cfg.wirelessInterface}
+      interval = 5
+      format-connected = <label-connected>
+      format-connected-prefix = " "
+      format-connected-prefix-foreground = ${cendre.cyan}
+      label-connected = %essid% %signal%%
+      format-disconnected = <label-disconnected>
+      label-disconnected = %{F${cendre.muted}}󰤭 down%{F-}
 
-      tztime local {
-              format = "%A, %d %B %Y %H:%M:%S"
-      }
+      [module/wired]
+      type = internal/network
+      interface = tailscale0
+      interval = 5
+      format-connected = <label-connected>
+      format-connected-prefix = "󰛳 "
+      format-connected-prefix-foreground = ${cendre.cyan}
+      label-connected = %local_ip%
+      format-disconnected =
+      label-disconnected =
+
+      [module/battery]
+      type = internal/battery
+      battery = ${cfg.batteryName}
+      adapter = ${cfg.acAdapter}
+      full-at = 99
+      low-at = 15
+      format-charging = <label-charging>
+      format-charging-prefix = " "
+      format-charging-prefix-foreground = ${cendre.green}
+      label-charging = %percentage%%
+      format-discharging = <label-discharging>
+      format-discharging-prefix = " "
+      format-discharging-prefix-foreground = ${cendre.yellow}
+      label-discharging = %percentage%%
+      format-full = <label-full>
+      format-full-prefix = " "
+      format-full-prefix-foreground = ${cendre.green}
+      label-full = %percentage%%
+      format-low = <label-low>
+      format-low-prefix = " "
+      format-low-prefix-foreground = ${cendre.red}
+      label-low = %percentage%%
+      label-low-foreground = ${cendre.red}
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
@@ -316,7 +449,7 @@ in {
     xdg.configFile."picom.conf".text = ''
       backend = "glx";
       vsync = true;
-      corner-radius = 6;
+      corner-radius = 10;
       shadow = true;
       shadow-radius = 12;
       shadow-opacity = 0.5;
@@ -327,11 +460,74 @@ in {
       active-opacity = 1.0;
     '';
 
-    # rofi launcher — base16 dark theme to match kitty/i3.
+    # rofi launcher — cendre theme, rounded to match picom/polybar (10px).
     programs.rofi = {
       enable = true;
       terminal = "${pkgs.kitty}/bin/kitty";
-      theme = "Arc-Dark";
+      font = "Iosevka Nerd Font Mono 12";
+      theme = let
+        inherit (config.lib.formats.rasi) mkLiteral;
+      in {
+        "*" = {
+          bg = mkLiteral cendre.base;
+          bg-alt = mkLiteral cendre.mantle;
+          fg = mkLiteral cendre.text;
+          fg-dim = mkLiteral cendre.subtext;
+          accent = mkLiteral cendre.accent;
+          urgent = mkLiteral cendre.urgent;
+          background-color = mkLiteral "transparent";
+          text-color = mkLiteral "@fg";
+        };
+
+        "window" = {
+          background-color = mkLiteral "@bg";
+          border = mkLiteral "2px";
+          border-color = mkLiteral "@accent";
+          border-radius = mkLiteral "10px";
+          width = mkLiteral "38%";
+          padding = mkLiteral "12px";
+        };
+
+        "mainbox" = {
+          spacing = mkLiteral "10px";
+          children = map mkLiteral ["inputbar" "listview"];
+        };
+
+        "inputbar" = {
+          background-color = mkLiteral "@bg-alt";
+          border-radius = mkLiteral "8px";
+          padding = mkLiteral "8px 12px";
+          spacing = mkLiteral "8px";
+          children = map mkLiteral ["prompt" "entry"];
+        };
+
+        "prompt".text-color = mkLiteral "@accent";
+        "entry".placeholder = "search";
+        "entry".placeholder-color = mkLiteral "@fg-dim";
+
+        "listview" = {
+          lines = mkLiteral "8";
+          columns = mkLiteral "1";
+          spacing = mkLiteral "4px";
+          scrollbar = mkLiteral "false";
+          fixed-height = mkLiteral "false";
+        };
+
+        "element" = {
+          padding = mkLiteral "8px 12px";
+          border-radius = mkLiteral "8px";
+          spacing = mkLiteral "10px";
+        };
+        "element normal.normal".text-color = mkLiteral "@fg";
+        "element alternate.normal".text-color = mkLiteral "@fg";
+        "element selected.normal" = {
+          background-color = mkLiteral "@accent";
+          text-color = mkLiteral "@bg";
+        };
+        "element urgent.normal".text-color = mkLiteral "@urgent";
+        "element-icon".size = mkLiteral "1.1em";
+        "element-text".vertical-align = mkLiteral "0.5";
+      };
     };
 
     # dunst notification daemon (replaces xfce4-notifyd/notification-daemon).
@@ -339,6 +535,10 @@ in {
 
     # X11 desktop runtime tools.
     home.packages = with pkgs; [
+      (polybar.override {
+        i3Support = true;
+        pulseSupport = true;
+      }) # Status bar (cendre)
       feh # Wallpaper setter
       picom # Compositor
       flameshot # Screenshot tool (Mod+p)
