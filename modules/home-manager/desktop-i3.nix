@@ -41,6 +41,21 @@
     cyan = "#4e89a2";
     urgent = "#d25780"; # bright red
   };
+
+  # Nerd Font glyphs via JSON \u escapes — deterministic bytes. Literal PUA
+  # glyphs get mangled when the source is edited, so never inline them.
+  ico = {
+    lcap = builtins.fromJSON ''""''; # rounded left pill cap
+    rcap = builtins.fromJSON ''""''; # rounded right pill cap
+    cpu = builtins.fromJSON ''""''; # microchip
+    mem = builtins.fromJSON ''""''; # database
+    temp = builtins.fromJSON ''""''; # thermometer
+    disk = builtins.fromJSON ''""''; # hdd
+    wifi = builtins.fromJSON ''""''; # wifi
+    battChg = builtins.fromJSON ''""''; # bolt (charging)
+    batt = builtins.fromJSON ''""''; # battery full
+    battLow = builtins.fromJSON ''""''; # battery empty
+  };
 in {
   # -----------------------------------------------------------------------
   # Per-host knobs — the i3 config below is shared between horus and thoth;
@@ -285,33 +300,36 @@ in {
       '';
     };
 
-    # Polybar bar — cendre palette, floating with rounded corners (radius 10
-    # to match picom). Modules mirror the retired i3status set 1:1.
+    # Polybar bar — GNOME-style: a solid cendre bar with each module in a
+    # rounded "pill" (powerline round caps in surface over the base bar),
+    # monochrome accent icons, centered clock. Modules mirror the old
+    # i3status set. Round caps use font-2 via %{T3}; pill body is the label
+    # background, so caps sit on the base bar and read as rounded ends.
     xdg.configFile."polybar/config.ini".text = ''
       [bar/main]
       width = 99%
       offset-x = 0.5%
-      offset-y = 4pt
-      height = 28pt
-      radius = 10
+      offset-y = 5pt
+      height = 32pt
+      radius = 12
       bottom = false
       fixed-center = true
       background = ${cendre.base}
       foreground = ${cendre.text}
       line-size = 2pt
       border-size = 0
-      padding-left = 1
-      padding-right = 1
+      padding = 2
       module-margin = 1
-      separator = %{F${cendre.overlay}}·%{F-}
       font-0 = Iosevka Nerd Font Mono:size=11;3
-      font-1 = Iosevka Nerd Font Mono:size=13;3
+      font-1 = Iosevka Nerd Font Mono:size=13;4
+      font-2 = Iosevka Nerd Font Mono:size=19;6
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
       tray-position = right
       tray-background = ${cendre.base}
       tray-padding = 2
+      tray-maxsize = 18
       cursor-click = pointer
       enable-ipc = true
       wm-restack = i3
@@ -325,47 +343,64 @@ in {
       enable-scroll = true
       wrapping-scroll = false
       format = <label-state> <label-mode>
-      label-mode-padding = 1
+      label-mode-padding = 2
       label-mode-foreground = ${cendre.base}
       label-mode-background = ${cendre.yellow}
       label-focused = %index%
       label-focused-background = ${cendre.accent}
       label-focused-foreground = ${cendre.base}
-      label-focused-padding = 1
+      label-focused-padding = 2
       label-visible = %index%
       label-visible-foreground = ${cendre.text}
-      label-visible-padding = 1
+      label-visible-padding = 2
       label-unfocused = %index%
-      label-unfocused-foreground = ${cendre.subtext}
-      label-unfocused-padding = 1
+      label-unfocused-foreground = ${cendre.muted}
+      label-unfocused-padding = 2
       label-urgent = %index%
       label-urgent-background = ${cendre.urgent}
       label-urgent-foreground = ${cendre.base}
-      label-urgent-padding = 1
+      label-urgent-padding = 2
 
       [module/date]
       type = internal/date
       interval = 1
       date = %A, %d %B %Y
       time = %H:%M:%S
-      label = %date%  %time%
+      format = <label>
+      format-prefix = %{T3}${ico.lcap}%{T-}
+      format-prefix-foreground = ${cendre.surface}
+      format-suffix = %{T3}${ico.rcap}%{T-}
+      format-suffix-foreground = ${cendre.surface}
+      label = %{F${cendre.accent}}󰃰%{F-}  %date%   %time%
+      label-background = ${cendre.surface}
       label-foreground = ${cendre.text}
-      format-prefix = "󰃰 "
-      format-prefix-foreground = ${cendre.accent}
+      label-padding = 1
 
       [module/cpu]
       type = internal/cpu
       interval = 2
-      format-prefix = " "
-      format-prefix-foreground = ${cendre.blue}
-      label = %percentage%%
+      format = <label>
+      format-prefix = %{T3}${ico.lcap}%{T-}
+      format-prefix-foreground = ${cendre.surface}
+      format-suffix = %{T3}${ico.rcap}%{T-}
+      format-suffix-foreground = ${cendre.surface}
+      label = %{F${cendre.blue}}${ico.cpu}%{F-}  %percentage%%
+      label-background = ${cendre.surface}
+      label-foreground = ${cendre.text}
+      label-padding = 1
 
       [module/memory]
       type = internal/memory
       interval = 2
-      format-prefix = " "
-      format-prefix-foreground = ${cendre.green}
-      label = %gb_used%
+      format = <label>
+      format-prefix = %{T3}${ico.lcap}%{T-}
+      format-prefix-foreground = ${cendre.surface}
+      format-suffix = %{T3}${ico.rcap}%{T-}
+      format-suffix-foreground = ${cendre.surface}
+      label = %{F${cendre.green}}${ico.mem}%{F-}  %gb_used%
+      label-background = ${cendre.surface}
+      label-foreground = ${cendre.text}
+      label-padding = 1
 
       [module/temperature]
       type = internal/temperature
@@ -373,23 +408,37 @@ in {
       thermal-zone = 0
       warn-temperature = 80
       format = <label>
-      format-prefix = " "
-      format-prefix-foreground = ${cendre.yellow}
+      format-prefix = %{T3}${ico.lcap}%{T-}
+      format-prefix-foreground = ${cendre.surface}
+      format-suffix = %{T3}${ico.rcap}%{T-}
+      format-suffix-foreground = ${cendre.surface}
       format-warn = <label-warn>
-      format-warn-prefix = " "
-      format-warn-prefix-foreground = ${cendre.red}
-      label = %temperature-c%
-      label-warn = %temperature-c%
+      format-warn-prefix = %{T3}${ico.lcap}%{T-}
+      format-warn-prefix-foreground = ${cendre.surface}
+      format-warn-suffix = %{T3}${ico.rcap}%{T-}
+      format-warn-suffix-foreground = ${cendre.surface}
+      label = %{F${cendre.yellow}}${ico.temp}%{F-}  %temperature-c%
+      label-background = ${cendre.surface}
+      label-foreground = ${cendre.text}
+      label-padding = 1
+      label-warn = %{F${cendre.red}}${ico.temp}%{F-}  %temperature-c%
+      label-warn-background = ${cendre.surface}
       label-warn-foreground = ${cendre.red}
+      label-warn-padding = 1
 
       [module/filesystem]
       type = internal/fs
       interval = 30
       mount-0 = /
       format-mounted = <label-mounted>
-      format-mounted-prefix = " "
-      format-mounted-prefix-foreground = ${cendre.magenta}
-      label-mounted = %free%
+      format-mounted-prefix = %{T3}${ico.lcap}%{T-}
+      format-mounted-prefix-foreground = ${cendre.surface}
+      format-mounted-suffix = %{T3}${ico.rcap}%{T-}
+      format-mounted-suffix-foreground = ${cendre.surface}
+      label-mounted = %{F${cendre.magenta}}${ico.disk}%{F-}  %free%
+      label-mounted-background = ${cendre.surface}
+      label-mounted-foreground = ${cendre.text}
+      label-mounted-padding = 1
       label-unmounted =
 
       [module/wireless]
@@ -397,20 +446,36 @@ in {
       interface = ${cfg.wirelessInterface}
       interval = 5
       format-connected = <label-connected>
-      format-connected-prefix = " "
-      format-connected-prefix-foreground = ${cendre.cyan}
-      label-connected = %essid% %signal%%
+      format-connected-prefix = %{T3}${ico.lcap}%{T-}
+      format-connected-prefix-foreground = ${cendre.surface}
+      format-connected-suffix = %{T3}${ico.rcap}%{T-}
+      format-connected-suffix-foreground = ${cendre.surface}
+      label-connected = %{F${cendre.cyan}}${ico.wifi}%{F-}  %essid% %signal%%
+      label-connected-background = ${cendre.surface}
+      label-connected-foreground = ${cendre.text}
+      label-connected-padding = 1
       format-disconnected = <label-disconnected>
+      format-disconnected-prefix = %{T3}${ico.lcap}%{T-}
+      format-disconnected-prefix-foreground = ${cendre.surface}
+      format-disconnected-suffix = %{T3}${ico.rcap}%{T-}
+      format-disconnected-suffix-foreground = ${cendre.surface}
       label-disconnected = %{F${cendre.muted}}󰤭 down%{F-}
+      label-disconnected-background = ${cendre.surface}
+      label-disconnected-padding = 1
 
       [module/wired]
       type = internal/network
       interface = tailscale0
       interval = 5
       format-connected = <label-connected>
-      format-connected-prefix = "󰛳 "
-      format-connected-prefix-foreground = ${cendre.cyan}
-      label-connected = %local_ip%
+      format-connected-prefix = %{T3}${ico.lcap}%{T-}
+      format-connected-prefix-foreground = ${cendre.surface}
+      format-connected-suffix = %{T3}${ico.rcap}%{T-}
+      format-connected-suffix-foreground = ${cendre.surface}
+      label-connected = %{F${cendre.cyan}}󰛳%{F-}  %local_ip%
+      label-connected-background = ${cendre.surface}
+      label-connected-foreground = ${cendre.text}
+      label-connected-padding = 1
       format-disconnected =
       label-disconnected =
 
@@ -421,22 +486,41 @@ in {
       full-at = 99
       low-at = 15
       format-charging = <label-charging>
-      format-charging-prefix = " "
-      format-charging-prefix-foreground = ${cendre.green}
-      label-charging = %percentage%%
+      format-charging-prefix = %{T3}${ico.lcap}%{T-}
+      format-charging-prefix-foreground = ${cendre.surface}
+      format-charging-suffix = %{T3}${ico.rcap}%{T-}
+      format-charging-suffix-foreground = ${cendre.surface}
+      label-charging = %{F${cendre.green}}${ico.battChg}%{F-}  %percentage%%
+      label-charging-background = ${cendre.surface}
+      label-charging-foreground = ${cendre.text}
+      label-charging-padding = 1
       format-discharging = <label-discharging>
-      format-discharging-prefix = " "
-      format-discharging-prefix-foreground = ${cendre.yellow}
-      label-discharging = %percentage%%
+      format-discharging-prefix = %{T3}${ico.lcap}%{T-}
+      format-discharging-prefix-foreground = ${cendre.surface}
+      format-discharging-suffix = %{T3}${ico.rcap}%{T-}
+      format-discharging-suffix-foreground = ${cendre.surface}
+      label-discharging = %{F${cendre.yellow}}${ico.batt}%{F-}  %percentage%%
+      label-discharging-background = ${cendre.surface}
+      label-discharging-foreground = ${cendre.text}
+      label-discharging-padding = 1
       format-full = <label-full>
-      format-full-prefix = " "
-      format-full-prefix-foreground = ${cendre.green}
-      label-full = %percentage%%
+      format-full-prefix = %{T3}${ico.lcap}%{T-}
+      format-full-prefix-foreground = ${cendre.surface}
+      format-full-suffix = %{T3}${ico.rcap}%{T-}
+      format-full-suffix-foreground = ${cendre.surface}
+      label-full = %{F${cendre.green}}${ico.batt}%{F-}  %percentage%%
+      label-full-background = ${cendre.surface}
+      label-full-foreground = ${cendre.text}
+      label-full-padding = 1
       format-low = <label-low>
-      format-low-prefix = " "
-      format-low-prefix-foreground = ${cendre.red}
-      label-low = %percentage%%
+      format-low-prefix = %{T3}${ico.lcap}%{T-}
+      format-low-prefix-foreground = ${cendre.surface}
+      format-low-suffix = %{T3}${ico.rcap}%{T-}
+      format-low-suffix-foreground = ${cendre.surface}
+      label-low = %{F${cendre.red}}${ico.battLow}%{F-}  %percentage%%
+      label-low-background = ${cendre.surface}
       label-low-foreground = ${cendre.red}
+      label-low-padding = 1
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
