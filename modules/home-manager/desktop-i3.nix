@@ -310,8 +310,8 @@ in {
       width = 99%
       offset-x = 0.5%
       offset-y = 5pt
-      height = 32pt
-      radius = 12
+      height = 24pt
+      radius = 10
       bottom = false
       fixed-center = true
       background = ${cendre.base}
@@ -320,9 +320,9 @@ in {
       border-size = 0
       padding = 2
       module-margin = 1
-      font-0 = Iosevka Nerd Font Mono:size=11;3
-      font-1 = Iosevka Nerd Font Mono:size=13;4
-      font-2 = Iosevka Nerd Font Mono:size=15;7
+      font-0 = Iosevka Nerd Font Mono:size=10;2
+      font-1 = Iosevka Nerd Font Mono:size=11;3
+      font-2 = Iosevka Nerd Font Mono:size=14;5
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
