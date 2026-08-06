@@ -322,7 +322,7 @@ in {
       module-margin = 1
       font-0 = UbuntuMono Nerd Font:size=11;2
       font-1 = UbuntuMono Nerd Font:size=11;2
-      font-2 = UbuntuMono Nerd Font:size=22;4
+      font-2 = UbuntuMono Nerd Font:size=24;3
       modules-left = i3
       modules-center = date
       modules-right = cpu memory temperature filesystem wireless wired battery
