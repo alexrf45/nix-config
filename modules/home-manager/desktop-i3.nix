@@ -215,11 +215,6 @@ in {
             notification = false;
           }
           {
-            command = "$HOME/.config/eww/launch.sh";
-            always = true;
-            notification = false;
-          }
-          {
             command = "i3-msg 'workspace 1; exec kitty'";
             notification = false;
           }
@@ -237,6 +232,28 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
+          # i3bar + i3status — cendre-themed, UbuntuMono Nerd Font for glyphs.
+          bar {
+             position top
+             mode dock
+             font pango:UbuntuMono Nerd Font 10
+             height 20
+             tray_output none
+             i3bar_command i3bar --transparency
+             status_command i3status -c ~/.config/i3/i3status.conf
+             separator_symbol " · "
+             colors {
+                    background         ${cendre.mantle}
+                    statusline         ${cendre.text}
+                    separator          ${cendre.muted}
+                    focused_workspace  ${cendre.accent}  ${cendre.accent}  ${cendre.base}
+                    active_workspace   ${cendre.surface} ${cendre.surface} ${cendre.text}
+                    inactive_workspace ${cendre.mantle}  ${cendre.mantle}  ${cendre.subtext}
+                    urgent_workspace   ${cendre.urgent}  ${cendre.urgent}  ${cendre.base}
+                    binding_mode       ${cendre.yellow}  ${cendre.yellow}  ${cendre.base}
+                   }
+            }
+
           # Drop the title bar on floating windows too (tiled ones are already
           # borderless via window.titlebar = false); keep the 2px cendre edge.
           default_floating_border pixel 2
@@ -260,25 +277,68 @@ in {
         '';
     };
 
-    # eww bar — cendre pills via GTK CSS border-radius. Config in dotfiles/eww.
-    xdg.configFile."eww/eww.yuck".source = ../../dotfiles/eww/eww.yuck;
-    xdg.configFile."eww/eww.scss".source = ../../dotfiles/eww/eww.scss;
-    xdg.configFile."eww/launch.sh" = {
-      source = ../../dotfiles/eww/launch.sh;
-      executable = true;
-    };
-    xdg.configFile."eww/scripts/workspaces.sh" = {
-      source = ../../dotfiles/eww/scripts/workspaces.sh;
-      executable = true;
-    };
-    xdg.configFile."eww/scripts/wifi.sh" = {
-      source = ../../dotfiles/eww/scripts/wifi.sh;
-      executable = true;
-    };
-    xdg.configFile."eww/scripts/tailscale.sh" = {
-      source = ../../dotfiles/eww/scripts/tailscale.sh;
-      executable = true;
-    };
+    # i3status config file (referenced by the bar's status_command above).
+    xdg.configFile."i3/i3status.conf".text = ''
+      # i3status — drives the i3bar for the X11 session. cendre good/bad/degraded.
+      general {
+              colors = true
+              markup = "pango"
+              interval = 5
+              color_good = "${cendre.green}"
+              color_bad = "${cendre.red}"
+              color_degraded = "${cendre.yellow}"
+      }
+
+      order += "wireless ${cfg.wirelessInterface}"
+      order += "ethernet tailscale0"
+      order += "cpu_usage"
+      order += "memory"
+      order += "battery 0"
+      order += "cpu_temperature 0"
+      order += "disk /"
+      order += "tztime local"
+
+      wireless ${cfg.wirelessInterface} {
+              format_up = " %essid %quality"
+              format_down = " down"
+      }
+
+      ethernet tailscale0 {
+              format_up = " %ip"
+              format_down = ""
+      }
+
+      cpu_usage {
+              format = " %usage"
+      }
+
+      memory {
+              format = " %used"
+              threshold_degraded = "10%"
+              format_degraded = " %free"
+      }
+
+      battery 0 {
+              format = "%status %percentage"
+              status_chr = "⚡"
+              status_bat = "BAT"
+              status_full = "FULL"
+              integer_battery_capacity = true
+              low_threshold = 15
+      }
+
+      cpu_temperature 0 {
+              format = " %degrees°C"
+      }
+
+      disk "/" {
+              format = " %free"
+      }
+
+      tztime local {
+              format = "%A, %d %B %Y %H:%M:%S"
+      }
+    '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
     xdg.configFile."pictures/golden-mountains.png" = {
@@ -380,7 +440,6 @@ in {
 
     # X11 desktop runtime tools.
     home.packages = with pkgs; [
-      eww # Status bar (cendre pills)
       feh # Wallpaper setter
       picom # Compositor
       flameshot # Screenshot tool (Mod+p)
