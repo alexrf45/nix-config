@@ -7,7 +7,7 @@
     enable = true;
 
     font = {
-      name = "Iosevka Nerd Font Mono";
+      name = "UbuntuMono Nerd Font Regular";
       size = 14;
     };
 
