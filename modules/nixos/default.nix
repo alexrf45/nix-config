@@ -10,4 +10,5 @@
   audio           = import ./audio.nix;
   virtualisation  = import ./virtualisation.nix;
   nixSettings     = import ./nix-settings.nix;
+  imobile         = import ./imobile.nix;           # iOS-over-USB (libimobiledevice + usbmuxd)
 }

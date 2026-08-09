@@ -18,6 +18,7 @@
     ../../modules/nixos/gaming.nix # Steam, GameMode, controller udev rules — horus only
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
+    ../../modules/nixos/imobile.nix # iOS-over-USB (iPhone backup / iMessage export)
     ../../modules/nixos/syncthing.nix
 
     # SOPS-nix system module
