@@ -56,7 +56,7 @@
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = ["Iosevka Nerd Font Mono"];
+        monospace = ["UbuntuMono Nerd Font"];
         sansSerif = ["Noto Sans"];
         serif = ["Noto Serif"];
       };
