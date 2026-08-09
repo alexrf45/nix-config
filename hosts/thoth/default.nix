@@ -14,6 +14,7 @@
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
+    ../../modules/nixos/imobile.nix          # iOS-over-USB (iPhone backup / iMessage export)
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/searxng.nix          # private metasearch for Kindly MCP (thoth-only)
 
