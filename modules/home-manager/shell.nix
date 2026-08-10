@@ -46,10 +46,8 @@
       l = "ls -lh --color=auto --group-directories-first";
       ls = "ls -h --color=auto --group-directories-first";
       la = "ls -lah --color=auto --group-directories-first";
-      lsblk = "lsblk | bat -l conf -p";
       sensors = "sensors | bat -l cpuinfo -p";
       daily = "bash $HOME/.config/scripts/daily.sh";
-      code-auth = "export CLAUDE_CODE_OAUTH_TOKEN=$(op read \"op://Private/claude_api_token/credential\")";
       lifeos = "bun $HOME/.claude/LIFEOS/TOOLS/lifeos.ts"; # LifeOS launcher (loads its system prompt from ~/.claude/LIFEOS)
       spotify = "spotify_player";
 
