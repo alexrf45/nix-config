@@ -20,26 +20,28 @@
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 
   # -----------------------------------------------------------------------
-  # cendre palette (soft) — single source of truth for i3 borders, polybar,
-  # and rofi. Lifted from the kitty/neovim theme so the whole X11 session
-  # reads as one system. github.com/Aejkatappaja/cendre
+  # peace palette — single source of truth for i3 borders, i3bar, and rofi.
+  # Derived from the Thangka mural wallpaper (dotfiles/pictures/peace.png):
+  # saffron robes, gold halo, crimson mandala, indigo sky, jade swirls, teal
+  # water, lotus pink, cream. Pure-black base so the whole X11 session reads
+  # as one system with the kitty/neovim peace theme.
   # -----------------------------------------------------------------------
-  cendre = {
-    base = "#231f1d"; # background
-    mantle = "#1a1716"; # darker surface (inactive tab bg)
-    surface = "#2d2725"; # color0 / raised
-    text = "#e6d5c2"; # foreground
-    subtext = "#a09384"; # color7 / dim text
-    muted = "#73665b"; # color8 / disabled
-    overlay = "#443c39"; # inactive border
-    accent = "#ea9875"; # cursor / active accent (salmon)
-    red = "#d1766e";
-    green = "#99af6b";
-    yellow = "#fcba81";
-    blue = "#58bdff";
-    magenta = "#9480ba";
-    cyan = "#4e89a2";
-    urgent = "#d25780"; # bright red
+  peace = {
+    base = "#000000"; # background (forced black)
+    mantle = "#0d0b0a"; # darker surface (inactive tab / bar bg)
+    surface = "#1a1512"; # color0 / raised
+    text = "#ede0c8"; # foreground (cream)
+    subtext = "#b8a888"; # color7 / dim text
+    muted = "#6b5d4f"; # color8 / disabled
+    overlay = "#3a322c"; # inactive border
+    accent = "#f2a93b"; # cursor / active accent (saffron)
+    red = "#c6362f"; # crimson mandala
+    green = "#5aa469"; # jade swirl
+    yellow = "#f4c430"; # gold halo
+    blue = "#4a74d0"; # indigo sky (lifted for black bg)
+    magenta = "#b0568a"; # plum / lotus
+    cyan = "#3aafb9"; # teal water
+    urgent = "#e05a4e"; # bright red
   };
 in {
   # -----------------------------------------------------------------------
@@ -96,7 +98,7 @@ in {
           smartGaps = true;
         };
 
-        # Thin borderless-title edge; cendre accent on the focused window is
+        # Thin borderless-title edge; peace accent on the focused window is
         # the focus indicator (picom rounds these corners to match).
         window.border = 2;
         window.titlebar = false;
@@ -205,7 +207,7 @@ in {
 
         startup = [
           {
-            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/golden-mountains.png";
+            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/peace.png";
             always = true;
             notification = false;
           }
@@ -232,7 +234,7 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          # i3bar + i3status — cendre-themed, UbuntuMono Nerd Font for glyphs.
+          # i3bar + i3status — peace-themed, UbuntuMono Nerd Font for glyphs.
           bar {
              position top
              mode dock
@@ -243,26 +245,26 @@ in {
              status_command i3status -c ~/.config/i3/i3status.conf
              separator_symbol " · "
              colors {
-                    background         ${cendre.mantle}
-                    statusline         ${cendre.text}
-                    separator          ${cendre.muted}
-                    focused_workspace  ${cendre.accent}  ${cendre.accent}  ${cendre.base}
-                    active_workspace   ${cendre.surface} ${cendre.surface} ${cendre.text}
-                    inactive_workspace ${cendre.mantle}  ${cendre.mantle}  ${cendre.subtext}
-                    urgent_workspace   ${cendre.urgent}  ${cendre.urgent}  ${cendre.base}
-                    binding_mode       ${cendre.yellow}  ${cendre.yellow}  ${cendre.base}
+                    background         ${peace.mantle}
+                    statusline         ${peace.text}
+                    separator          ${peace.muted}
+                    focused_workspace  ${peace.accent}  ${peace.accent}  ${peace.base}
+                    active_workspace   ${peace.surface} ${peace.surface} ${peace.text}
+                    inactive_workspace ${peace.mantle}  ${peace.mantle}  ${peace.subtext}
+                    urgent_workspace   ${peace.urgent}  ${peace.urgent}  ${peace.base}
+                    binding_mode       ${peace.yellow}  ${peace.yellow}  ${peace.base}
                    }
             }
 
           # Drop the title bar on floating windows too (tiled ones are already
-          # borderless via window.titlebar = false); keep the 2px cendre edge.
+          # borderless via window.titlebar = false); keep the 2px peace edge.
           default_floating_border pixel 2
 
-          # Window borders — cendre. Fields: border background text indicator child_border
-          client.focused          ${cendre.accent}  ${cendre.accent}  ${cendre.base}    ${cendre.accent}  ${cendre.accent}
-          client.focused_inactive ${cendre.overlay} ${cendre.mantle}  ${cendre.subtext} ${cendre.overlay} ${cendre.overlay}
-          client.unfocused        ${cendre.surface} ${cendre.mantle}  ${cendre.muted}   ${cendre.surface} ${cendre.surface}
-          client.urgent           ${cendre.urgent}  ${cendre.urgent}  ${cendre.base}    ${cendre.urgent}  ${cendre.urgent}
+          # Window borders — peace. Fields: border background text indicator child_border
+          client.focused          ${peace.accent}  ${peace.accent}  ${peace.base}    ${peace.accent}  ${peace.accent}
+          client.focused_inactive ${peace.overlay} ${peace.mantle}  ${peace.subtext} ${peace.overlay} ${peace.overlay}
+          client.unfocused        ${peace.surface} ${peace.mantle}  ${peace.muted}   ${peace.surface} ${peace.surface}
+          client.urgent           ${peace.urgent}  ${peace.urgent}  ${peace.base}    ${peace.urgent}  ${peace.urgent}
 
           # Disable screen blanking / DPMS (mirrors the old `xset s off -dpms`).
           exec_always --no-startup-id xset s off
@@ -279,14 +281,14 @@ in {
 
     # i3status config file (referenced by the bar's status_command above).
     xdg.configFile."i3/i3status.conf".text = ''
-      # i3status — drives the i3bar for the X11 session. cendre good/bad/degraded.
+      # i3status — drives the i3bar for the X11 session. peace good/bad/degraded.
       general {
               colors = true
               markup = "pango"
               interval = 5
-              color_good = "${cendre.green}"
-              color_bad = "${cendre.red}"
-              color_degraded = "${cendre.yellow}"
+              color_good = "${peace.green}"
+              color_bad = "${peace.red}"
+              color_degraded = "${peace.yellow}"
       }
 
       order += "wireless ${cfg.wirelessInterface}"
@@ -299,48 +301,52 @@ in {
       order += "tztime local"
 
       wireless ${cfg.wirelessInterface} {
-              format_up = " %essid %quality"
-              format_down = " down"
+              format_up = " %essid %quality"
+              format_down = " down"
       }
 
       ethernet tailscale0 {
-              format_up = " %ip"
+              format_up = " %ip"
               format_down = ""
       }
 
       cpu_usage {
-              format = " %usage"
+              format = " %usage"
       }
 
       memory {
-              format = " %used"
+              format = " %used"
               threshold_degraded = "10%"
-              format_degraded = " %free"
+              format_degraded = " %free"
       }
 
       battery 0 {
               format = "%status %percentage"
-              status_chr = "⚡"
-              status_bat = "BAT"
-              status_full = "FULL"
+              status_chr = ""
+              status_bat = ""
+              status_full = ""
               integer_battery_capacity = true
               low_threshold = 15
       }
 
       cpu_temperature 0 {
-              format = " %degrees°C"
+              format = " %degrees°C"
       }
 
       disk "/" {
-              format = " %free"
+              format = " %free"
       }
 
       tztime local {
-              format = "%A, %d %B %Y %H:%M:%S"
+              format = " %A, %d %B %Y %H:%M:%S"
       }
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
+    xdg.configFile."pictures/peace.png" = {
+      source = ../../dotfiles/pictures/peace.png;
+      force = true;
+    };
     xdg.configFile."pictures/golden-mountains.png" = {
       source = ../../dotfiles/pictures/golden-mountains.png;
       force = true;
@@ -365,7 +371,7 @@ in {
       active-opacity = 1.0;
     '';
 
-    # rofi launcher — cendre theme, rounded to match picom/polybar (10px).
+    # rofi launcher — peace theme, rounded to match picom/polybar (10px).
     programs.rofi = {
       enable = true;
       terminal = "${pkgs.kitty}/bin/kitty";
@@ -374,12 +380,12 @@ in {
         inherit (config.lib.formats.rasi) mkLiteral;
       in {
         "*" = {
-          bg = mkLiteral cendre.base;
-          bg-alt = mkLiteral cendre.mantle;
-          fg = mkLiteral cendre.text;
-          fg-dim = mkLiteral cendre.subtext;
-          accent = mkLiteral cendre.accent;
-          urgent = mkLiteral cendre.urgent;
+          bg = mkLiteral peace.base;
+          bg-alt = mkLiteral peace.mantle;
+          fg = mkLiteral peace.text;
+          fg-dim = mkLiteral peace.subtext;
+          accent = mkLiteral peace.accent;
+          urgent = mkLiteral peace.urgent;
           background-color = mkLiteral "transparent";
           text-color = mkLiteral "@fg";
         };
