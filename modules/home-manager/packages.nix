@@ -36,13 +36,13 @@
     whois
     traceroute
     ipcalc
-    nmap             # host/port discovery
-    netcat-gnu       # nc — connectivity checks / quick listeners
-    tcpdump          # packet capture for network debugging
+    nmap # host/port discovery
+    netcat-gnu # nc — connectivity checks / quick listeners
+    tcpdump # packet capture for network debugging
 
     # Debug / binutils (general development)
     gdb
-    binutils         # objdump, strings, nm
+    binutils # objdump, strings, nm
 
     # Media
     spotify-player # TUI Spotify client (mirrors dotfiles `alias spotify`)
@@ -91,6 +91,91 @@
         # Some DoD sites still require older TLS — allow TLS 1.0+
         "security.tls.version.min" = 1;
       };
+    };
+  };
+
+  # -----------------------------------------------------------------------
+  # fastfetch — system-info readout for desktop screenshots (hardware /
+  # software / editor). Declarative config; `programs.fastfetch` also installs
+  # the package. Run `fastfetch` to print. Editor line shells out to nvim so
+  # the screenshot shows the actual editor + version.
+  # -----------------------------------------------------------------------
+  programs.fastfetch = {
+    enable = true;
+    settings = {
+      display = {separator = "  ";};
+      modules = [
+        "title"
+        "separator"
+        {
+          type = "os";
+          key = "OS";
+        }
+        {
+          type = "host";
+          key = "Host";
+        }
+        {
+          type = "kernel";
+          key = "Kernel";
+        }
+        {
+          type = "uptime";
+          key = "Uptime";
+        }
+        {
+          type = "packages";
+          key = "Packages";
+        }
+        {
+          type = "wm";
+          key = "WM";
+        }
+        {
+          type = "terminal";
+          key = "Terminal";
+        }
+        {
+          type = "shell";
+          key = "Shell";
+        }
+        {
+          type = "command";
+          key = "Editor";
+          text = "nvim --version | head -n1";
+        }
+        "break"
+        {
+          type = "cpu";
+          key = "CPU";
+        }
+        {
+          type = "gpu";
+          key = "GPU";
+        }
+        {
+          type = "memory";
+          key = "Memory";
+        }
+        {
+          type = "swap";
+          key = "Swap";
+        }
+        {
+          type = "disk";
+          key = "Disk";
+        }
+        {
+          type = "display";
+          key = "Display";
+        }
+        {
+          type = "battery";
+          key = "Battery";
+        }
+        "break"
+        "colors"
+      ];
     };
   };
 
