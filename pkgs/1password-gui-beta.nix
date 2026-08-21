@@ -12,9 +12,9 @@
 { _1password-gui, fetchurl, polkitPolicyOwners ? [] }:
 
 (_1password-gui.override { channel = "beta"; inherit polkitPolicyOwners; }).overrideAttrs (_: rec {
-  version = "8.12.28-17.BETA";
+  version = "8.12.34-29.BETA";
   src = fetchurl {
     url = "https://downloads.1password.com/linux/tar/beta/x86_64/1password-${version}.x64.tar.gz";
-    hash = "sha256-zKKHXw/sWOxankBsUxOSOZcdLC7cjeozj40/PyrZR9s=";
+    hash = "sha256-aJSyg6U0z5SweQP7OJZqCqsuN/de44SM40AwiBmq3ds=";
   };
 })

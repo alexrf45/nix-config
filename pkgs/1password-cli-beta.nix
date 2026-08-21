@@ -13,11 +13,11 @@
 
 stdenv.mkDerivation rec {
   pname = "1password-cli-beta";
-  version = "2.37.0-beta.01";
+  version = "2.39.1-beta.01";
 
   src = fetchurl {
     url = "https://cache.agilebits.com/dist/1P/op2/pkg/v${version}/op_linux_amd64_v${version}.zip";
-    hash = "sha256-Spho/lPR9NSY0elioQtw2I06k3iKQ509xA+QB0CPbw8=";
+    hash = "sha256-V6XXY34fUIGUtIcyE23lflPvzER4d6Xbyu14Aavrf0k=";
   };
 
   nativeBuildInputs = [ unzip installShellFiles ];
