@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: peace (mural-derived, pure-black bg — see nvim/colors/peace.lua)
+  # Theme: luna (WTFox/luna.nvim — near-black bg, muted accents)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -87,7 +87,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "peace", "habamax" },
+        colorscheme = { "luna", "habamax" },
       },
       checker = {
         enabled = true,
@@ -177,249 +177,12 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- peace — local colorscheme built from dotfiles/pictures/peace.png.
-    -- The scheme itself lives in nvim/colors/peace.lua; here we just tell
-    -- LazyVim to load it (no external plugin to fetch).
+    -- luna — WTFox/luna.nvim, a near-black colorscheme with muted accents.
+    -- Fetched by lazy.nvim; LazyVim is told to load it as the colorscheme.
     return {
-      "LazyVim/LazyVim",
-      opts = { colorscheme = "peace" },
+      { "wtfox/luna.nvim", lazy = false, priority = 1000, opts = {} },
+      { "LazyVim/LazyVim", opts = { colorscheme = "luna" } },
     }
-  '';
-
-  # peace colorscheme — mural-derived palette (dotfiles/pictures/peace.png):
-  # saffron/gold/crimson/indigo/jade/teal/lotus on pure black. Native
-  # colors/ file so `:colorscheme peace` resolves without a plugin.
-  xdg.configFile."nvim/colors/peace.lua".text = ''
-    vim.cmd("highlight clear")
-    if vim.fn.exists("syntax_on") == 1 then vim.cmd("syntax reset") end
-    vim.o.background = "dark"
-    vim.g.colors_name = "peace"
-
-    local c = {
-      bg = "#000000",
-      bg_alt = "#0d0b0a",
-      surface = "#1a1512",
-      sel = "#2a2018",
-      overlay = "#3a322c",
-      muted = "#6b5d4f",
-      subtext = "#b8a888",
-      fg = "#ede0c8",
-      cream = "#f5ecdb",
-      saffron = "#f2a93b",
-      gold = "#f4c430",
-      crimson = "#c6362f",
-      red_br = "#e05a4e",
-      jade = "#5aa469",
-      green_br = "#7cc088",
-      indigo = "#4a74d0",
-      blue_br = "#6f95ff",
-      teal = "#3aafb9",
-      cyan_br = "#5fd0d6",
-      plum = "#b0568a",
-      lotus = "#e890a8",
-    }
-
-    local function hl(g, o) vim.api.nvim_set_hl(0, g, o) end
-
-    -- Editor UI
-    hl("Normal", { fg = c.fg, bg = c.bg })
-    hl("NormalNC", { fg = c.fg, bg = c.bg })
-    hl("NormalFloat", { fg = c.fg, bg = c.bg_alt })
-    hl("FloatBorder", { fg = c.overlay, bg = c.bg_alt })
-    hl("FloatTitle", { fg = c.saffron, bold = true })
-    hl("ColorColumn", { bg = c.surface })
-    hl("Cursor", { fg = c.bg, bg = c.saffron })
-    hl("CursorLine", { bg = c.surface })
-    hl("CursorColumn", { bg = c.surface })
-    hl("CursorLineNr", { fg = c.saffron, bold = true })
-    hl("LineNr", { fg = c.muted })
-    hl("SignColumn", { bg = c.bg })
-    hl("WinSeparator", { fg = c.overlay })
-    hl("VertSplit", { fg = c.overlay })
-    hl("Folded", { fg = c.subtext, bg = c.surface })
-    hl("FoldColumn", { fg = c.muted })
-    hl("MatchParen", { fg = c.gold, bold = true })
-    hl("NonText", { fg = c.overlay })
-    hl("Whitespace", { fg = c.surface })
-    hl("SpecialKey", { fg = c.muted })
-    hl("Visual", { bg = c.sel })
-    hl("Search", { fg = c.bg, bg = c.gold })
-    hl("IncSearch", { fg = c.bg, bg = c.saffron })
-    hl("CurSearch", { fg = c.bg, bg = c.saffron })
-    hl("Pmenu", { fg = c.fg, bg = c.bg_alt })
-    hl("PmenuSel", { fg = c.bg, bg = c.saffron })
-    hl("PmenuSbar", { bg = c.surface })
-    hl("PmenuThumb", { bg = c.muted })
-    hl("StatusLine", { fg = c.fg, bg = c.surface })
-    hl("StatusLineNC", { fg = c.muted, bg = c.bg_alt })
-    hl("TabLine", { fg = c.subtext, bg = c.bg_alt })
-    hl("TabLineSel", { fg = c.bg, bg = c.saffron })
-    hl("TabLineFill", { bg = c.bg })
-    hl("Title", { fg = c.saffron, bold = true })
-    hl("Directory", { fg = c.indigo })
-    hl("ErrorMsg", { fg = c.crimson })
-    hl("WarningMsg", { fg = c.gold })
-    hl("ModeMsg", { fg = c.jade })
-    hl("MoreMsg", { fg = c.jade })
-    hl("Question", { fg = c.teal })
-    hl("WildMenu", { fg = c.bg, bg = c.saffron })
-    hl("QuickFixLine", { bg = c.surface })
-    hl("Conceal", { fg = c.muted })
-
-    -- Syntax
-    hl("Comment", { fg = c.muted, italic = true })
-    hl("Constant", { fg = c.teal })
-    hl("String", { fg = c.jade })
-    hl("Character", { fg = c.jade })
-    hl("Number", { fg = c.lotus })
-    hl("Boolean", { fg = c.lotus })
-    hl("Float", { fg = c.lotus })
-    hl("Identifier", { fg = c.fg })
-    hl("Function", { fg = c.saffron })
-    hl("Statement", { fg = c.crimson })
-    hl("Conditional", { fg = c.crimson })
-    hl("Repeat", { fg = c.crimson })
-    hl("Label", { fg = c.crimson })
-    hl("Operator", { fg = c.subtext })
-    hl("Keyword", { fg = c.plum })
-    hl("Exception", { fg = c.crimson })
-    hl("PreProc", { fg = c.gold })
-    hl("Include", { fg = c.plum })
-    hl("Define", { fg = c.plum })
-    hl("Macro", { fg = c.gold })
-    hl("Type", { fg = c.gold })
-    hl("StorageClass", { fg = c.gold })
-    hl("Structure", { fg = c.gold })
-    hl("Typedef", { fg = c.gold })
-    hl("Special", { fg = c.teal })
-    hl("SpecialChar", { fg = c.lotus })
-    hl("Tag", { fg = c.crimson })
-    hl("Delimiter", { fg = c.subtext })
-    hl("SpecialComment", { fg = c.subtext, italic = true })
-    hl("Underlined", { fg = c.indigo, underline = true })
-    hl("Todo", { fg = c.bg, bg = c.gold, bold = true })
-    hl("Error", { fg = c.crimson })
-
-    -- Diagnostics
-    hl("DiagnosticError", { fg = c.crimson })
-    hl("DiagnosticWarn", { fg = c.gold })
-    hl("DiagnosticInfo", { fg = c.teal })
-    hl("DiagnosticHint", { fg = c.jade })
-    hl("DiagnosticOk", { fg = c.jade })
-    hl("DiagnosticUnderlineError", { undercurl = true, sp = c.crimson })
-    hl("DiagnosticUnderlineWarn", { undercurl = true, sp = c.gold })
-    hl("DiagnosticUnderlineInfo", { undercurl = true, sp = c.teal })
-    hl("DiagnosticUnderlineHint", { undercurl = true, sp = c.jade })
-
-    -- Git / diff
-    hl("DiffAdd", { fg = c.jade, bg = "#10160f" })
-    hl("DiffChange", { fg = c.gold, bg = c.surface })
-    hl("DiffDelete", { fg = c.crimson, bg = "#1a0f0e" })
-    hl("DiffText", { fg = c.gold, bold = true })
-    hl("Added", { fg = c.jade })
-    hl("Changed", { fg = c.gold })
-    hl("Removed", { fg = c.crimson })
-    hl("GitSignsAdd", { fg = c.jade })
-    hl("GitSignsChange", { fg = c.gold })
-    hl("GitSignsDelete", { fg = c.crimson })
-
-    -- Treesitter
-    local links = {
-      ["@comment"] = "Comment",
-      ["@string"] = "String",
-      ["@string.escape"] = "SpecialChar",
-      ["@string.regexp"] = "SpecialChar",
-      ["@character"] = "Character",
-      ["@number"] = "Number",
-      ["@number.float"] = "Float",
-      ["@boolean"] = "Boolean",
-      ["@constant"] = "Constant",
-      ["@function"] = "Function",
-      ["@function.call"] = "Function",
-      ["@function.method"] = "Function",
-      ["@conditional"] = "Conditional",
-      ["@repeat"] = "Repeat",
-      ["@operator"] = "Operator",
-      ["@keyword"] = "Keyword",
-      ["@type"] = "Type",
-      ["@punctuation.delimiter"] = "Delimiter",
-      ["@punctuation.bracket"] = "Delimiter",
-      ["@tag"] = "Tag",
-      ["@lsp.type.class"] = "Type",
-      ["@lsp.type.function"] = "Function",
-      ["@lsp.type.method"] = "Function",
-      ["@lsp.type.property"] = "@variable.member",
-      ["@lsp.type.variable"] = "@variable",
-      ["@lsp.type.parameter"] = "@variable.parameter",
-    }
-    for g, t in pairs(links) do hl(g, { link = t }) end
-
-    hl("@variable", { fg = c.fg })
-    hl("@variable.builtin", { fg = c.crimson })
-    hl("@variable.parameter", { fg = c.subtext })
-    hl("@variable.member", { fg = c.teal })
-    hl("@property", { fg = c.teal })
-    hl("@field", { fg = c.teal })
-    hl("@constant.builtin", { fg = c.lotus })
-    hl("@function.builtin", { fg = c.saffron })
-    hl("@constructor", { fg = c.gold })
-    hl("@type.builtin", { fg = c.gold })
-    hl("@namespace", { fg = c.gold })
-    hl("@module", { fg = c.gold })
-    hl("@keyword.function", { fg = c.plum })
-    hl("@keyword.return", { fg = c.crimson })
-    hl("@keyword.operator", { fg = c.plum })
-    hl("@keyword.import", { fg = c.plum })
-    hl("@punctuation.special", { fg = c.lotus })
-    hl("@tag.attribute", { fg = c.saffron })
-    hl("@tag.delimiter", { fg = c.subtext })
-
-    -- Markup (markdown/help)
-    hl("@markup.heading", { fg = c.saffron, bold = true })
-    hl("@markup.link", { fg = c.indigo, underline = true })
-    hl("@markup.link.url", { fg = c.teal, underline = true })
-    hl("@markup.raw", { fg = c.jade })
-    hl("@markup.list", { fg = c.crimson })
-    hl("@markup.strong", { bold = true })
-    hl("@markup.italic", { italic = true })
-    hl("@markup.quote", { fg = c.subtext, italic = true })
-
-    -- neo-tree
-    hl("NeoTreeNormal", { fg = c.fg, bg = c.bg })
-    hl("NeoTreeNormalNC", { fg = c.fg, bg = c.bg })
-    hl("NeoTreeRootName", { fg = c.saffron, bold = true })
-    hl("NeoTreeDirectoryName", { fg = c.indigo })
-    hl("NeoTreeDirectoryIcon", { fg = c.indigo })
-    hl("NeoTreeGitAdded", { fg = c.jade })
-    hl("NeoTreeGitModified", { fg = c.gold })
-    hl("NeoTreeGitDeleted", { fg = c.crimson })
-    hl("NeoTreeIndentMarker", { fg = c.overlay })
-
-    -- which-key
-    hl("WhichKey", { fg = c.saffron })
-    hl("WhichKeyGroup", { fg = c.indigo })
-    hl("WhichKeyDesc", { fg = c.fg })
-    hl("WhichKeySeparator", { fg = c.muted })
-    hl("WhichKeyFloat", { bg = c.bg_alt })
-
-    -- mini.starter
-    hl("MiniStarterHeader", { fg = c.saffron })
-    hl("MiniStarterFooter", { fg = c.muted, italic = true })
-    hl("MiniStarterItem", { fg = c.fg })
-    hl("MiniStarterSection", { fg = c.indigo })
-    hl("MiniStarterCurrent", { fg = c.saffron, bold = true })
-
-    -- lazy.nvim UI
-    hl("LazyNormal", { fg = c.fg, bg = c.bg_alt })
-    hl("LazyH1", { fg = c.bg, bg = c.saffron, bold = true })
-    hl("LazyButton", { fg = c.subtext, bg = c.surface })
-    hl("LazyButtonActive", { fg = c.bg, bg = c.saffron })
-
-    -- blink.cmp / completion
-    hl("BlinkCmpMenu", { fg = c.fg, bg = c.bg_alt })
-    hl("BlinkCmpMenuBorder", { fg = c.overlay, bg = c.bg_alt })
-    hl("BlinkCmpLabelMatch", { fg = c.saffron, bold = true })
-    hl("BlinkCmpKind", { fg = c.teal })
   '';
 
   xdg.configFile."nvim/lua/plugins/disabled.lua".text = ''

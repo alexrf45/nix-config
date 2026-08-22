@@ -25,9 +25,10 @@
       
       bind t set-option status
 
-      set-window-option -g automatic-rename off
+      set-window-option -g automatic-rename on
       set-option -g set-titles on
-
+      set -gq allow-passthrough on
+      set -g visual-activity off
       set -g default-terminal "tmux-256color"
       set -ga terminal-overrides ',xterm-256color:RGB'
 

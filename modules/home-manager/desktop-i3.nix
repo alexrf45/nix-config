@@ -20,28 +20,28 @@
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 
   # -----------------------------------------------------------------------
-  # peace palette — single source of truth for i3 borders, i3bar, and rofi.
-  # Derived from the Thangka mural wallpaper (dotfiles/pictures/peace.png):
-  # saffron robes, gold halo, crimson mandala, indigo sky, jade swirls, teal
-  # water, lotus pink, cream. Pure-black base so the whole X11 session reads
-  # as one system with the kitty/neovim peace theme.
+  # luna palette — single source of truth for i3 borders, i3bar, and rofi.
+  # Mirrors WTFox/luna.nvim: a near-black session with a small set of muted
+  # accents — warm signal, cool func-blue, plum type, sage string. Base
+  # (#060606) matches the kitty/neovim luna theme so the whole X11 session
+  # reads as one system.
   # -----------------------------------------------------------------------
-  peace = {
-    base = "#000000"; # background (forced black)
-    mantle = "#0d0b0a"; # darker surface (inactive tab / bar bg)
-    surface = "#1a1512"; # color0 / raised
-    text = "#ede0c8"; # foreground (cream)
-    subtext = "#b8a888"; # color7 / dim text
-    muted = "#6b5d4f"; # color8 / disabled
-    overlay = "#3a322c"; # inactive border
-    accent = "#f2a93b"; # cursor / active accent (saffron)
-    red = "#c6362f"; # crimson mandala
-    green = "#5aa469"; # jade swirl
-    yellow = "#f4c430"; # gold halo
-    blue = "#4a74d0"; # indigo sky (lifted for black bg)
-    magenta = "#b0568a"; # plum / lotus
-    cyan = "#3aafb9"; # teal water
-    urgent = "#e05a4e"; # bright red
+  luna = {
+    base = "#060606"; # background (luna bg)
+    mantle = "#1c1c1c"; # darker surface (inactive tab / bar bg)
+    surface = "#333333"; # raised
+    text = "#e4e4e8"; # foreground
+    subtext = "#a8a8a8"; # dim text (grey_light)
+    muted = "#7c7c7c"; # disabled (comment grey)
+    overlay = "#404040"; # inactive border
+    accent = "#c2916a"; # active accent (signal — luna's warm UI cue)
+    red = "#e08585"; # error
+    green = "#6fbe80"; # ok
+    yellow = "#d9a35a"; # warning
+    blue = "#75a1c7"; # func
+    magenta = "#c4a8d6"; # type
+    cyan = "#75a1c7"; # func (luna maps cyan → func)
+    urgent = "#e08585"; # error
   };
 in {
   # -----------------------------------------------------------------------
@@ -98,7 +98,7 @@ in {
           smartGaps = true;
         };
 
-        # Thin borderless-title edge; peace accent on the focused window is
+        # Thin borderless-title edge; luna accent on the focused window is
         # the focus indicator (picom rounds these corners to match).
         window.border = 2;
         window.titlebar = false;
@@ -207,7 +207,7 @@ in {
 
         startup = [
           {
-            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/peace.png";
+            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/monochrome.jpg";
             always = true;
             notification = false;
           }
@@ -234,7 +234,7 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          # i3bar + i3status — peace-themed, UbuntuMono Nerd Font for glyphs.
+          # i3bar + i3status — luna-themed, UbuntuMono Nerd Font for glyphs.
           bar {
              position top
              mode dock
@@ -245,26 +245,26 @@ in {
              status_command i3status -c ~/.config/i3/i3status.conf
              separator_symbol " · "
              colors {
-                    background         ${peace.mantle}
-                    statusline         ${peace.text}
-                    separator          ${peace.muted}
-                    focused_workspace  ${peace.accent}  ${peace.accent}  ${peace.base}
-                    active_workspace   ${peace.surface} ${peace.surface} ${peace.text}
-                    inactive_workspace ${peace.mantle}  ${peace.mantle}  ${peace.subtext}
-                    urgent_workspace   ${peace.urgent}  ${peace.urgent}  ${peace.base}
-                    binding_mode       ${peace.yellow}  ${peace.yellow}  ${peace.base}
+                    background         ${luna.mantle}
+                    statusline         ${luna.text}
+                    separator          ${luna.muted}
+                    focused_workspace  ${luna.accent}  ${luna.accent}  ${luna.base}
+                    active_workspace   ${luna.surface} ${luna.surface} ${luna.text}
+                    inactive_workspace ${luna.mantle}  ${luna.mantle}  ${luna.subtext}
+                    urgent_workspace   ${luna.urgent}  ${luna.urgent}  ${luna.base}
+                    binding_mode       ${luna.yellow}  ${luna.yellow}  ${luna.base}
                    }
             }
 
           # Drop the title bar on floating windows too (tiled ones are already
-          # borderless via window.titlebar = false); keep the 2px peace edge.
+          # borderless via window.titlebar = false); keep the 2px luna edge.
           default_floating_border pixel 2
 
-          # Window borders — peace. Fields: border background text indicator child_border
-          client.focused          ${peace.accent}  ${peace.accent}  ${peace.base}    ${peace.accent}  ${peace.accent}
-          client.focused_inactive ${peace.overlay} ${peace.mantle}  ${peace.subtext} ${peace.overlay} ${peace.overlay}
-          client.unfocused        ${peace.surface} ${peace.mantle}  ${peace.muted}   ${peace.surface} ${peace.surface}
-          client.urgent           ${peace.urgent}  ${peace.urgent}  ${peace.base}    ${peace.urgent}  ${peace.urgent}
+          # Window borders — luna. Fields: border background text indicator child_border
+          client.focused          ${luna.accent}  ${luna.accent}  ${luna.base}    ${luna.accent}  ${luna.accent}
+          client.focused_inactive ${luna.overlay} ${luna.mantle}  ${luna.subtext} ${luna.overlay} ${luna.overlay}
+          client.unfocused        ${luna.surface} ${luna.mantle}  ${luna.muted}   ${luna.surface} ${luna.surface}
+          client.urgent           ${luna.urgent}  ${luna.urgent}  ${luna.base}    ${luna.urgent}  ${luna.urgent}
 
           # Disable screen blanking / DPMS (mirrors the old `xset s off -dpms`).
           exec_always --no-startup-id xset s off
@@ -281,14 +281,14 @@ in {
 
     # i3status config file (referenced by the bar's status_command above).
     xdg.configFile."i3/i3status.conf".text = ''
-      # i3status — drives the i3bar for the X11 session. peace good/bad/degraded.
+      # i3status — drives the i3bar for the X11 session. luna good/bad/degraded.
       general {
               colors = true
               markup = "pango"
               interval = 5
-              color_good = "${peace.green}"
-              color_bad = "${peace.red}"
-              color_degraded = "${peace.yellow}"
+              color_good = "${luna.green}"
+              color_bad = "${luna.red}"
+              color_degraded = "${luna.yellow}"
       }
 
       order += "wireless ${cfg.wirelessInterface}"
@@ -343,8 +343,8 @@ in {
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
-    xdg.configFile."pictures/peace.png" = {
-      source = ../../dotfiles/pictures/peace.png;
+    xdg.configFile."pictures/monochrome.jpg" = {
+      source = ../../dotfiles/pictures/monochrome.jpg;
       force = true;
     };
     xdg.configFile."pictures/golden-mountains.png" = {
@@ -371,7 +371,7 @@ in {
       active-opacity = 1.0;
     '';
 
-    # rofi launcher — peace theme, rounded to match picom/polybar (10px).
+    # rofi launcher — luna theme, rounded to match picom/polybar (10px).
     programs.rofi = {
       enable = true;
       terminal = "${pkgs.kitty}/bin/kitty";
@@ -380,12 +380,12 @@ in {
         inherit (config.lib.formats.rasi) mkLiteral;
       in {
         "*" = {
-          bg = mkLiteral peace.base;
-          bg-alt = mkLiteral peace.mantle;
-          fg = mkLiteral peace.text;
-          fg-dim = mkLiteral peace.subtext;
-          accent = mkLiteral peace.accent;
-          urgent = mkLiteral peace.urgent;
+          bg = mkLiteral luna.base;
+          bg-alt = mkLiteral luna.mantle;
+          fg = mkLiteral luna.text;
+          fg-dim = mkLiteral luna.subtext;
+          accent = mkLiteral luna.accent;
+          urgent = mkLiteral luna.urgent;
           background-color = mkLiteral "transparent";
           text-color = mkLiteral "@fg";
         };
