@@ -36,19 +36,16 @@
     whois
     traceroute
     ipcalc
-    nmap             # host/port discovery
-    netcat-gnu       # nc — connectivity checks / quick listeners
-    tcpdump          # packet capture for network debugging
+    nmap # host/port discovery
+    netcat-gnu # nc — connectivity checks / quick listeners
+    tcpdump # packet capture for network debugging
 
     # Debug / binutils (general development)
     gdb
-    binutils         # objdump, strings, nm
+    binutils # objdump, strings, nm
 
     # Media
     spotify-player # TUI Spotify client (mirrors dotfiles `alias spotify`)
-
-    # Productivity
-    lazygit
 
     # Fonts (additional user-level fonts)
     font-awesome

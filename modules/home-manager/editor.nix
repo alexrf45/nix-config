@@ -598,6 +598,32 @@
     return { "OXY2DEV/markview.nvim", lazy = true }
   '';
 
+  # neogit — git TUI inside neovim, replacing lazygit. fzf-lua (already the
+  # picker) drives selections; diffview provides the diff/history views.
+  # Claims <leader>gg — LazyVim only binds that to lazygit when the lazygit
+  # binary is on PATH, and it no longer is, so there is no conflict.
+  xdg.configFile."nvim/lua/plugins/neogit.lua".text = ''
+    return {
+      {
+        "NeogitOrg/neogit",
+        cmd = "Neogit",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "sindrets/diffview.nvim",
+          "ibhagwan/fzf-lua",
+        },
+        opts = {
+          graph_style = "unicode",
+          integrations = { diffview = true, fzf_lua = true },
+        },
+        keys = {
+          { "<leader>gg", function() require("neogit").open() end, desc = "Neogit" },
+          { "<leader>gn", function() require("neogit").open() end, desc = "Neogit" },
+        },
+      },
+    }
+  '';
+
   xdg.configFile."nvim/lua/plugins/termcolor.lua".text = ''
     return { "sekhat/termcolors.nvim" }
   '';
