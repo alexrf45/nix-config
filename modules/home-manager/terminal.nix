@@ -1,7 +1,8 @@
 {...}: {
   # -----------------------------------------------------------------------
-  # kitty — GPU terminal, peace palette (from dotfiles/pictures/peace.png).
-  # Mural-derived: saffron/gold/crimson/indigo/jade/teal/lotus on pure black.
+  # kitty — GPU terminal, luna palette (WTFox/luna.nvim).
+  # Near-black base (#060606) with four muted accents — warm keyword,
+  # cool func-blue, plum type, sage string — matching the neovim luna theme.
   # -----------------------------------------------------------------------
   programs.kitty = {
     enable = true;
@@ -19,44 +20,44 @@
       confirm_os_window_close = 0;
       enable_audio_bell = "no";
 
-      # peace (mural-derived, pure-black bg)
-      background = "#000000";
-      foreground = "#ede0c8";
+      # luna (near-black bg)
+      background = "#060606";
+      foreground = "#e4e4e8";
 
-      cursor = "#f2a93b";
-      cursor_text_color = "#000000";
-      url_color = "#3aafb9";
+      cursor = "#c2916a";
+      cursor_text_color = "#060606";
+      url_color = "#75a1c7";
 
-      selection_background = "#2a2018";
-      selection_foreground = "#ede0c8";
+      selection_background = "#384048";
+      selection_foreground = "#e4e4e8";
 
       # normal
-      color0 = "#1a1512"; # black
-      color1 = "#c6362f"; # red
-      color2 = "#5aa469"; # green
-      color3 = "#f2a93b"; # yellow
-      color4 = "#4a74d0"; # blue
-      color5 = "#b0568a"; # magenta
-      color6 = "#3aafb9"; # cyan
-      color7 = "#c9b99c"; # white
+      color0 = "#000000"; # black
+      color1 = "#e08585"; # red      (error)
+      color2 = "#6fbe80"; # green    (ok)
+      color3 = "#c2916a"; # yellow   (signal)
+      color4 = "#75a1c7"; # blue     (func)
+      color5 = "#c4a8d6"; # magenta  (type)
+      color6 = "#75a1c7"; # cyan     (func)
+      color7 = "#c7c7c7"; # white    (silver)
 
       # bright
-      color8 = "#6b5d4f"; # bright black
-      color9 = "#e05a4e"; # bright red
-      color10 = "#7cc088"; # bright green
-      color11 = "#f4c430"; # bright yellow
-      color12 = "#6f95ff"; # bright blue
-      color13 = "#e890a8"; # bright magenta
-      color14 = "#5fd0d6"; # bright cyan
-      color15 = "#f5ecdb"; # bright white
+      color8 = "#888888"; # bright black   (grey)
+      color9 = "#e08585"; # bright red     (error)
+      color10 = "#6fbe80"; # bright green   (ok)
+      color11 = "#d9a35a"; # bright yellow  (warning)
+      color12 = "#8c9cb8"; # bright blue    (info)
+      color13 = "#c4a8d6"; # bright magenta (type)
+      color14 = "#75a1c7"; # bright cyan    (func)
+      color15 = "#ffffff"; # bright white   (white)
 
-      active_tab_foreground = "#ede0c8";
-      active_tab_background = "#000000";
-      inactive_tab_foreground = "#6b5d4f";
-      inactive_tab_background = "#0d0b0a";
-      active_border_color = "#f2a93b";
-      inactive_border_color = "#3a322c";
-      bell_border_color = "#f4c430";
+      active_tab_foreground = "#e4e4e8";
+      active_tab_background = "#060606";
+      inactive_tab_foreground = "#7c7c7c";
+      inactive_tab_background = "#1c1c1c";
+      active_border_color = "#c2916a";
+      inactive_border_color = "#404040";
+      bell_border_color = "#d9a35a";
     };
   };
 }
