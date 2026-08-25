@@ -56,6 +56,8 @@
     # Web browsers
     brave
     google-chrome # CAC-authenticated DoD portals
+    # Markdown Editor
+    obsidian
   ];
 
   # -----------------------------------------------------------------------
