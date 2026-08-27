@@ -73,6 +73,7 @@
     obs-studio
     remmina # RDP/VNC client
     gimp
+    teams-for-linux
   ];
 
   # -----------------------------------------------------------------------
