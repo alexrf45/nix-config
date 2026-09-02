@@ -58,6 +58,8 @@
     google-chrome # CAC-authenticated DoD portals
     # Markdown Editor
     obsidian
+    protonmail-bridge-gui
+    thunderbird-latest
   ];
 
   # -----------------------------------------------------------------------
