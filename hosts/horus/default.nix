@@ -15,11 +15,11 @@
     ../../modules/nixos/security.nix
     ../../modules/nixos/desktop-x11.nix # Xorg + i3 (aligned with thoth)
     ../../modules/nixos/audio.nix
-    ../../modules/nixos/gaming.nix # Steam, GameMode, controller udev rules — horus only
-    ../../modules/nixos/ollama.nix # Local LLM inference (Ollama + CUDA) — horus only
+    #../../modules/nixos/gaming.nix # Steam, GameMode, controller udev rules — horus only
+    #../../modules/nixos/ollama.nix # Local LLM inference (Ollama + CUDA) — horus only
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
-    ../../modules/nixos/imobile.nix # iOS-over-USB (iPhone backup / iMessage export)
+    #../../modules/nixos/imobile.nix # iOS-over-USB (iPhone backup / iMessage export)
     ../../modules/nixos/syncthing.nix
 
     # SOPS-nix system module
