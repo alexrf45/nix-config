@@ -237,7 +237,7 @@ in {
           # i3bar + i3status — luna-themed, UbuntuMono Nerd Font for glyphs.
           bar {
              position top
-             mode dock
+             mode hide
              font pango:UbuntuMono Nerd Font 10
              height 20
              tray_output none
