@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: luna (WTFox/luna.nvim — near-black bg, muted accents)
+  # Theme: gruvbox-material dark soft (sainnhe/gruvbox-material)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -87,7 +87,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "luna", "habamax" },
+        colorscheme = { "gruvbox-material", "habamax" },
       },
       checker = {
         enabled = true,
@@ -177,11 +177,20 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- luna — WTFox/luna.nvim, a near-black colorscheme with muted accents.
+    -- gruvbox-material dark soft — sainnhe/gruvbox-material.
     -- Fetched by lazy.nvim; LazyVim is told to load it as the colorscheme.
     return {
-      { "wtfox/luna.nvim", lazy = false, priority = 1000, opts = {} },
-      { "LazyVim/LazyVim", opts = { colorscheme = "luna" } },
+      {
+        "sainnhe/gruvbox-material",
+        lazy = false,
+        priority = 1000,
+        config = function()
+          vim.g.gruvbox_material_background = "soft"
+          vim.g.gruvbox_material_foreground = "material"
+          vim.g.gruvbox_material_better_performance = 1
+        end,
+      },
+      { "LazyVim/LazyVim", opts = { colorscheme = "gruvbox-material" } },
     }
   '';
 
