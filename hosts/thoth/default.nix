@@ -17,6 +17,7 @@
     #../../modules/nixos/imobile.nix          # iOS-over-USB (iPhone backup / iMessage export)
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/searxng.nix          # private metasearch for Kindly MCP (thoth-only)
+    ../../modules/nixos/spotify-player.nix   # custom Spotify client ID via sops (thoth-only)
 
     # SOPS-nix system module
     inputs.sops-nix.nixosModules.sops
