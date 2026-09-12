@@ -5,6 +5,7 @@
 
     firewall = {
       enable = true;
+      logRefusedPackets = true;
       allowedTCPPorts = [ 22 8080 8000 57621];
       allowedUDPPorts = [ 5353 ];
       # Extend as needed:
