@@ -5,8 +5,7 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [ 22 8080 8000];
-      allowedTCPPorts = [ 57621 ];
+      allowedTCPPorts = [ 22 8080 8000 57621];
       allowedUDPPorts = [ 5353 ];
       # Extend as needed:
       #   allowedTCPPorts = [ 22 8080 ];
