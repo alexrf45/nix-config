@@ -21,6 +21,7 @@
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/ssh.nix
+    ../../../modules/home-manager/spotify-player.nix # thoth-only: needs the sops client-ID secret
   ];
 
   home = {

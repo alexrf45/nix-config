@@ -32,6 +32,18 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # spotify-player — upstream flake, pinned ahead of nixpkgs.
+    # Stable ships 0.23.0 and unstable 0.24.1; both predate the v0.25.0 Web API
+    # rework (upstream PR #1077) that this config needs. See the override in
+    # overlays/modifications.nix for the full rationale.
+    # Follows nixpkgs-unstable: the rspotify 0.16 migration needs a newer Rust
+    # toolchain than stable carries, and reusing the existing unstable pin
+    # avoids dragging in a third nixpkgs evaluation.
+    spotify-player = {
+      url = "github:aome510/spotify-player/v0.25.1";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, sops-nix, ... }@inputs:
