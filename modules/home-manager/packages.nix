@@ -13,7 +13,8 @@
     ripgrep
     bat
     eza # Modern ls (replaces exa, which is archived)
-    zoxide # Smart cd
+    # zoxide is installed by programs.zoxide in bash.nix (which also wires up
+    # the shell integration `z`/`zi` — it was missing entirely before).
     delta # Better git diff
     jq
     yq-go
@@ -102,7 +103,7 @@
   # -----------------------------------------------------------------------
   programs.fzf = {
     enable = true;
-    enableZshIntegration = true;
+    enableBashIntegration = true; # Ctrl-R history, Ctrl-T file, Alt-C cd
     defaultOptions = [
       "--color=fg:-1,fg+:#d0d0d0,bg:-1,bg+:#262626"
       "--color=hl:#5fb079,hl+:#43fb00,info:#afaf87,marker:#87ff00"

@@ -6,12 +6,12 @@
   # -----------------------------------------------------------------------
   programs.tmux = {
     enable = true;
-    shell = "${pkgs.zsh}/bin/zsh";
+    shell = "${pkgs.bashInteractive}/bin/bash";
 
     # The full tmux config mirrors the dotfiles .tmux.conf exactly.
     # tpm bootstrap: if ~/.tmux/plugins/tpm doesn't exist, git-clones it.
     extraConfig = ''
-      set -g default-command "${pkgs.zsh}/bin/zsh"
+      set -g default-command "${pkgs.bashInteractive}/bin/bash"
 
       unbind C-b
       set -g prefix C-a

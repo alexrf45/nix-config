@@ -12,7 +12,7 @@
     inputs.sops-nix.homeManagerModules.sops
 
     # Shared Home Manager modules
-    ../../../modules/home-manager/shell.nix
+    ../../../modules/home-manager/bash.nix
     ../../../modules/home-manager/terminal.nix
     ../../../modules/home-manager/editor.nix
     ../../../modules/home-manager/tmux.nix
@@ -80,7 +80,7 @@
   # -----------------------------------------------------------------------
   # thoth-specific shell aliases
   # -----------------------------------------------------------------------
-  programs.zsh.shellAliases = {
+  programs.bash.shellAliases = {
     # Edit SOPS secrets on thoth. Derives the age private key from the SSH
     # host key on the fly so it never touches disk in plaintext.
     # Usage: sops-thoth secrets/thoth.yaml

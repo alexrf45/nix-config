@@ -4,25 +4,42 @@
   ...
 }: {
   # -----------------------------------------------------------------------
-  # Zsh — all aliases and functions managed in Nix; no sourced dotfiles
+  # Bash — all aliases and functions managed in Nix; no sourced dotfiles.
+  #
+  # Migrated from zsh (2026-09-13). Design rule: stay close to stock bash so
+  # muscle memory transfers to work boxes. Anything that only works because
+  # Home Manager installed it lives behind a feature test.
   # -----------------------------------------------------------------------
-  programs.zsh = {
+  programs.bash = {
     enable = true;
     enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
 
-    history = {
-      size = 20000;
-      save = 20000;
-      path = "${config.home.homeDirectory}/.zsh_history";
-      extended = true;
-      ignoreAllDups = true;
-      ignoreSpace = true;
-      share = true;
-    };
+    historySize = 20000;
+    historyFileSize = 20000;
+    historyFile = "${config.home.homeDirectory}/.bash_history";
 
-    dotDir = config.home.homeDirectory;
+    # erasedups ~ zsh ignoreAllDups; ignorespace ~ zsh HIST_IGNORE_SPACE
+    historyControl = ["erasedups" "ignorespace"];
+
+    # autocd        ~ setopt AUTO_CD
+    # extglob       ~ setopt EXTENDED_GLOB
+    # dotglob       ~ setopt GLOB_DOTS
+    # histappend    ~ setopt INC_APPEND_HISTORY (paired with `history -a` below)
+    # histverify    ~ setopt HIST_VERIFY
+    # NOTE: `failglob` (~ setopt NOMATCH) is deliberately NOT set. It aborts
+    # commands whose globs match nothing, which is standard zsh behaviour but
+    # surprising in bash and absent on work boxes — a portability footgun.
+    shellOptions = [
+      "autocd"
+      "checkjobs"
+      "checkwinsize"
+      "cdspell"
+      "dotglob"
+      "extglob"
+      "globstar"
+      "histappend"
+      "histverify"
+    ];
 
     # -------------------------------------------------------------------
     # Aliases
@@ -33,7 +50,7 @@
       horus = "sudo nixos-rebuild switch --flake \"github:alexrf45/nix-config#horus\"";
 
       # General
-      r = ". ~/.zshrc";
+      r = ". ~/.bashrc";
       h = "cd ~";
       v = "nvim";
       config = "nvim ~/.vimrc";
@@ -150,42 +167,97 @@
     };
 
     # -------------------------------------------------------------------
-    # Shell options, completion, and function definitions
+    # Interactive setup, prompt, and function definitions
     # -------------------------------------------------------------------
-    initContent = ''
-      setopt AUTO_CD
-      setopt AUTO_PUSHD
-      setopt EXTENDED_GLOB
-      setopt EXTENDED_HISTORY
-      setopt NOMATCH
-      setopt MENU_COMPLETE
-      setopt GLOB_DOTS
-      setopt INTERACTIVE_COMMENTS
-      setopt HIST_IGNORE_DUPS
-      setopt HIST_VERIFY
-      setopt INC_APPEND_HISTORY
-      setopt SHARE_HISTORY
-      setopt PROMPT_SUBST
-      unsetopt beep
-      setopt HIST_IGNORE_SPACE
+    initExtra = ''
+      # ~ setopt EXTENDED_HISTORY — timestamps in `history` output
+      HISTTIMEFORMAT="%F %T  "
 
-      # Completion styling
-      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
-      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-      zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+      # ===================================================================
+      # Prompt
+      #
+      # ╭ ~/nix-config  main *% (venv)
+      # ╰ ❯
+      #
+      # Renders: cwd · git branch + dirty state · active virtualenv ·
+      # exit-status-coloured ❯. No prompt daemon — everything below is
+      # portable bash and can be pasted into a work box's ~/.bashrc as-is.
+      # ===================================================================
 
-      # Autosuggestion styling
-      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ffffff,standout"
-      ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="10"
-      ZSH_AUTOSUGGEST_USE_ASYNC=1
+      # git-prompt.sh ships inside git itself. Try the Nix store path first,
+      # then the usual distro locations, so this block survives being copied
+      # onto a RHEL/Debian box.
+      for __gp in \
+        "${pkgs.git}/share/bash-completion/completions/git-prompt.sh" \
+        /usr/share/git-core/contrib/completion/git-prompt.sh \
+        /etc/bash_completion.d/git-prompt.sh
+      do
+        [ -r "$__gp" ] && . "$__gp" && break
+      done
+      unset __gp
 
-      # Edit command in $EDITOR
-      autoload -Uz edit-command-line
-      zle -N edit-command-line
-      bindkey '^X^E' edit-command-line
+      # No-op fallback so PS1 never errors if git-prompt.sh is missing entirely
+      declare -F __git_ps1 >/dev/null 2>&1 || __git_ps1() { :; }
 
-      # ---- Functions ----
+      GIT_PS1_SHOWDIRTYSTATE=1      # * unstaged, + staged
+      GIT_PS1_SHOWUNTRACKEDFILES=1  # %
+      GIT_PS1_SHOWSTASHSTATE=1      # $
+      GIT_PS1_SHOWCOLORHINTS=       # we colour it ourselves
+      VIRTUAL_ENV_DISABLE_PROMPT=1  # we render the venv ourselves
+
+      # Auto-activate a Python virtualenv when entering a project directory,
+      # and deactivate on leaving it. This is the bash port of zsh's
+      # `add-zsh-hook chpwd auto_venv` — bash has no chpwd hook, so it runs
+      # from PROMPT_COMMAND behind a cwd-change guard.
+      auto_venv() {
+        [ "$PWD" = "''${__LAST_PWD-}" ] && return
+        __LAST_PWD="$PWD"
+
+        if [ -n "''${VIRTUAL_ENV-}" ] && [[ "$PWD" != *"''${VIRTUAL_ENV%/*}"* ]]; then
+          deactivate
+          return
+        fi
+        [ -n "''${VIRTUAL_ENV-}" ] && return
+
+        local dir="$PWD"
+        while [ -n "$dir" ] && [ "$dir" != "/" ]; do
+          if [ -f "$dir/venv/bin/activate" ]; then
+            # shellcheck disable=SC1091
+            . "$dir/venv/bin/activate"
+            return
+          fi
+          dir="''${dir%/*}"
+        done
+      }
+
+      # PS1 is rebuilt each prompt so the ❯ can carry the last exit status.
+      # $? must be captured on the very first line of this function.
+      __prompt() {
+        local __exit=$?
+
+        history -a          # ~ setopt INC_APPEND_HISTORY: flush immediately
+        # Uncomment for full zsh-style SHARE_HISTORY across live sessions:
+        # history -c; history -r
+
+        auto_venv
+
+        local __char
+        if [ "$__exit" -eq 0 ]; then
+          __char='\[\e[1;32m\]'   # green
+        else
+          __char='\[\e[1;31m\]'   # red
+        fi
+
+        PS1='\[\e[1;37m\]╭\[\e[0m\] \[\e[1;34m\]\w\[\e[0m\]'
+        PS1+='\[\e[1;32m\]$(__git_ps1 "  %s")\[\e[0m\]'
+        PS1+='\[\e[1;33m\]''${VIRTUAL_ENV:+ (''${VIRTUAL_ENV##*/})}\[\e[0m\]'
+        PS1+='\n\[\e[1;37m\]╰\[\e[0m\] '"$__char"'❯\[\e[0m\] '
+      }
+      PROMPT_COMMAND=__prompt
+
+      # ===================================================================
+      # Functions
+      # ===================================================================
 
       cheat-code() {
         curl cheat.sh/"$1" | bat
@@ -227,8 +299,9 @@
 
       # cd up N directories: `up 3`
       up() {
-        for i in $(seq 1 $1); do
-          cd ../
+        local i
+        for i in $(seq 1 "$1"); do
+          cd ../ || return
         done
       }
 
@@ -236,7 +309,7 @@
         mkdir "$1" &&
           cd "$1" &&
           virtualenv .venv &&
-          source .venv/bin/activate
+          . .venv/bin/activate
       }
 
       # Runs aws-cli via Chainguard container, inheriting session credentials
@@ -303,34 +376,17 @@
         echo "Switched to AWS profile: $AWS_PROFILE"
       }
 
-      # Auto-activate Python virtualenv when entering a project directory
-      auto_venv() {
-        if [[ -n "$VIRTUAL_ENV" && "$PWD" != *"''${VIRTUAL_ENV:h}"* ]]; then
-          deactivate
-          return
-        fi
-        [[ -n "$VIRTUAL_ENV" ]] && return
-        local dir="$PWD"
-        while [[ "$dir" != "/" ]]; do
-          if [[ -f "$dir/venv/bin/activate" ]]; then
-            source "$dir/venv/bin/activate"
-            return
-          fi
-          dir="''${dir:h}"
-        done
-      }
-
       # Bootstrap a new Python devenv project:
       #   pydev <name>   — create dir, init flake template, drop into devenv shell
       #   pydev <name>   — if dir exists, just enter the devenv shell
       pydev() {
-        if [[ -z "$1" ]]; then
+        if [ -z "$1" ]; then
           echo "Usage: pydev <project-name>"
           return 1
         fi
         local name="$1"
 
-        if [[ -d "$name" ]]; then
+        if [ -d "$name" ]; then
           echo "→ '$name' already exists — entering devenv shell"
           cd "$name" && devenv shell
           return
@@ -346,102 +402,42 @@
         echo "→ Starting devenv shell (first run installs packages, may take a moment)"
         devenv shell
       }
-
-      autoload -Uz add-zsh-hook
-      add-zsh-hook chpwd auto_venv
     '';
   };
 
   # -----------------------------------------------------------------------
-  # Starship prompt — minimal layout
-  # ╭ ~/path  branch ±~+?  (venv)  vpn:10.10.14.5
-  # ╰ ❯
+  # Readline — replaces the zsh `zstyle` completion styling and `unsetopt beep`
   # -----------------------------------------------------------------------
-  programs.starship = {
+  programs.readline = {
     enable = true;
-    enableZshIntegration = true;
-    settings = {
-      # ''${custom.vpn} escapes to the literal ${custom.vpn} that starship expects.
-      # Using $custom.vpn (no braces) causes starship to render $custom (all custom
-      # modules) followed by the literal text ".vpn" — the braced form is required.
-      format = ''
-        [╭](bold white) $directory$git_branch$git_status$python''${custom.vpn}
-        [╰](bold white)$character
-      '';
-      scan_timeout = 10;
-      add_newline = true;
 
-      directory = {
-        home_symbol = "~";
-        truncation_length = 3;
-        truncate_to_repo = true;
-        style = "bold blue";
-        read_only = " ro";
-      };
+    variables = {
+      # ~ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+      completion-ignore-case = true;
+      # treat - and _ as interchangeable while completing
+      completion-map-case = true;
+      show-all-if-ambiguous = true;
+      menu-complete-display-prefix = true;
+      # ~ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+      colored-stats = true;
+      colored-completion-prefix = true;
+      # ~ unsetopt beep
+      bell-style = "none";
+    };
 
-      character = {
-        success_symbol = "[❯](bold green)";
-        error_symbol = "[❯](bold red)";
-      };
-
-      git_branch = {
-        format = "[ $branch]($style) ";
-        style = "bold green";
-      };
-
-      git_status = {
-        format = "([$all_status$ahead_behind]($style) )";
-        style = "bright-white";
-        conflicted = "⚔";
-        ahead = "↑";
-        behind = "↓";
-        diverged = "⇕";
-        untracked = "?";
-        stashed = "≡";
-        modified = "~";
-        staged = "+";
-        renamed = "»";
-        deleted = "✘";
-      };
-
-      # Only show venv name when inside an activated virtualenv
-      python = {
-        format = ''[(\($virtualenv\))]($style) '';
-        style = "bold yellow";
-        python_binary = ["./venv/bin/python" "python" "python3"];
-        detect_extensions = ["py"];
-      };
-
-      # VPN indicator — shown only when an OpenVPN tunnel (tun0, tun1, …) is up.
-      # Matches interface NAMES starting with "tun[digit]" so Tailscale (tailscale0)
-      # is never caught, regardless of its kernel interface type.
-      custom.vpn = {
-        when = "ip link show | grep -qE '^[0-9]+: tun[0-9]'";
-        command = "ip -4 addr | awk '/^[0-9]+: tun[0-9]/{found=1} found && /inet /{print $2; exit}' | cut -d/ -f1";
-        format = "[vpn:$output]($style) ";
-        style = "bold cyan";
-      };
-
-      # Disabled — not needed in daily prompt
-      aws.disabled = true;
-      gcloud.disabled = true;
-      terraform.disabled = true;
-      azure.disabled = true;
-      time.disabled = true;
-      pulumi.disabled = true;
-      golang.disabled = true;
+    bindings = {
+      # ~ setopt MENU_COMPLETE
+      "TAB" = "menu-complete";
+      "\\e[Z" = "menu-complete-backward"; # Shift-Tab cycles backwards
     };
   };
 
   # -----------------------------------------------------------------------
-  # Miscellaneous home files
+  # zoxide — previously installed as a bare package in packages.nix with no
+  # shell integration, so `z` never existed. Wired up properly here.
   # -----------------------------------------------------------------------
-  home.file = {
-    # Overwrite pre-NixOS .zprofile — it had bare > characters that zsh
-    # interpreted as redirects, creating junk files in $HOME on every login.
-    ".zprofile" = {
-      text = "# Managed by Home Manager — do not edit\n";
-      force = true;
-    };
+  programs.zoxide = {
+    enable = true;
+    enableBashIntegration = true;
   };
 }
