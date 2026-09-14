@@ -65,7 +65,6 @@
       la = "ls -lah --color=auto --group-directories-first";
       sensors = "sensors | bat -l cpuinfo -p";
       daily = "bash $HOME/.config/scripts/daily.sh";
-      lifeos = "bun $HOME/.claude/LIFEOS/TOOLS/lifeos.ts"; # LifeOS launcher (loads its system prompt from ~/.claude/LIFEOS)
       spotify = "spotify_player";
 
       # Network / utils
