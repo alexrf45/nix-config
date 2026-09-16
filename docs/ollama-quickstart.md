@@ -1,5 +1,8 @@
 # Ollama Quickstart — horus
 
+> **Archived:** horus is retired (2026-09), so this service isn't running anywhere. Kept for
+> reference in case horus (or another NVIDIA box) is revived.
+
 Private, self-hosted LLM inference on **horus** (the only box with a discrete GPU).
 Everything here matches `modules/nixos/ollama.nix`.
 

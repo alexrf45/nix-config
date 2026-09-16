@@ -2,7 +2,7 @@
 
 # ❄️ nix-config
 
-**A reproducible NixOS flake for two personal laptops — `horus` & `thoth`.**
+**A reproducible NixOS flake for my personal laptop — `thoth`** (`horus` retired, config kept for revival).
 
 Stable `nixos-26.05` · select `nixos-unstable` overlay · Home Manager · secrets via SOPS + age
 
@@ -26,11 +26,11 @@ Stable `nixos-26.05` · select `nixos-unstable` overlay · Home Manager · secre
 ## Build / switch
 
 ```sh
-sudo nixos-rebuild switch --flake .#<host>   # host = horus | thoth
+sudo nixos-rebuild switch --flake .#<host>   # host = thoth  (horus is retired)
 ```
 
 **Before landing changes**
 
-- Run `nix flake check` and `nixos-rebuild build --flake .#<host>` — both hosts for shared-module edits
+- Run `nix flake check` and `nixos-rebuild build --flake .#<host>` for `thoth` (horus is retired and not required to build)
 - Format with `nix fmt` (alejandra)
 - Work on a branch, then PR into `main`

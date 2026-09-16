@@ -3,7 +3,10 @@
 Detailed hardware, storage, and boot facts for each host. The critical, easy-to-forget ones
 are called out as **gotchas**.
 
-## horus — Acer Nitro 5
+## horus — Acer Nitro 5 (retired)
+
+> **Retired 2026-09.** Kept for reference in case the machine is revived; its flake output and
+> host modules remain in the repo but are no longer maintained.
 
 - **Machine:** Acer Nitro 5 — AMD Ryzen CPU + NVIDIA discrete GPU
 - **RAM:** 32GB
