@@ -78,7 +78,7 @@
   '';
 
   # -----------------------------------------------------------------------
-  # GitHub CLI — system of record for the LifeOS Work System (issues)
+  # GitHub CLI
   # -----------------------------------------------------------------------
   programs.gh = {
     enable = true;

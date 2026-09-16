@@ -62,7 +62,7 @@
   users.users.fr3d = {
     isNormalUser = true;
     description = "fr3d";
-    shell = pkgs.zsh;
+    shell = pkgs.bashInteractive;
     extraGroups = [
       "wheel"
       "networkmanager"
@@ -79,6 +79,7 @@
     # ];
   };
 
-  # zsh must be declared as a system shell for login shells to work
-  programs.zsh.enable = true;
+  # bashInteractive is NixOS's default user shell and is always present in
+  # /etc/shells, so no `programs.<shell>.enable` declaration is needed here.
+  # (Was `programs.zsh.enable = true` before the 2026-09-13 bash migration.)
 }

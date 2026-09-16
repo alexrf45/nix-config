@@ -12,7 +12,7 @@
     inputs.sops-nix.homeManagerModules.sops
 
     # Home Manager modules
-    ../../../modules/home-manager/shell.nix
+    ../../../modules/home-manager/bash.nix
     ../../../modules/home-manager/terminal.nix
     ../../../modules/home-manager/editor.nix
     ../../../modules/home-manager/tmux.nix

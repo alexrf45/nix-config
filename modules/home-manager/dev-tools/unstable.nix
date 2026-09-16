@@ -10,7 +10,7 @@
   # `use devenv` support (nix-direnv 3.0+ supports devenv natively).
   programs.direnv = {
     enable = true;
-    enableZshIntegration = true;
+    enableBashIntegration = true;
     nix-direnv.enable = true;
   };
 }

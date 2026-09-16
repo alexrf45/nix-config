@@ -22,7 +22,6 @@ Stable `nixos-26.05` · select `nixos-unstable` overlay · Home Manager · secre
 | [`CLAUDE.md`](./CLAUDE.md) | Architecture, hosts, structure, and key design decisions |
 | [`docs/bootstrap.md`](./docs/bootstrap.md) | First-time install / setup |
 | [`docs/hardware.md`](./docs/hardware.md) | Hardware, storage, and boot detail |
-| Living review & recovery guide | Snapshot, roadmap, and break/revert reference — private `lifeos-work` repo (`nix-config/living-review.md`) |
 
 ## Build / switch
 
