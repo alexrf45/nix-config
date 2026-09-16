@@ -13,11 +13,11 @@ Home Manager as an integrated module (`useGlobalPkgs`); secrets via SOPS + age.
 
 Build/switch: `sudo nixos-rebuild switch --flake .#thoth` (see the `/rebuild` command).
 
-> **horus is retired (2026-09).** Its config (`hosts/horus/`, `home-manager/horus/`, the
-> `nixosConfigurations.horus` flake output, and horus-only modules like `hardware.nix` and
-> `ollama.nix`) is kept in the repo so it can be revived, but it is no longer maintained or
-> required to build. Don't spend effort keeping it green; if reviving it, expect to fix eval
-> drift and set the real PRIME bus IDs first (`docs/bootstrap.md`).
+> **horus is retired (2026-09).** Its `nixosConfigurations.horus` flake output was removed, but
+> its config (`hosts/horus/`, `home-manager/horus/`, and horus-only modules like `hardware.nix`
+> and `ollama.nix`) is kept in the repo, unmaintained. To revive it, re-add the output in
+> `flake.nix` (a copy of the `thoth` block pointing at `./hosts/horus`), expect to fix eval
+> drift, and set the real PRIME bus IDs first (`docs/bootstrap.md`).
 
 Hardware/storage/boot detail lives in `docs/hardware.md`; first-time setup in `docs/bootstrap.md`.
 
@@ -53,7 +53,7 @@ Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but un
 ## Working in this repo
 
 - **Git:** feature branch off `main`, PR into `main` — never commit to `main` directly (`.claude/rules/common/git-workflow.md`).
-- **Verify by building:** `nix flake check` and `nixos-rebuild build --flake .#<host>` (`thoth`; horus is retired and not required) before landing a flake update (`.claude/rules/common/testing.md`, `/flake-update`).
+- **Verify by building:** `nix flake check` and `nixos-rebuild build --flake .#<host>` (`thoth`, the only host) before landing a flake update (`.claude/rules/common/testing.md`, `/flake-update`).
 - **Format** Nix with `alejandra` (`nix fmt`).
 
 Reference: <https://github.com/alexrf45/h0me>, <https://github.com/alexrf45/dotfiles> (mirrored in `dotfiles/`).

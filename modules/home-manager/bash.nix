@@ -47,7 +47,6 @@
     shellAliases = {
       # NixOS rebuild
       thoth = "sudo nixos-rebuild switch --flake \"github:alexrf45/nix-config#thoth\"";
-      horus = "sudo nixos-rebuild switch --flake \"github:alexrf45/nix-config#horus\"";
 
       # General
       r = ". ~/.bashrc";

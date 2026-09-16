@@ -3,8 +3,8 @@ description: Verify a host build, then hand the switch to the user
 argument-hint: "[host]"
 ---
 
-Rebuild a host. `$1` is the target host (normally `thoth`; `horus` is retired and only built if
-explicitly requested); if omitted, infer it from `hostname` (default `thoth`).
+Rebuild a host. `$1` is the target host (`thoth` — the only flake output; `horus` is retired);
+if omitted, default to `thoth`.
 
 1. Run `nixos-rebuild build --flake .#<host>` (no sudo) to verify the configuration builds.
 2. If it fails, show the error and use `nix log <drv>` to isolate the failing derivation.

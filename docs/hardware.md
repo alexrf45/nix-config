@@ -5,8 +5,8 @@ are called out as **gotchas**.
 
 ## horus — Acer Nitro 5 (retired)
 
-> **Retired 2026-09.** Kept for reference in case the machine is revived; its flake output and
-> host modules remain in the repo but are no longer maintained.
+> **Retired 2026-09.** Kept for reference in case the machine is revived; its flake output was
+> removed, but its host modules remain in the repo (unmaintained).
 
 - **Machine:** Acer Nitro 5 — AMD Ryzen CPU + NVIDIA discrete GPU
 - **RAM:** 32GB
