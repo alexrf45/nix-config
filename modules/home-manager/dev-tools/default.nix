@@ -4,6 +4,7 @@
     ./javascript.nix
     ./python.nix
     ./terraform.nix
+    ./kubernetes.nix
     ./aws.nix
     ./secrets.nix
     ./unstable.nix
