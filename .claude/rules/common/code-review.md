@@ -7,7 +7,7 @@
 - Evaluates & builds — `nix flake check`, plus the relevant `nixos-rebuild build`.
 - No plaintext secrets or committed keys (see the security rule).
 - Modules stay small and host-split; formatted with `alejandra`.
-- Boot-critical changes flagged: thoth `vmd` initrd module, horus PRIME bus IDs.
+- Boot-critical changes flagged: thoth `vmd` initrd module (horus PRIME bus IDs only if reviving the retired host).
 - Vendored pkg bumps keep their SRI hash + update header accurate.
 
 ## Severity

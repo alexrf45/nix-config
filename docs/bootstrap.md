@@ -14,7 +14,9 @@ nixos-generate-config --show-hardware-config > hosts/<host>/hardware-configurati
 sudo nixos-rebuild switch --flake .#<host>
 ```
 
-## horus only — NVIDIA PRIME bus IDs
+## horus only — NVIDIA PRIME bus IDs (retired host)
+
+> horus is retired (2026-09). This applies only if reviving it.
 
 The PRIME bus IDs in `modules/nixos/hardware.nix` are host-specific. Derive them on the
 physical machine and update the values:

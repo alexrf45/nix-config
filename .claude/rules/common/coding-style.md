@@ -2,7 +2,7 @@
 
 - **Format** with `alejandra` (`nix fmt`) before committing.
 - **Small, focused modules.** Split by host variant (`hardware.nix` vs `hardware-intel.nix`,
-  `desktop.nix` vs `desktop-x11.nix`) and by domain; a shared module imported by both hosts
+  `desktop.nix` vs `desktop-x11.nix`) and by domain; a shared module imported by more than one host
   belongs in `modules/`.
 - **Declarative & immutable** — no imperative/stateful hacks. Overlays are declared in
   `hosts/<host>/default.nix`, never inside `home.nix` (silently ignored under `useGlobalPkgs`).
