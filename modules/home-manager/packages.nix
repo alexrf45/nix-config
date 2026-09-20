@@ -30,6 +30,7 @@
     unzip
     unrar
     aria2 # Download manager (aria2c)
+    proton-drive-cli # Proton Drive from the terminal (overlays/additions.nix)
     smartmontools # smartctl — SMART health checks (internal + external disks)
     gsmartcontrol
     # Network tools
