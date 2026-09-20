@@ -17,4 +17,7 @@ Conventional format — `<type>: <description>` — types: `feat fix refactor do
 
 1. `git diff main...HEAD` for the full change set (not just the last commit).
 2. Comprehensive summary; **state the verification** run (which `nix build` / `nixos-rebuild build`).
-3. Push a new branch with `-u`. No `gh` CLI on thoth — use WebFetch for GitHub reads.
+3. Push a new branch with `-u`, then open the PR with `gh pr create --base main`.
+   `gh` **is** installed on thoth (`programs.gh` in `modules/home-manager/git.nix`) and
+   authenticated as `alexrf45` with `repo` scope, so it can open and merge PRs. WebFetch is
+   still the tool for public pages `gh`'s token can't reach — e.g. nixpkgs PR discussions.
