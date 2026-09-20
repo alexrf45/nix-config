@@ -13,4 +13,10 @@ final: prev: {
   # imessage-exporter — export iMessage/SMS from an iOS backup to TXT/HTML.
   # Not in nixpkgs; see pkgs/imessage-exporter.nix for update instructions.
   imessage-exporter = final.callPackage ../pkgs/imessage-exporter.nix { };
+
+  # proton-drive-cli — Proton's official Drive CLI (prebuilt binary).
+  # Not in nixpkgs yet (PR #557198 still open); swap to
+  # pkgs-unstable.proton-drive-cli once it lands and settles.
+  # See pkgs/proton-drive-cli.nix for update instructions.
+  proton-drive-cli = final.callPackage ../pkgs/proton-drive-cli.nix { };
 }
