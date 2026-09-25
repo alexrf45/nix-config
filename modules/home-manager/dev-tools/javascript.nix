@@ -1,5 +1,5 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    bun # JS/TS runtime — used by vault-task-sync (~/code/vault-task-sync)
+    bun # JS/TS runtime — runtime for vault-task-sync (see modules/home-manager/vault-task-sync.nix)
   ];
 }
