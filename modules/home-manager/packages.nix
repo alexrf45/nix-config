@@ -98,9 +98,19 @@
   };
 
   # -----------------------------------------------------------------------
-  # fzf — use programs.fzf.defaultOptions (list of strings) to avoid shell
-  # redirection issues: bare > in FZF_DEFAULT_OPTS via sessionVariables gets
-  # interpreted as a redirect operator, creating junk files in $HOME.
+  # fzf
+  #
+  # Any option value containing a bare `>` MUST be single-quoted. Home Manager
+  # joins defaultOptions into the FZF_DEFAULT_OPTS env var, and fzf parses that
+  # with a shell-words splitter that honours redirection — an unquoted `>` is
+  # read as a redirect operator and silently swallows the NEXT token. That broke
+  # Ctrl-R: the bash widget appends `--read0`, which got eaten as the redirect
+  # target, so fzf split the NUL-delimited history on newlines instead and
+  # rendered the entire history as one line.
+  #
+  # Note Nix has no \u escape — a literal glyph must be written out, not
+  # "\uf054" (which evaluates to the bare string "uf054" and makes fzf exit 2
+  # with "pointer display width should be up to 2").
   # -----------------------------------------------------------------------
   programs.fzf = {
     enable = true;
@@ -112,9 +122,9 @@
       "--color=border:#2B3328,preview-fg:#f1f8f2,query:#e97b7b"
       "--border=rounded"
       "--preview-window=border-rounded"
-      "--prompt=> "
-      "--marker=>"
-      "--pointer=\uf054"
+      "--prompt='> '"
+      "--marker='>'"
+      "--pointer="
       "--separator=─"
       "--scrollbar=│"
     ];
