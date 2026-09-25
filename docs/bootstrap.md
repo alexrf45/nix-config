@@ -31,3 +31,14 @@ lspci | grep -E 'VGA|3D'
 - The `vmd` initrd module must stay enabled (Intel VMD; the NVMe disk won't be found without it).
 - `/home` (sda1) is preserved across reinstall — do not reformat it.
 - CIFS `/mnt/home-drive` credentials live at `/etc/nixos/smb-secrets` (prefer migrating to sops).
+- `vault-task-sync` runs from a working checkout, not the Nix store. On a fresh
+  host the timer fails until it exists:
+
+  ```sh
+  git clone git@github.com:alexrf45/vault-task-sync.git ~/code/vault-task-sync
+  cd ~/code/vault-task-sync && bun install
+  ```
+
+  Its two sops keys (`vault-task-sync-credentials`, `vault-task-sync-token`) must
+  also be present in `secrets/thoth.yaml` *before* the first rebuild that includes
+  `modules/nixos/vault-task-sync.nix`, or activation fails. See that file's header.

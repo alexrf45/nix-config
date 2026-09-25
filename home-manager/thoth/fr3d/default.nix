@@ -22,6 +22,7 @@
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/ssh.nix
     ../../../modules/home-manager/spotify-player.nix # thoth-only: needs the sops client-ID secret
+    ../../../modules/home-manager/vault-task-sync.nix # thoth-only: needs the sops OAuth secrets
   ];
 
   home = {
@@ -35,6 +36,11 @@
     wirelessInterface = "wlp1s0";
     primaryOutput = "HDMI-1"; # dock: external HDMI primary, laptop panel off
   };
+
+  # Obsidian → Google Calendar sync. Runs every 30 min; the vault and the
+  # checkout both live on this host. See modules/nixos/vault-task-sync.nix for
+  # the sops keys it depends on.
+  local.vaultTaskSync.enable = true;
 
   # Reload systemd user services on Home Manager activation
   systemd.user.startServices = "sd-switch";
