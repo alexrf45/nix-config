@@ -171,6 +171,14 @@
       # ~ setopt EXTENDED_HISTORY — timestamps in `history` output
       HISTTIMEFORMAT="%F %T  "
 
+      # fzf reads its options from this file on every invocation. Exported here
+      # rather than via home.sessionVariables because hm-session-vars.sh guards
+      # itself with __HM_SESS_VARS_SOURCED — an already-running graphical
+      # session keeps re-exporting the value it captured at login, so option
+      # changes would not show up until a full logout. .bashrc has no such
+      # guard, so a new shell is enough. See the fzf block in packages.nix.
+      export FZF_DEFAULT_OPTS_FILE="${config.xdg.configHome}/fzf/fzfrc"
+
       # ===================================================================
       # Prompt
       #
