@@ -50,6 +50,11 @@
   # Tailscale mesh VPN (mirrors the Debian tailscale setup).
   services.tailscale.enable = true;
 
+  # Tailscale from unstable: stable nixos-26.05 is stuck on the 1.98 series,
+  # months behind upstream. This option drives tailscaled *and* the CLI, so it
+  # upgrades the whole install. Drop it once stable reaches >= 1.102.
+  services.tailscale.package = pkgs-unstable.tailscale;
+
   # libvirt/KVM + virt-manager (mirrors the Debian QEMU/libvirt setup).
   # Docker is already enabled by modules/nixos/virtualisation.nix.
   virtualisation.libvirtd.enable = true;
