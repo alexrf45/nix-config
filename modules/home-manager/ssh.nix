@@ -27,6 +27,9 @@
 
     [[ssh-keys]]
     vault = "HomeLab"
+
+    [[ssh-keys]]
+    vault = "Security"
   '';
 
   # GTK PIN entry dialog — works under Sway/Wayland (via XWayland), non-GNOME
