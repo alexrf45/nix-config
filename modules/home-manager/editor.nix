@@ -410,21 +410,6 @@
     local function uuid() return os.date("%Y%m%d%H%M") end
     local function rfc3339() return os.date("%Y-%m-%dT%H:%M:%SZ") end
 
-    -- title → filename slug: lowercase, non-alphanumerics collapsed to "-", ~50 chars
-    local function slugify(title)
-      local s = title:lower():gsub("[^%w]+", "-")
-      s = s:gsub("^%-+", ""):gsub("%-+$", "")
-      s = s:sub(1, 50):gsub("%-+$", "")
-      return s
-    end
-
-    -- {uuid}-{slug} (bare uuid when the title yields no usable slug)
-    local function note_name(id, title)
-      local slug = slugify(title)
-      if slug == "" then return id end
-      return id .. "-" .. slug
-    end
-
     local function read_template(name)
       local path = vault .. "/templates/" .. name
       local f = io.open(path, "r")
@@ -466,7 +451,7 @@
       local tmpl = read_template(template_name) or "# {{title}}\n\n"
       local content, id = fill_template(tmpl, title)
       local dir = subdir and (vault .. "/" .. subdir) or vault
-      write_and_open(dir .. "/" .. note_name(id, title) .. ".md", content)
+      write_and_open(dir .. "/" .. id .. ".md", content)
     end
 
     -- ── pickers ──────────────────────────────────────────────────────────────────
@@ -522,7 +507,7 @@
       if #matches == 0 then
         local tmpl = read_template("atomic.md") or "# {{title}}\n\n"
         local content, id = fill_template(tmpl, link)
-        write_and_open(vault .. "/" .. note_name(id, link) .. ".md", content)
+        write_and_open(vault .. "/" .. id .. ".md", content)
       elseif #matches == 1 then
         vim.cmd("edit " .. vim.fn.fnameescape(matches[1]))
       else
@@ -543,7 +528,7 @@
     function M.new_fleeting()   from_template("note.md", "Fleeting note: ", "inbox") end
     function M.new_literature() from_template("literature.md", "Literature note: ") end
     function M.new_project()    from_template("project.md", "Project note: ") end
-    function M.new_poem()       from_template("poem.md", "Poem title: ", "writing") end
+    function M.new_poem()       from_template("poem.md", "Poem title: ", "drafts") end
 
     function M.show_backlinks()
       local name = vim.fn.expand("%:t:r")
@@ -575,13 +560,13 @@
 
     function M.insert_img_link()
       require("fzf-lua").files({
-        cwd    = vault .. "/media/images",
+        cwd    = vault .. "/attachments/images",
         prompt = "Insert image> ",
         actions = {
           ["default"] = function(selected)
             if not selected or #selected == 0 then return end
             local name = vim.fn.fnamemodify(selected[1], ":t")
-            local link = "![" .. name .. "](media/images/" .. name .. ")"
+            local link = "![" .. name .. "](attachments/images/" .. name .. ")"
             local row, col = unpack(vim.api.nvim_win_get_cursor(0))
             vim.api.nvim_buf_set_text(0, row - 1, col, row - 1, col, { link })
             vim.api.nvim_win_set_cursor(0, { row, col + #link })
