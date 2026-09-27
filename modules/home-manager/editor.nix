@@ -410,6 +410,15 @@
     local function uuid() return os.date("%Y%m%d%H%M") end
     local function rfc3339() return os.date("%Y-%m-%dT%H:%M:%SZ") end
 
+    -- drafts/ keeps the prose title: spaces -> "_", punctuation dropped.
+    -- Poems and prose are titled works, not zettels (see naming-and-structure).
+    local function draft_name(title)
+      local s = title:gsub("[^%w%s%-%.]", "")
+      s = s:gsub("%s+", "_"):gsub("_+", "_")
+      s = s:gsub("^_+", ""):gsub("_+$", "")
+      return s
+    end
+
     local function read_template(name)
       local path = vault .. "/templates/" .. name
       local f = io.open(path, "r")
@@ -445,13 +454,15 @@
       end
     end
 
-    local function from_template(template_name, prompt_text, subdir)
+    local function from_template(template_name, prompt_text, subdir, namer)
       local title = vim.fn.input(prompt_text)
       if title == "" then return end
       local tmpl = read_template(template_name) or "# {{title}}\n\n"
       local content, id = fill_template(tmpl, title)
       local dir = subdir and (vault .. "/" .. subdir) or vault
-      write_and_open(dir .. "/" .. id .. ".md", content)
+      local name = namer and namer(title) or id
+      if name == "" then name = id end
+      write_and_open(dir .. "/" .. name .. ".md", content)
     end
 
     -- ── pickers ──────────────────────────────────────────────────────────────────
@@ -528,7 +539,7 @@
     function M.new_fleeting()   from_template("note.md", "Fleeting note: ", "inbox") end
     function M.new_literature() from_template("literature.md", "Literature note: ") end
     function M.new_project()    from_template("project.md", "Project note: ") end
-    function M.new_poem()       from_template("poem.md", "Poem title: ", "drafts") end
+    function M.new_poem()       from_template("poem.md", "Poem title: ", "drafts", draft_name) end
 
     function M.show_backlinks()
       local name = vim.fn.expand("%:t:r")
