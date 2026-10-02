@@ -51,9 +51,12 @@
     system = "x86_64-linux";
     inherit (self) outputs;
 
+    # Unstable channel, plus version pins layered on top of it — see
+    # overlays/unstable-pins.nix (claude-code is pinned ahead of the channel).
     pkgs-unstable = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
+      overlays = [ (import ./overlays/unstable-pins.nix { inherit inputs; }) ];
     };
   in
   {
