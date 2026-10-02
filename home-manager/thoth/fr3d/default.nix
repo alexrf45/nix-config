@@ -75,6 +75,7 @@
     remmina # RDP/VNC client
     gimp
     teams-for-linux
+    calibre # Ebook library + Kindle sync (USB plumbing: modules/nixos/kindle.nix)
   ];
 
   # -----------------------------------------------------------------------

@@ -15,6 +15,7 @@
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
     #../../modules/nixos/imobile.nix          # iOS-over-USB (iPhone backup / iMessage export)
+    ../../modules/nixos/kindle.nix           # Kindle-over-USB (udisks2 + MTP) for calibre
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/searxng.nix          # private metasearch for Kindly MCP (thoth-only)
     ../../modules/nixos/spotify-player.nix   # custom Spotify client ID via sops (thoth-only)
