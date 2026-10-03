@@ -389,6 +389,8 @@
             options = {
               wrap = true,      -- soft-wrap prose (global opt.wrap is false)
               linebreak = true, -- break at word boundaries, not mid-word
+              number = false,         -- hide line numbers
+              relativenumber = false, -- hide relative numbers
             },
           },
           plugins = {
