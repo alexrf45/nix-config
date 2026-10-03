@@ -370,6 +370,44 @@
     return { "OXY2DEV/markview.nvim", lazy = true }
   '';
 
+  # Distraction-free buffer for writing (prose/poems) — rarely used for code.
+  # <leader>Z rather than <leader>uz, which LazyVim gives to Snacks' own zen toggle.
+  xdg.configFile."nvim/lua/plugins/zen-mode.lua".text = ''
+    return {
+      {
+        "folke/zen-mode.nvim",
+        cmd = "ZenMode",
+        dependencies = { "folke/twilight.nvim" },
+        keys = {
+          { "<leader>Z", "<cmd>ZenMode<cr>", desc = "Zen mode (writing)" },
+        },
+        opts = {
+          window = {
+            backdrop = 0.70, -- shade the backdrop; 1 keeps it the same as Normal
+            width = 120,     -- cells when > 1, fraction of the editor when <= 1
+            height = 1,
+            options = {
+              wrap = true,      -- soft-wrap prose (global opt.wrap is false)
+              linebreak = true, -- break at word boundaries, not mid-word
+            },
+          },
+          plugins = {
+            options = {
+              enabled = true,
+              ruler = false,   -- hide the ruler text in the cmd line area
+              showcmd = false, -- hide the command in the last line
+              laststatus = 1,  -- statusline only shown if laststatus == 3
+            },
+            twilight = { enabled = true }, -- dim inactive text while zen is open
+            gitsigns = { enabled = true }, -- hide git signs
+            tmux = { enabled = true },     -- hide the tmux statusline
+            todo = { enabled = false },    -- keep todo-comments highlights
+          },
+        },
+      },
+    }
+  '';
+
   xdg.configFile."nvim/lua/plugins/neogit.lua".text = ''
     return {
       {
