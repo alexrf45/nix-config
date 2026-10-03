@@ -28,8 +28,8 @@ hosts/<host>/          host entry + hardware-configuration.nix
 modules/nixos/         system modules (hardware, networking, security, desktop, audio, …)
 modules/home-manager/  HM modules (shell, terminal, editor, tmux, git, dev-tools, …)
 home-manager/<host>/   per-user HM entry point
-overlays/              unstable-packages + additions (vendored pkgs) overlays
-pkgs/                  vendored derivations (1Password CLI/GUI beta)
+overlays/              unstable-packages + additions (vendored pkgs) + unstable-pins overlays
+pkgs/                  vendored derivations (1Password CLI/GUI beta) + pinned manifests
 templates/             flake templates (python, mkdocs)
 secrets/               SOPS-encrypted .yaml (age)
 ```
@@ -41,6 +41,18 @@ Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but un
 ## Key design decisions
 
 - nixpkgs `nixos-26.05` stable + `nixos-unstable` overlay for select packages.
+- **Where a package's version comes from**, in order of preference — promote reluctantly, demote
+  eagerly, and comment what retires each override:
+  1. stable `nixpkgs` — the default.
+  2. `pkgs-unstable.<pkg>` — stable is too old, the channel's cadence is fine (`devenv`,
+     `tailscale`). Moves on `/flake-update`.
+  3. a pin on top of unstable (`overlays/unstable-pins.nix`) — the package moves faster than the
+     channel. `claude-code` lives here: it ships ~daily, and bumping the whole unstable input to
+     chase it also rebuilds `spotify-player` from source. Bumping a pin is independent of the lock.
+  4. vendored `pkgs/*.nix` + `overlays/additions.nix` — not in nixpkgs at all (1Password betas,
+     `imessage-exporter`, `proton-drive-cli`).
+  5. an upstream flake input — upstream publishes a good flake and you want to track it
+     (`spotify-player`).
 - Home Manager integrated (`useGlobalPkgs = true`); overlays declared in `hosts/<host>/default.nix`, not in home.nix.
 - horus GPU (retired host): NVIDIA PRIME offload (AMD drives the display, NVIDIA on demand).
 - Sound: PipeWire + WirePlumber; Display: i3 (X11) (horus was aligned to thoth before retirement). Sway modules kept but unused.
