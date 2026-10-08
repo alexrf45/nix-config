@@ -19,4 +19,13 @@ final: prev: {
   # pkgs-unstable.proton-drive-cli once it lands and settles.
   # See pkgs/proton-drive-cli.nix for update instructions.
   proton-drive-cli = final.callPackage ../pkgs/proton-drive-cli.nix { };
+
+  # avd4linux — Azure Virtual Desktop client with CAC redirection.
+  # Not in nixpkgs; see pkgs/avd4linux.nix for update instructions.
+  # FreeRDP from unstable (3.31) rather than stable (3.26): upstream tests
+  # against 3.32, and its AAD/RD-gateway handshake is parsed off FreeRDP's
+  # terminal output, so stay close to that. Both channels ship pcsclite 2.4.1,
+  # so it still speaks the same protocol as the stable pcscd. Drop the
+  # override once stable reaches >= 3.31.
+  avd4linux = final.callPackage ../pkgs/avd4linux.nix { freerdp = final.unstable.freerdp; };
 }

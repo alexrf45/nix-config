@@ -14,6 +14,7 @@
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix
+    ../../modules/nixos/avd4linux.nix        # Azure Virtual Desktop + CAC (needs smartcard.nix)
     #../../modules/nixos/imobile.nix          # iOS-over-USB (iPhone backup / iMessage export)
     ../../modules/nixos/kindle.nix           # Kindle-over-USB (udisks2 + MTP) for calibre
     ../../modules/nixos/syncthing.nix
