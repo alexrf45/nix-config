@@ -92,11 +92,21 @@ python3Packages.buildPythonApplication {
   # One wrapper, not two: fold the GApps env (typelibs, GIO modules, schemas)
   # into the Python wrapper. bwrap is needed by the sandbox probe; ldd by the
   # FreeRDP MS-RDPECAM capability check.
+  #
+  # OPENSC_CONF: a DoD CAC carries both CAC and PIV applets, and stock OpenSC
+  # may bind either driver — the same card then shows up as two different
+  # tokens (manufacturer=piv_II vs. "Common Access Card", different serials).
+  # The app picks its cert URI in one process and WebKit resolves it via p11-kit
+  # in another; if the drivers differ, GIO fails with "The requested data were
+  # not available" and the PIN prompt never appears. Upstream's opensc.conf
+  # pins PIV-II, but only the Flatpak applied it. Scoped to this app (and the
+  # WebKit/FreeRDP children that inherit it); SSH/Firefox keep the system config.
   dontWrapGApps = true;
   preFixup = ''
     makeWrapperArgs+=(
       "''${gappsWrapperArgs[@]}"
       --prefix PATH : ${lib.makeBinPath [ bubblewrap (lib.getBin glibc) ]}
+      --set-default OPENSC_CONF $out/etc/opensc.conf
     )
   '';
 
@@ -104,6 +114,7 @@ python3Packages.buildPythonApplication {
     install -Dm644 data/org.avd4linux.AVD4Linux.desktop -t $out/share/applications
     install -Dm644 data/org.avd4linux.AVD4Linux.svg -t $out/share/icons/hicolor/scalable/apps
     install -Dm644 data/org.avd4linux.AVD4Linux.metainfo.xml -t $out/share/metainfo
+    install -Dm644 data/opensc.conf -t $out/etc
   '';
 
   nativeCheckInputs = [ python3Packages.unittestCheckHook ];
