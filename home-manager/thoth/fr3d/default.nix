@@ -33,7 +33,7 @@
   # i3 per-host knobs (shared modules/home-manager/desktop-i3.nix).
   local.i3 = {
     wirelessInterface = "wlp1s0";
-    primaryOutput = "HDMI-1"; # dock: external HDMI primary, laptop panel off
+    primaryOutput = "HDMI-1"; # external-only when plugged in, laptop panel otherwise
   };
 
   # Reload systemd user services on Home Manager activation

@@ -6,6 +6,24 @@
 }: let
   cfg = config.local.i3;
 
+  wallpaper = "$HOME/.config/pictures/monochrome.jpg";
+
+  # External display only when it's plugged in, laptop panel otherwise. Run at
+  # i3 start/reload and by srandrd on every RandR connect/disconnect event.
+  displaySwitch = pkgs.writeShellApplication {
+    name = "display-switch";
+    runtimeInputs = with pkgs; [xorg.xrandr gnugrep feh];
+    text = ''
+      if xrandr --query | grep -q "^${cfg.primaryOutput} connected"; then
+        xrandr --output ${cfg.primaryOutput} --auto --primary --output ${cfg.internalOutput} --off
+      else
+        xrandr --output ${cfg.internalOutput} --auto --primary --output ${cfg.primaryOutput} --off
+      fi
+      # Repaint the wallpaper for the new screen geometry.
+      feh --no-fehbg --bg-fill "${wallpaper}"
+    '';
+  };
+
   mod = "Mod4";
   # vim-style focus keys, matching the Debian i3 config
   up = "l";
@@ -61,9 +79,10 @@ in {
       default = null;
       example = "HDMI-1";
       description = ''
-        External display (xrandr output name) forced on as primary at
-        startup, turning the internal panel off. Null disables the
-        external-monitor autoconfig entirely (internal panel stays on).
+        External display (xrandr output name). While it's connected it is the
+        only active output (internal panel off); unplugged, the internal
+        panel takes over — switched automatically on hotplug via srandrd.
+        Null disables the auto-switch entirely (internal panel stays on).
       '';
     };
 
@@ -207,7 +226,7 @@ in {
 
         startup = [
           {
-            command = "feh --no-fehbg --bg-fill $HOME/.config/pictures/monochrome.jpg";
+            command = "feh --no-fehbg --bg-fill ${wallpaper}";
             always = true;
             notification = false;
           }
@@ -273,9 +292,11 @@ in {
         ''
         + lib.optionalString (cfg.primaryOutput != null) ''
 
-          # External monitor as primary; laptop panel off when connected.
-          exec_always --no-startup-id xrandr --output ${cfg.primaryOutput} --auto --primary --output ${cfg.internalOutput} --off
-          workspace 1 output ${cfg.primaryOutput}
+          # Auto-switch: external monitor only while connected, laptop panel
+          # otherwise. srandrd forks and re-runs display-switch on hotplug.
+          exec_always --no-startup-id ${lib.getExe displaySwitch}
+          exec --no-startup-id ${lib.getExe pkgs.srandrd} ${lib.getExe displaySwitch}
+          workspace 1 output ${cfg.primaryOutput} ${cfg.internalOutput}
         '';
     };
 
