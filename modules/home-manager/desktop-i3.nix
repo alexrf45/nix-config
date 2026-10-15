@@ -38,28 +38,27 @@
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 
   # -----------------------------------------------------------------------
-  # luna palette — single source of truth for i3 borders, i3bar, and rofi.
-  # Mirrors WTFox/luna.nvim: a near-black session with a small set of muted
-  # accents — warm signal, cool func-blue, plum type, sage string. Base
-  # (#060606) matches the kitty/neovim luna theme so the whole X11 session
-  # reads as one system.
+  # Session palette — single source of truth for i3 borders, i3bar, i3status
+  # and rofi. Currently guts (vossenwout/guts.nvim), mapped from its
+  # lua/guts/palette.lua roles so the X11 session matches kitty/neovim.
+  # Accent is night_sky_blue, the same as kitty's active tab/border.
   # -----------------------------------------------------------------------
-  luna = {
-    base = "#060606"; # background (luna bg)
-    mantle = "#1c1c1c"; # darker surface (inactive tab / bar bg)
-    surface = "#333333"; # raised
-    text = "#e4e4e8"; # foreground
-    subtext = "#a8a8a8"; # dim text (grey_light)
-    muted = "#7c7c7c"; # disabled (comment grey)
-    overlay = "#404040"; # inactive border
-    accent = "#c2916a"; # active accent (signal — luna's warm UI cue)
-    red = "#e08585"; # error
-    green = "#6fbe80"; # ok
-    yellow = "#d9a35a"; # warning
-    blue = "#75a1c7"; # func
-    magenta = "#c4a8d6"; # type
-    cyan = "#75a1c7"; # func (luna maps cyan → func)
-    urgent = "#e08585"; # error
+  palette = {
+    base = "#101113"; # background (rainy_night_black_1)
+    mantle = "#161719"; # darker surface: inactive tab / bar bg (rainy_night_black_2)
+    surface = "#4a4253"; # raised (kitty selection / bright black)
+    text = "#9f9e99"; # foreground (dragon_slayer_white)
+    subtext = "#787487"; # dim text (dragon_slayer_gray_2)
+    muted = "#554a62"; # disabled / separators (dragon_slayer_gray_1)
+    overlay = "#554a62"; # inactive border (dragon_slayer_gray_1)
+    accent = "#697a9a"; # active accent (night_sky_blue)
+    red = "#93554b"; # error (kitty red)
+    green = "#a7d8b0"; # ok (brand_of_sacrifice_green_1)
+    yellow = "#ac7f7b"; # warning (campfire)
+    blue = "#697a9a"; # types (night_sky_blue)
+    magenta = "#83799c"; # functions (griffith_purple)
+    cyan = "#7a837c"; # strings (cliff_green)
+    urgent = "#93554b"; # error (kitty red)
   };
 in {
   # -----------------------------------------------------------------------
@@ -117,7 +116,7 @@ in {
           smartGaps = true;
         };
 
-        # Thin borderless-title edge; luna accent on the focused window is
+        # Thin borderless-title edge; accent edge on the focused window is
         # the focus indicator (picom rounds these corners to match).
         window.border = 2;
         window.titlebar = false;
@@ -253,7 +252,7 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          # i3bar + i3status — luna-themed, UbuntuMono Nerd Font for glyphs.
+          # i3bar + i3status — palette-themed, UbuntuMono Nerd Font for glyphs.
           bar {
              position top
              mode hide
@@ -264,26 +263,26 @@ in {
              status_command i3status -c ~/.config/i3/i3status.conf
              separator_symbol " · "
              colors {
-                    background         ${luna.mantle}
-                    statusline         ${luna.text}
-                    separator          ${luna.muted}
-                    focused_workspace  ${luna.accent}  ${luna.accent}  ${luna.base}
-                    active_workspace   ${luna.surface} ${luna.surface} ${luna.text}
-                    inactive_workspace ${luna.mantle}  ${luna.mantle}  ${luna.subtext}
-                    urgent_workspace   ${luna.urgent}  ${luna.urgent}  ${luna.base}
-                    binding_mode       ${luna.yellow}  ${luna.yellow}  ${luna.base}
+                    background         ${palette.mantle}
+                    statusline         ${palette.text}
+                    separator          ${palette.muted}
+                    focused_workspace  ${palette.accent}  ${palette.accent}  ${palette.base}
+                    active_workspace   ${palette.surface} ${palette.surface} ${palette.text}
+                    inactive_workspace ${palette.mantle}  ${palette.mantle}  ${palette.subtext}
+                    urgent_workspace   ${palette.urgent}  ${palette.urgent}  ${palette.base}
+                    binding_mode       ${palette.yellow}  ${palette.yellow}  ${palette.base}
                    }
             }
 
           # Drop the title bar on floating windows too (tiled ones are already
-          # borderless via window.titlebar = false); keep the 2px luna edge.
+          # borderless via window.titlebar = false); keep the 2px accent edge.
           default_floating_border pixel 2
 
-          # Window borders — luna. Fields: border background text indicator child_border
-          client.focused          ${luna.accent}  ${luna.accent}  ${luna.base}    ${luna.accent}  ${luna.accent}
-          client.focused_inactive ${luna.overlay} ${luna.mantle}  ${luna.subtext} ${luna.overlay} ${luna.overlay}
-          client.unfocused        ${luna.surface} ${luna.mantle}  ${luna.muted}   ${luna.surface} ${luna.surface}
-          client.urgent           ${luna.urgent}  ${luna.urgent}  ${luna.base}    ${luna.urgent}  ${luna.urgent}
+          # Window borders. Fields: border background text indicator child_border
+          client.focused          ${palette.accent}  ${palette.accent}  ${palette.base}    ${palette.accent}  ${palette.accent}
+          client.focused_inactive ${palette.overlay} ${palette.mantle}  ${palette.subtext} ${palette.overlay} ${palette.overlay}
+          client.unfocused        ${palette.surface} ${palette.mantle}  ${palette.muted}   ${palette.surface} ${palette.surface}
+          client.urgent           ${palette.urgent}  ${palette.urgent}  ${palette.base}    ${palette.urgent}  ${palette.urgent}
 
           # Disable screen blanking / DPMS (mirrors the old `xset s off -dpms`).
           exec_always --no-startup-id xset s off
@@ -302,14 +301,14 @@ in {
 
     # i3status config file (referenced by the bar's status_command above).
     xdg.configFile."i3/i3status.conf".text = ''
-      # i3status — drives the i3bar for the X11 session. luna good/bad/degraded.
+      # i3status — drives the i3bar for the X11 session. palette good/bad/degraded.
       general {
               colors = true
               markup = "pango"
               interval = 5
-              color_good = "${luna.green}"
-              color_bad = "${luna.red}"
-              color_degraded = "${luna.yellow}"
+              color_good = "${palette.green}"
+              color_bad = "${palette.red}"
+              color_degraded = "${palette.yellow}"
       }
 
       order += "wireless ${cfg.wirelessInterface}"
@@ -392,7 +391,7 @@ in {
       active-opacity = 1.0;
     '';
 
-    # rofi launcher — luna theme, rounded to match picom/polybar (10px).
+    # rofi launcher — session palette, rounded to match picom/polybar (10px).
     programs.rofi = {
       enable = true;
       terminal = "${pkgs.kitty}/bin/kitty";
@@ -401,12 +400,12 @@ in {
         inherit (config.lib.formats.rasi) mkLiteral;
       in {
         "*" = {
-          bg = mkLiteral luna.base;
-          bg-alt = mkLiteral luna.mantle;
-          fg = mkLiteral luna.text;
-          fg-dim = mkLiteral luna.subtext;
-          accent = mkLiteral luna.accent;
-          urgent = mkLiteral luna.urgent;
+          bg = mkLiteral palette.base;
+          bg-alt = mkLiteral palette.mantle;
+          fg = mkLiteral palette.text;
+          fg-dim = mkLiteral palette.subtext;
+          accent = mkLiteral palette.accent;
+          urgent = mkLiteral palette.urgent;
           background-color = mkLiteral "transparent";
           text-color = mkLiteral "@fg";
         };
