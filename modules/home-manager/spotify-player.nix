@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # ---------------------------------------------------------------------------
   # spotify_player application config.
   #
@@ -19,7 +18,7 @@
   # literal ID would leak to both the moment this file is rendered.
   # ---------------------------------------------------------------------------
   xdg.configFile."spotify-player/app.toml".text = ''
-    theme = "gruvbox-material"
+    theme = "guts"
     client_id_command = { command = "cat", args = ["/run/secrets/spotify-client-id"] }
     client_port = 8080
     login_redirect_uri = "http://127.0.0.1:8989/login"
@@ -85,61 +84,61 @@
   '';
 
   # ---------------------------------------------------------------------------
-  # Theme: gruvbox-material dark soft (sainnhe/gruvbox-material), matching
-  # kitty (modules/home-manager/terminal.nix) and neovim (editor.nix).
+  # Theme: guts (vossenwout/guts.nvim), matching kitty
+  # (modules/home-manager/terminal.nix) and neovim (editor.nix).
   #
   # Hexes are lifted verbatim from the kitty palette so the TUI sits flush
-  # against the terminal it runs in. Upstream ships a `gruvbox_dark`, but that is
-  # classic gruvbox (#282828 / #ebdbb2), not the material soft variant used here.
+  # against the terminal it runs in; component styles reuse guts.nvim's own
+  # palette roles (gray_1 borders, gray_2 muted text, brand-green highlights).
   #
-  # Referenced by `theme = "gruvbox-material"` in app.toml above. A theme named
+  # Referenced by `theme = "guts"` in app.toml above. A theme named
   # there but absent here falls back to `default` silently, with no error, which
   # is exactly how the previous `theme = "dracula"` line sat inert.
   # ---------------------------------------------------------------------------
   xdg.configFile."spotify-player/theme.toml".text = ''
     [[themes]]
-    name = "gruvbox-material"
+    name = "guts"
 
     [themes.palette]
-    background = "#32302f"
-    foreground = "#d4be98"
-    black = "#665c54"
-    red = "#ea6962"
-    green = "#a9b665"
-    yellow = "#d8a657"
-    blue = "#7daea3"
-    magenta = "#d3869b"
-    cyan = "#89b482"
-    white = "#d4be98"
-    bright_black = "#928374"
-    bright_red = "#ea6962"
-    bright_green = "#a9b665"
-    bright_yellow = "#d8a657"
-    bright_blue = "#7daea3"
-    bright_magenta = "#d3869b"
-    bright_cyan = "#89b482"
-    bright_white = "#d4be98"
+    background = "#101113"
+    foreground = "#9f9e99"
+    black = "#101113"
+    red = "#93554b"
+    green = "#51606a"
+    yellow = "#ac7f7b"
+    blue = "#697a9a"
+    magenta = "#83799c"
+    cyan = "#7a837c"
+    white = "#9f9e99"
+    bright_black = "#4a4253"
+    bright_red = "#93554b"
+    bright_green = "#a7d8b0"
+    bright_yellow = "#e1ffe5"
+    bright_blue = "#8288a0"
+    bright_magenta = "#997e95"
+    bright_cyan = "#879493"
+    bright_white = "#a8a7a2"
 
     [themes.component_style]
-    block_title = { fg = "#d8a657", modifiers = ["Bold"] }
-    border = { fg = "#504945" }
-    playback_status = { fg = "#a9b665", modifiers = ["Bold"] }
-    playback_track = { fg = "#d4be98", modifiers = ["Bold"] }
-    playback_artists = { fg = "#7daea3" }
-    playback_album = { fg = "#d3869b" }
-    playback_genres = { fg = "#89b482" }
-    playback_metadata = { fg = "#928374" }
-    playback_progress_bar = { fg = "#d8a657", bg = "#45403d" }
-    playback_progress_bar_unfilled = { fg = "#504945" }
-    current_playing = { fg = "#a9b665", modifiers = ["Bold"] }
-    page_desc = { fg = "#d8a657", modifiers = ["Bold"] }
-    playlist_desc = { fg = "#928374" }
-    table_header = { fg = "#7daea3", modifiers = ["Bold"] }
-    selection = { bg = "#45403d", fg = "#d4be98", modifiers = ["Bold"] }
-    secondary_row = { bg = "#3c3836" }
-    like = { fg = "#ea6962", modifiers = ["Bold"] }
-    lyrics_played = { fg = "#928374" }
-    lyrics_playing = { fg = "#d8a657", modifiers = ["Bold"] }
-    visualization = { low = "#7daea3", mid = "#a9b665", high = "#ea6962" }
+    block_title = { fg = "#ac7f7b", modifiers = ["Bold"] }
+    border = { fg = "#554a62" }
+    playback_status = { fg = "#a7d8b0", modifiers = ["Bold"] }
+    playback_track = { fg = "#9f9e99", modifiers = ["Bold"] }
+    playback_artists = { fg = "#697a9a" }
+    playback_album = { fg = "#997e95" }
+    playback_genres = { fg = "#7a837c" }
+    playback_metadata = { fg = "#787487" }
+    playback_progress_bar = { fg = "#ac7f7b", bg = "#4a4253" }
+    playback_progress_bar_unfilled = { fg = "#554a62" }
+    current_playing = { fg = "#a7d8b0", modifiers = ["Bold"] }
+    page_desc = { fg = "#ac7f7b", modifiers = ["Bold"] }
+    playlist_desc = { fg = "#787487" }
+    table_header = { fg = "#697a9a", modifiers = ["Bold"] }
+    selection = { bg = "#4a4253", fg = "#9f9e99", modifiers = ["Bold"] }
+    secondary_row = { bg = "#161719" }
+    like = { fg = "#93554b", modifiers = ["Bold"] }
+    lyrics_played = { fg = "#787487" }
+    lyrics_playing = { fg = "#ac7f7b", modifiers = ["Bold"] }
+    visualization = { low = "#697a9a", mid = "#a7d8b0", high = "#93554b" }
   '';
 }
