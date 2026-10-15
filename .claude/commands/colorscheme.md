@@ -6,7 +6,9 @@ argument-hint: "<github-url-or-colorscheme-name>"
 Switch the shared neovim + kitty colorscheme. `$ARGUMENTS` is either a GitHub URL to a
 neovim colorscheme plugin (e.g. `https://github.com/vossenwout/guts.nvim`) or a scheme
 name to resolve (e.g. `kanagawa`, `rose-pine`) — if a name, find its canonical neovim
-plugin repo first (WebFetch; no `gh` on thoth).
+plugin repo first. `gh` is installed and authenticated on thoth — `gh api repos/<owner>/<repo>/git/trees/HEAD?recursive=1`
+lists the files, and `gh api repos/<owner>/<repo>/contents/<path> -H 'Accept: application/vnd.github.raw'`
+reads one (WebFetch works too).
 
 ## 1. Gather the theme
 
@@ -36,11 +38,15 @@ Work on a feature branch off `main` (never commit to `main`).
   use the theme's blue-ish accent; inactive use a near-background dark). Lowercase all hex.
 - Note the source of the palette (e.g. `— from extras/ghostty/<name> upstream`) in the
   kitty block comment.
+- `modules/home-manager/spotify-player.nix` — `theme = "<name>"` in `app.toml` plus the
+  `theme.toml` block, whose palette mirrors kitty's (component styles map onto the theme's
+  own palette roles).
 - Grep the repo for the *old* theme name to catch stragglers (lualine, docs, i3status).
 
 ## 3. Verify & land
 
-1. `nix fmt` (alejandra).
+1. `alejandra` on the changed files only (`nix run nixpkgs#alejandra -- <files>`) — the repo
+   isn't fully formatted, so `nix fmt .` reformats ~55 unrelated files.
 2. `nixos-rebuild build --flake .#thoth` (or the active host) — no sudo.
 3. Commit (`feat: switch colorscheme to <name>`), push, PR into `main`. Remind the user
    the nvim plugin itself is fetched by lazy.nvim at runtime, so first launch after
