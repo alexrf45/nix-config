@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: gruvbox-material dark soft (sainnhe/gruvbox-material)
+  # Theme: guts (dark)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -87,7 +87,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "gruvbox-material", "habamax" },
+        colorscheme = { "guts", "habamax" },
       },
       checker = {
         enabled = true,
@@ -177,20 +177,16 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- gruvbox-material dark soft — sainnhe/gruvbox-material.
+    -- guts — github.com/vossenwout/guts.nvim
     -- Fetched by lazy.nvim; LazyVim is told to load it as the colorscheme.
     return {
       {
-        "sainnhe/gruvbox-material",
+        "vossenwout/guts.nvim",
+        name = "guts",
         lazy = false,
         priority = 1000,
-        config = function()
-          vim.g.gruvbox_material_background = "soft"
-          vim.g.gruvbox_material_foreground = "material"
-          vim.g.gruvbox_material_better_performance = 1
-        end,
       },
-      { "LazyVim/LazyVim", opts = { colorscheme = "gruvbox-material" } },
+      { "LazyVim/LazyVim", opts = { colorscheme = "guts" } },
     }
   '';
 
