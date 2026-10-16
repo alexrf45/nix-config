@@ -6,7 +6,7 @@
 }: let
   cfg = config.local.i3;
 
-  wallpaper = "$HOME/.config/pictures/monochrome.jpg";
+  wallpaper = "$HOME/.config/pictures/kali.png";
 
   # External display only when it's plugged in, laptop panel otherwise. Run at
   # i3 start/reload and by srandrd on every RandR connect/disconnect event.
@@ -363,8 +363,8 @@ in {
     '';
 
     # Wallpapers used by i3 (background) and i3lock (lock screen).
-    xdg.configFile."pictures/monochrome.jpg" = {
-      source = ../../dotfiles/pictures/monochrome.jpg;
+    xdg.configFile."pictures/kali.png" = {
+      source = ../../dotfiles/pictures/kali.png;
       force = true;
     };
     xdg.configFile."pictures/golden-mountains.png" = {
