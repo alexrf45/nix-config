@@ -367,10 +367,6 @@ in {
       source = ../../dotfiles/pictures/kali.png;
       force = true;
     };
-    xdg.configFile."pictures/golden-mountains.png" = {
-      source = ../../dotfiles/pictures/golden-mountains.png;
-      force = true;
-    };
     xdg.configFile."pictures/sky.png" = {
       source = ../../dotfiles/pictures/sky.png;
       force = true;
