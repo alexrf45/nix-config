@@ -42,7 +42,7 @@ Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but un
 
 - nixpkgs `nixos-26.05` stable + `nixos-unstable` overlay for select packages.
 - **Where a package's version comes from**, in order of preference — promote reluctantly, demote
-  eagerly, and comment what retires each override:
+  eagerly, and note (in one line) what retires each override:
   1. stable `nixpkgs` — the default.
   2. `pkgs-unstable.<pkg>` — stable is too old, the channel's cadence is fine (`devenv`,
      `tailscale`). Moves on `/flake-update`.
