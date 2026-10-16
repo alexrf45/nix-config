@@ -10,4 +10,5 @@
   naming (hyphens are valid identifiers: `netcat-gnu`, `recon-ng`).
 - **No hardcoded secrets** or machine-specific paths outside the relevant host module.
 - **Prefer nixpkgs**; vendor (`pkgs/*.nix` + `overlays/additions.nix`) only when a tool isn't packaged.
-- Comment the *why* for non-obvious pins, overrides, and boot-critical settings (VMD, PRIME).
+- Keep comments terse — one line max, even for pins, overrides, and boot-critical settings (VMD,
+  PRIME). Longer rationale or update procedures go in the commit message or `docs/`.
