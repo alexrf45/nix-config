@@ -8,6 +8,7 @@
     ./aws.nix
     ./secrets.nix
     ./unstable.nix
+    ./mise.nix
   ];
 
   home.sessionPath = [
