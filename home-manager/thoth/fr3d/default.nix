@@ -13,6 +13,7 @@
 
     # Shared Home Manager modules
     ../../../modules/home-manager/bash.nix
+    ../../../modules/home-manager/starship.nix
     ../../../modules/home-manager/terminal.nix
     ../../../modules/home-manager/editor.nix
     ../../../modules/home-manager/tmux.nix

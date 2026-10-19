@@ -179,37 +179,8 @@
       # guard, so a new shell is enough. See the fzf block in packages.nix.
       export FZF_DEFAULT_OPTS_FILE="${config.xdg.configHome}/fzf/fzfrc"
 
-      # ===================================================================
-      # Prompt
-      #
-      # ╭ ~/nix-config  main *% (venv)
-      # ╰ ❯
-      #
-      # Renders: cwd · git branch + dirty state · active virtualenv ·
-      # exit-status-coloured ❯. No prompt daemon — everything below is
-      # portable bash and can be pasted into a work box's ~/.bashrc as-is.
-      # ===================================================================
-
-      # git-prompt.sh ships inside git itself. Try the Nix store path first,
-      # then the usual distro locations, so this block survives being copied
-      # onto a RHEL/Debian box.
-      for __gp in \
-        "${pkgs.git}/share/bash-completion/completions/git-prompt.sh" \
-        /usr/share/git-core/contrib/completion/git-prompt.sh \
-        /etc/bash_completion.d/git-prompt.sh
-      do
-        [ -r "$__gp" ] && . "$__gp" && break
-      done
-      unset __gp
-
-      # No-op fallback so PS1 never errors if git-prompt.sh is missing entirely
-      declare -F __git_ps1 >/dev/null 2>&1 || __git_ps1() { :; }
-
-      GIT_PS1_SHOWDIRTYSTATE=1      # * unstaged, + staged
-      GIT_PS1_SHOWUNTRACKEDFILES=1  # %
-      GIT_PS1_SHOWSTASHSTATE=1      # $
-      GIT_PS1_SHOWCOLORHINTS=       # we colour it ourselves
-      VIRTUAL_ENV_DISABLE_PROMPT=1  # we render the venv ourselves
+      # Prompt is starship (starship.nix); it renders the venv itself.
+      VIRTUAL_ENV_DISABLE_PROMPT=1
 
       # Auto-activate a Python virtualenv when entering a project directory,
       # and deactivate on leaving it. This is the bash port of zsh's
@@ -236,28 +207,13 @@
         done
       }
 
-      # PS1 is rebuilt each prompt so the ❯ can carry the last exit status.
-      # $? must be captured on the very first line of this function.
+      # Runs before starship's precmd (starship preserves an existing PROMPT_COMMAND).
       __prompt() {
-        local __exit=$?
-
         history -a          # ~ setopt INC_APPEND_HISTORY: flush immediately
         # Uncomment for full zsh-style SHARE_HISTORY across live sessions:
         # history -c; history -r
 
         auto_venv
-
-        local __char
-        if [ "$__exit" -eq 0 ]; then
-          __char='\[\e[1;32m\]'   # green
-        else
-          __char='\[\e[1;31m\]'   # red
-        fi
-
-        PS1='\[\e[1;37m\]╭\[\e[0m\] \[\e[1;34m\]\w\[\e[0m\]'
-        PS1+='\[\e[1;32m\]$(__git_ps1 "  %s")\[\e[0m\]'
-        PS1+='\[\e[1;33m\]''${VIRTUAL_ENV:+ (''${VIRTUAL_ENV##*/})}\[\e[0m\]'
-        PS1+='\n\[\e[1;37m\]╰\[\e[0m\] '"$__char"'❯\[\e[0m\] '
       }
       PROMPT_COMMAND=__prompt
 
