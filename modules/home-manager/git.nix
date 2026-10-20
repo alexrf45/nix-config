@@ -38,6 +38,7 @@
         aa   = "add --all";
         b    = "branch";
         bd   = "branch -d";
+        cm    = "commit";
         cb   = "checkout -b";
         cl   = "clone";
         clr  = "clone --recurse-modules";

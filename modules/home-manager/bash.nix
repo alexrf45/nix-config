@@ -119,6 +119,7 @@
       gbd = "git bd";
       gcb = "git cb";
       gc = "git cl";
+      gcm = "git cm";
       gcl = "git clr";
       clean = "git nuke";
       checkout = "git co";
