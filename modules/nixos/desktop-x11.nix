@@ -28,7 +28,10 @@
   # LightDM display manager with the GTK greeter (mirrors Debian's lightdm).
   services.xserver.displayManager.lightdm = {
     enable = true;
-    greeters.gtk.enable = true;
+    greeters.gtk = {
+      enable = true;
+      extraConfig = "font-name = Iosevka Aile 11";
+    };
   };
 
   # Boot straight into the i3 session.
@@ -46,26 +49,25 @@
   };
 
   # -----------------------------------------------------------------------
-  # Fonts — JetBrains Mono / Nerd Fonts, matching the Debian setup.
+  # Fonts — Iosevka everywhere: Nerd Font (mono), Aile (sans), Etoile (serif).
   # -----------------------------------------------------------------------
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      nerd-fonts.jetbrains-mono # Primary UI/terminal font (i3 + kitty)
-      nerd-fonts.ubuntu-mono # i3bar font ("UbuntuMono Nerd Font")
-      nerd-fonts.fira-code
-      nerd-fonts.hack
       font-awesome # i3blocks/i3status glyphs
-      noto-fonts
+      nerd-fonts.iosevka # Monospace (kitty, i3, rofi, dunst)
+      (iosevka-bin.override {variant = "Aile";}) # Sans
+      (iosevka-bin.override {variant = "Etoile";}) # Serif
+      noto-fonts # Fallback for glyphs Iosevka lacks
       noto-fonts-color-emoji
-      nerd-fonts.iosevka # Terminal font referenced by kitty (terminal.nix)
       liberation_ttf
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = ["JetBrainsMono Nerd Font Mono"];
-        sansSerif = ["Noto Sans"];
-        serif = ["Noto Serif"];
+        monospace = ["Iosevka Nerd Font Mono"];
+        sansSerif = ["Iosevka Aile"];
+        serif = ["Iosevka Etoile"];
+        emoji = ["Noto Color Emoji"];
       };
     };
   };
