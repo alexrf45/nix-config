@@ -1,7 +1,7 @@
 {...}: {
   # -----------------------------------------------------------------------
-  # kitty — GPU terminal, guts palette (github.com/vossenwout/guts.nvim),
-  # matching the neovim guts theme.
+  # kitty — GPU terminal, posterpole palette (github.com/ilof2/posterpole.nvim),
+  # matching the neovim posterpole theme.
   # -----------------------------------------------------------------------
   programs.kitty = {
     enable = true;
@@ -19,44 +19,44 @@
       confirm_os_window_close = 0;
       enable_audio_bell = "no";
 
-      # guts (dark) — from extras/ghostty/guts upstream
-      background = "#101113";
-      foreground = "#9f9e99";
+      # posterpole (dark) — from posterpole/kitty themes/posterpole.conf upstream
+      background = "#24212a";
+      foreground = "#aea79c";
 
-      cursor = "#9f9e99";
-      cursor_text_color = "#101113";
-      url_color = "#697a9a";
+      cursor = "#afb19d";
+      cursor_text_color = "#24212a";
+      url_color = "#6c7f93";
 
-      selection_background = "#4a4253";
-      selection_foreground = "#e1ffe5";
+      selection_background = "#4d4d4d";
+      selection_foreground = "#afa79d";
 
       # normal
-      color0 = "#101113"; # black
-      color1 = "#93554b"; # red
-      color2 = "#51606a"; # green
-      color3 = "#ac7f7b"; # yellow
-      color4 = "#697a9a"; # blue
-      color5 = "#83799c"; # magenta
-      color6 = "#7a837c"; # cyan
-      color7 = "#9f9e99"; # white
+      color0 = "#2c2c30"; # black
+      color1 = "#a97070"; # red
+      color2 = "#778c73"; # green
+      color3 = "#cc9166"; # yellow
+      color4 = "#6c7f93"; # blue
+      color5 = "#b894af"; # magenta
+      color6 = "#8ea4a2"; # cyan
+      color7 = "#afa79d"; # white
 
       # bright
-      color8 = "#4a4253"; # bright black
-      color9 = "#93554b"; # bright red
-      color10 = "#a7d8b0"; # bright green
-      color11 = "#e1ffe5"; # bright yellow
-      color12 = "#8288a0"; # bright blue
-      color13 = "#997e95"; # bright magenta
-      color14 = "#879493"; # bright cyan
-      color15 = "#a8a7a2"; # bright white
+      color8 = "#a5a59c"; # bright black
+      color9 = "#bc8f8f"; # bright red
+      color10 = "#92a38f"; # bright green
+      color11 = "#d9ac8c"; # bright yellow
+      color12 = "#8a99a8"; # bright blue
+      color13 = "#ccb3c6"; # bright magenta
+      color14 = "#8fa4a2"; # bright cyan
+      color15 = "#c6c0b9"; # bright white
 
-      active_tab_foreground = "#101113";
-      active_tab_background = "#697a9a";
-      inactive_tab_foreground = "#9f9e99";
-      inactive_tab_background = "#161719";
-      active_border_color = "#697a9a";
-      inactive_border_color = "#161719";
-      bell_border_color = "#ac7f7b";
+      active_tab_foreground = "#24212a";
+      active_tab_background = "#6c7f93";
+      inactive_tab_foreground = "#aea79c";
+      inactive_tab_background = "#2c2c30";
+      active_border_color = "#6c7f93";
+      inactive_border_color = "#2c2c30";
+      bell_border_color = "#cc9166";
     };
   };
 }

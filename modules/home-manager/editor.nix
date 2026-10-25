@@ -8,7 +8,7 @@
   # LazyVim + lazy.nvim bootstrap; mason manages LSPs at runtime
   # LazyExtras: editor.fzf (replaces telescope), editor.neo-tree,
   #             ui.mini-starter (replaces snacks dashboard)
-  # Theme: guts (dark)
+  # Theme: posterpole (dark)
   # -----------------------------------------------------------------------
   programs.neovim = {
     enable = true;
@@ -87,7 +87,7 @@
       install = {
         -- install missing plugins on startup
         missing = true,
-        colorscheme = { "guts", "habamax" },
+        colorscheme = { "posterpole", "habamax" },
       },
       checker = {
         enabled = true,
@@ -177,16 +177,16 @@
   # ── plugins ──────────────────────────────────────────────────────────────────
 
   xdg.configFile."nvim/lua/plugins/color.lua".text = ''
-    -- guts — github.com/vossenwout/guts.nvim
+    -- posterpole — github.com/ilof2/posterpole.nvim
     -- Fetched by lazy.nvim; LazyVim is told to load it as the colorscheme.
     return {
       {
-        "vossenwout/guts.nvim",
-        name = "guts",
+        "ilof2/posterpole.nvim",
+        name = "posterpole",
         lazy = false,
         priority = 1000,
       },
-      { "LazyVim/LazyVim", opts = { colorscheme = "guts" } },
+      { "LazyVim/LazyVim", opts = { colorscheme = "posterpole" } },
     }
   '';
 
