@@ -100,7 +100,7 @@
     name = "posterpole"
 
     [themes.palette]
-    background = "#24212a"
+    background = "#141414"
     foreground = "#aea79c"
     black = "#2c2c30"
     red = "#a97070"

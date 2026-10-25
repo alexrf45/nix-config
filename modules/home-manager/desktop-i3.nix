@@ -44,7 +44,7 @@
   # Accent is func blue, the same as kitty's active tab/border.
   # -----------------------------------------------------------------------
   palette = {
-    base = "#24212a"; # background (kitty bg)
+    base = "#141414"; # background (kitty/nvim bg)
     mantle = "#2c2c30"; # alt surface: inactive tab / bar bg (kitty black)
     surface = "#4d4d4d"; # raised (kitty selection)
     text = "#aea79c"; # foreground (kitty fg)

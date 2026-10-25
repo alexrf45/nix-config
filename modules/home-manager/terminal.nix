@@ -19,12 +19,12 @@
       confirm_os_window_close = 0;
       enable_audio_bell = "no";
 
-      # posterpole (dark) — from posterpole/kitty themes/posterpole.conf upstream
-      background = "#24212a";
+      # posterpole (dark) — from posterpole/kitty upstream; bg = nvim bg (#141414)
+      background = "#141414";
       foreground = "#aea79c";
 
       cursor = "#afb19d";
-      cursor_text_color = "#24212a";
+      cursor_text_color = "#141414";
       url_color = "#6c7f93";
 
       selection_background = "#4d4d4d";
@@ -50,7 +50,7 @@
       color14 = "#8fa4a2"; # bright cyan
       color15 = "#c6c0b9"; # bright white
 
-      active_tab_foreground = "#24212a";
+      active_tab_foreground = "#141414";
       active_tab_background = "#6c7f93";
       inactive_tab_foreground = "#aea79c";
       inactive_tab_background = "#2c2c30";
