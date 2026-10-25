@@ -39,26 +39,26 @@
 
   # -----------------------------------------------------------------------
   # Session palette — single source of truth for i3 borders, i3bar, i3status
-  # and rofi. Currently guts (vossenwout/guts.nvim), mapped from its
-  # lua/guts/palette.lua roles so the X11 session matches kitty/neovim.
-  # Accent is night_sky_blue, the same as kitty's active tab/border.
+  # and rofi. Currently posterpole (ilof2/posterpole.nvim), mapped from its
+  # kitty port + lua/posterpole/colors.lua roles so the X11 session matches kitty/neovim.
+  # Accent is func blue, the same as kitty's active tab/border.
   # -----------------------------------------------------------------------
   palette = {
-    base = "#101113"; # background (rainy_night_black_1)
-    mantle = "#161719"; # darker surface: inactive tab / bar bg (rainy_night_black_2)
-    surface = "#4a4253"; # raised (kitty selection / bright black)
-    text = "#9f9e99"; # foreground (dragon_slayer_white)
-    subtext = "#787487"; # dim text (dragon_slayer_gray_2)
-    muted = "#554a62"; # disabled / separators (dragon_slayer_gray_1)
-    overlay = "#554a62"; # inactive border (dragon_slayer_gray_1)
-    accent = "#697a9a"; # active accent (night_sky_blue)
-    red = "#93554b"; # error (kitty red)
-    green = "#a7d8b0"; # ok (brand_of_sacrifice_green_1)
-    yellow = "#ac7f7b"; # warning (campfire)
-    blue = "#697a9a"; # types (night_sky_blue)
-    magenta = "#83799c"; # functions (griffith_purple)
-    cyan = "#7a837c"; # strings (cliff_green)
-    urgent = "#93554b"; # error (kitty red)
+    base = "#141414"; # background (kitty/nvim bg)
+    mantle = "#2c2c30"; # alt surface: inactive tab / bar bg (kitty black)
+    surface = "#4d4d4d"; # raised (kitty selection)
+    text = "#aea79c"; # foreground (kitty fg)
+    subtext = "#a8968a"; # dim text (special)
+    muted = "#4d4d4d"; # disabled / separators (comment)
+    overlay = "#4b4444"; # inactive border (brightTermBlack)
+    accent = "#6c7f93"; # active accent (func)
+    red = "#a97070"; # error (keyword)
+    green = "#92a38f"; # ok (kitty bright green)
+    yellow = "#cc9166"; # warning (kitty yellow)
+    blue = "#6c7f93"; # functions (func)
+    magenta = "#b894af"; # kitty magenta
+    cyan = "#8ea4a2"; # kitty cyan
+    urgent = "#a97070"; # error (keyword)
   };
 in {
   # -----------------------------------------------------------------------

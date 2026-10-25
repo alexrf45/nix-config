@@ -45,6 +45,13 @@ Work on a feature branch off `main` (never commit to `main`).
   selection bg, `overlay` = the inactive border, `accent` = the same blue-ish accent as kitty's
   active tab/border, `red`/`green`/`yellow` = error/ok/warning (pick readable ones, not
   near-background diff tints). Update the palette header comment with the theme name.
+- i3bar — the `bar { colors { … } }` block in `desktop-i3.nix`'s `extraConfig`. It reads
+  the palette (`background`/`statusline`/`separator` = `mantle`/`text`/`muted`; workspaces
+  `focused` = `accent`, `active` = `surface`, `inactive` = `mantle`, `urgent` = `urgent`,
+  `binding_mode` = `yellow`), so normally the palette edit covers it. Read the block anyway:
+  any hardcoded hex or a new key there should become a `${palette.*}` reference. Then check
+  that the bar text stays readable: `text`/`subtext` on `mantle`, and `base` on
+  `accent`/`urgent`/`yellow`.
 - `modules/home-manager/spotify-player.nix` — `theme = "<name>"` in `app.toml` plus the
   `theme.toml` block, whose palette mirrors kitty's (component styles map onto the theme's
   own palette roles).
