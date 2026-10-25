@@ -106,7 +106,7 @@ in {
         floating.modifier = mod;
 
         fonts = {
-          names = ["JetBrains Mono"];
+          names = ["Iosevka Nerd Font"];
           size = 10.0;
         };
 
@@ -252,11 +252,11 @@ in {
       # Debian config (client.* uses the original 4-field form).
       extraConfig =
         ''
-          # i3bar + i3status — palette-themed, UbuntuMono Nerd Font for glyphs.
+          # i3bar + i3status — palette-themed, Iosevka Nerd Font for glyphs.
           bar {
              position top
              mode hide
-             font pango:UbuntuMono Nerd Font 10
+             font pango:Iosevka Nerd Font 10
              height 20
              tray_output none
              i3bar_command i3bar --transparency
@@ -457,8 +457,20 @@ in {
       };
     };
 
+    # GTK apps follow the system Iosevka font.
+    gtk = {
+      enable = true;
+      font = {
+        name = "Iosevka Aile";
+        size = 10;
+      };
+    };
+
     # dunst notification daemon (replaces xfce4-notifyd/notification-daemon).
-    services.dunst.enable = true;
+    services.dunst = {
+      enable = true;
+      settings.global.font = "Iosevka Nerd Font 10";
+    };
 
     # X11 desktop runtime tools.
     home.packages = with pkgs; [
