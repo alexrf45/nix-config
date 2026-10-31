@@ -83,6 +83,7 @@
       # tmux / tmuxp
       t = "tmux";
       dev = "tmuxp load ~/.config/tmuxp/dev.yaml";
+      sec = "tmuxp load ~/.config/tmuxp/sec.yaml"; # HTB VPN + ~/htb
 
       # Python
       py = "python3";

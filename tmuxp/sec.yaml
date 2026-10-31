@@ -1,0 +1,17 @@
+# Security / HTB session: VPN up + working dir
+# Usage: tmuxp load ~/.config/tmuxp/sec.yaml   (alias: sec)
+session_name: sec
+windows:
+  - window_name: vpn
+    layout: tiled
+    panes:
+      # htb(): pulls the .ovpn from 1Password and runs sudo openvpn (foreground)
+      - htb
+  - window_name: htb
+    layout: tiled
+    panes:
+      - cd ~/htb
+  - window_name: scratch
+    layout: tiled
+    panes:
+      - cd ~/htb
