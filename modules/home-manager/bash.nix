@@ -339,6 +339,14 @@
         echo "Switched to AWS profile: $AWS_PROFILE"
       }
 
+      # Connect to HTB with the .ovpn pulled from 1Password into tmpfs
+      htb() {
+        local f
+        f=$(mktemp -p "$XDG_RUNTIME_DIR" htb.XXXXXX.ovpn) || return 1
+        op document get htb_vpn --vault Security > "$f" && sudo openvpn --config "$f"
+        rm -f "$f"
+      }
+
       # Bootstrap a new Python devenv project:
       #   pydev <name>   — create dir, init flake template, drop into devenv shell
       #   pydev <name>   — if dir exists, just enter the devenv shell
