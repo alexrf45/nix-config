@@ -77,6 +77,7 @@
   # tmuxp session files — placed at ~/.config/tmuxp/
   # -----------------------------------------------------------------------
   xdg.configFile."tmuxp/dev.yaml".source = ../../tmuxp/dev.yaml;
+  xdg.configFile."tmuxp/sec.yaml".source = ../../tmuxp/sec.yaml;
 
   # -----------------------------------------------------------------------
   # Firefox — managed via programs module for profile/settings control
