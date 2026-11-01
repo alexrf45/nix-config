@@ -69,7 +69,7 @@
       bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
       set -g status-right " "
-      set -g status-left "%H:%M:%S - "
+      set -g status-left " %Y-%m-%d %H:%M:%S "
       set -g status-style "fg=white,bg=default"
       set -g status-right-length 200
       set -g status-left-length 100
