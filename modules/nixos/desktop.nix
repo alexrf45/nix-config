@@ -9,6 +9,7 @@
     extraPackages = with pkgs; [
       grim # Screenshot capture
       slurp # Region selection (for screenshots)
+      satty # Annotation editor for screenshots (replaces flameshot's GUI)
       wl-clipboard # Wayland clipboard (wl-copy / wl-paste)
     ];
   };

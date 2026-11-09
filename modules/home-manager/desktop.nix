@@ -34,8 +34,10 @@ in
         smartGaps = true;
       };
 
-      window.border = 2;
+      window.border = 0;
       window.titlebar = false;
+      floating.border = 0;
+      floating.titlebar = false;
 
       # Dux opens its own windows (settings etc.) floating.
       window.commands = [
@@ -100,8 +102,8 @@ in
         "${mod}+r" = ''mode "resize"'';
         "${mod}+0" = ''mode "${systemMode}"'';
 
-        # screenshot (flameshot gui -> grim + slurp region to clipboard)
-        "${mod}+p" = ''exec grim -g "$(slurp)" - | wl-copy'';
+        # screenshot (flameshot gui -> grim + slurp region, annotate in satty)
+        "${mod}+p" = ''exec grim -g "$(slurp)" - | satty -f - --copy-command wl-copy --output-filename "$HOME/media/images/$(date +%Y-%m-%d_%H-%M-%S).png"'';
 
         # media / brightness keys
         "XF86AudioRaiseVolume"  = "exec pactl set-sink-volume @DEFAULT_SINK@ +10%";
@@ -163,6 +165,9 @@ in
       # output eDP-1 position 0,0
     '';
   };
+
+  # satty --output-filename won't create the directory itself.
+  systemd.user.tmpfiles.rules = ["d %h/media/images 0755 - - -"];
 
   home.packages = with pkgs; [
     wlr-randr # Output management (replaces xrandr)
