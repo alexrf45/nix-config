@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   # -----------------------------------------------------------------------
   # SSH daemon
@@ -30,6 +30,22 @@
   # -----------------------------------------------------------------------
   security.pam.services.login.enableGnomeKeyring = lib.mkForce false;
   services.gnome.gnome-keyring.enable = true;
+
+  # gdm-password sets useDefaultRules = false and only substacks `login`, so the mkForce
+  # above left the keyring locked under GDM; enableGnomeKeyring is ignored there.
+  security.pam.services.gdm-password.rules = {
+    auth.gnome_keyring = {
+      control = "optional";
+      modulePath = "${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so";
+      order = config.security.pam.services.gdm-password.rules.auth.login.order + 100;
+    };
+    session.gnome_keyring = {
+      control = "optional";
+      modulePath = "${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so";
+      settings.auto_start = true;
+      order = config.security.pam.services.gdm-password.rules.session.login.order + 100;
+    };
+  };
 
   # -----------------------------------------------------------------------
   # 1Password system integration
