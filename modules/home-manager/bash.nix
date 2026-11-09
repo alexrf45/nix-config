@@ -5,10 +5,6 @@
 }: {
   # -----------------------------------------------------------------------
   # Bash — all aliases and functions managed in Nix; no sourced dotfiles.
-  #
-  # Migrated from zsh (2026-09-13). Design rule: stay close to stock bash so
-  # muscle memory transfers to work boxes. Anything that only works because
-  # Home Manager installed it lives behind a feature test.
   # -----------------------------------------------------------------------
   programs.bash = {
     enable = true;
@@ -18,17 +14,8 @@
     historyFileSize = 20000;
     historyFile = "${config.home.homeDirectory}/.bash_history";
 
-    # erasedups ~ zsh ignoreAllDups; ignorespace ~ zsh HIST_IGNORE_SPACE
     historyControl = ["erasedups" "ignorespace"];
 
-    # autocd        ~ setopt AUTO_CD
-    # extglob       ~ setopt EXTENDED_GLOB
-    # dotglob       ~ setopt GLOB_DOTS
-    # histappend    ~ setopt INC_APPEND_HISTORY (paired with `history -a` below)
-    # histverify    ~ setopt HIST_VERIFY
-    # NOTE: `failglob` (~ setopt NOMATCH) is deliberately NOT set. It aborts
-    # commands whose globs match nothing, which is standard zsh behaviour but
-    # surprising in bash and absent on work boxes — a portability footgun.
     shellOptions = [
       "autocd"
       "checkjobs"
@@ -45,10 +32,8 @@
     # Aliases
     # -------------------------------------------------------------------
     shellAliases = {
-      # NixOS rebuild
       thoth = "sudo nixos-rebuild switch --flake \"github:alexrf45/nix-config#thoth\"";
 
-      # General
       r = ". ~/.bashrc";
       h = "cd ~";
       v = "nvim";
