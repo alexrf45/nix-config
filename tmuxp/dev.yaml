@@ -14,7 +14,7 @@ windows:
     layout: tiled
     panes:
       - cd ~/projects && lazygit
-  - window_name: run
+  - window_name: notes
     layout: tiled
     panes:
-      - cd ~/projects
+      - cd ~/notes/ && nvim .
