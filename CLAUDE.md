@@ -37,7 +37,7 @@ secrets/               SOPS-encrypted .yaml (age)
 Shared modules split into host variants where hardware differs — e.g. `hardware.nix` vs
 `hardware-intel.nix`. Both hosts were aligned on i3 (X11) via `desktop-x11.nix` + HM `desktop-i3.nix`; the
 Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) now layer a Sway + Dux Shell (`dux.nix`) session
-on top of it as a trial — pick it at LightDM; i3 stays the default session.
+on top of it as a trial — pick it at GDM (gear icon); i3 stays the default session.
 
 ## Key design decisions
 

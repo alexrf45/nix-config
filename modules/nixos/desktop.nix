@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   # -----------------------------------------------------------------------
-  # Sway (Wayland) session — layered on desktop-x11.nix (LightDM, fonts, xkb).
+  # Sway (Wayland) session — layered on desktop-x11.nix (GDM, fonts, xkb).
   # Per-user keybindings live in modules/home-manager/desktop.nix.
   # -----------------------------------------------------------------------
   programs.sway = {

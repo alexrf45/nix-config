@@ -95,7 +95,7 @@ in {
   config = {
     # -----------------------------------------------------------------------
     # i3 (X11) — faithful port of ~/.config/i3/config from the Debian setup.
-    # System-level i3/lightdm bits live in modules/nixos/desktop-x11.nix.
+    # System-level i3/GDM bits live in modules/nixos/desktop-x11.nix.
     # -----------------------------------------------------------------------
     xsession.windowManager.i3 = {
       enable = true;
