@@ -1,16 +1,18 @@
 { pkgs, ... }:
 let
+  # Keys mirror desktop-i3.nix so muscle memory carries across sessions.
   mod   = "Mod4";
   left  = "j";
   down  = "k";
   up    = "l";
   right = "semicolon";
   term  = "kitty";
-  menu  = "wmenu-run";
+  menu  = "dms ipc call spotlight toggle"; # Dux launcher (replaces rofi)
 
   systemMode = "(l)ock, (e)xit, (r)eboot, (Shift+s)hutdown";
 in
 {
+  # Sway + Dux Shell; system side in modules/nixos/desktop.nix + dux.nix.
   wayland.windowManager.sway = {
     enable = true;
     package = null;
@@ -22,18 +24,23 @@ in
       floating.modifier = mod;
 
       fonts = {
-        names = [ "JetBrains Mono" ];
+        names = [ "Iosevka Nerd Font" ];
         size = 10.0;
       };
 
       gaps = {
-        inner = 4;
-        outer = 2;
+        inner = 8;
+        outer = 4;
         smartGaps = true;
       };
 
-      window.border = 0;
+      window.border = 2;
       window.titlebar = false;
+
+      # Dux opens its own windows (settings etc.) floating.
+      window.commands = [
+        { criteria.app_id = "dev.duxlabs.shell"; command = "floating enable"; }
+      ];
 
       keybindings = {
         "${mod}+Return" = "exec ${term}";
@@ -96,28 +103,31 @@ in
         # screenshot (flameshot gui -> grim + slurp region to clipboard)
         "${mod}+p" = ''exec grim -g "$(slurp)" - | wl-copy'';
 
-        # media keys (Wayland-safe; no i3status refresh needed)
-        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +10%";
-        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -10%";
-        "XF86AudioMute"        = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioMicMute"     = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        # media / brightness keys
+        "XF86AudioRaiseVolume"  = "exec pactl set-sink-volume @DEFAULT_SINK@ +10%";
+        "XF86AudioLowerVolume"  = "exec pactl set-sink-volume @DEFAULT_SINK@ -10%";
+        "XF86AudioMute"         = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86AudioMicMute"      = "exec pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        "XF86MonBrightnessUp"   = "exec brightnessctl set +10%";
+        "XF86MonBrightnessDown" = "exec brightnessctl set 10%-";
       };
 
       modes = {
         resize = {
-          "${left}"  = "resize shrink width 10 px";
-          "${down}"  = "resize grow height 10 px";
-          "${up}"    = "resize shrink height 10 px";
-          "${right}" = "resize grow width 10 px";
-          "Left"     = "resize shrink width 10 px";
-          "Down"     = "resize grow height 10 px";
-          "Up"       = "resize shrink height 10 px";
-          "Right"    = "resize grow width 10 px";
+          "${left}"  = "resize shrink width 10 px or 10 ppt";
+          "${down}"  = "resize grow height 10 px or 10 ppt";
+          "${up}"    = "resize shrink height 10 px or 10 ppt";
+          "${right}" = "resize grow width 10 px or 10 ppt";
+          "Left"     = "resize shrink width 10 px or 10 ppt";
+          "Down"     = "resize grow height 10 px or 10 ppt";
+          "Up"       = "resize shrink height 10 px or 10 ppt";
+          "Right"    = "resize grow width 10 px or 10 ppt";
           "Return"   = ''mode "default"'';
           "Escape"   = ''mode "default"'';
+          "${mod}+r" = ''mode "default"'';
         };
         "${systemMode}" = {
-          "l"       = ''exec swaylock -i $HOME/.config/pictures/sky.png; mode "default"'';
+          "l"       = ''exec dms ipc call lock lock; mode "default"'';
           "e"       = ''exec swaymsg exit; mode "default"'';
           "r"       = ''exec systemctl reboot; mode "default"'';
           "Shift+s" = ''exec systemctl poweroff; mode "default"'';
@@ -132,15 +142,11 @@ in
       };
 
       startup = [
-        { command = "swaybg -i $HOME/.config/pictures/skull.jpg -m fill"; always = true; }
         { command = "kitty"; }
       ];
 
-      # waybar replaces the old i3bar/i3blocks status bar.
-      bars = [{
-        command = "${pkgs.waybar}/bin/waybar";
-        position = "top";
-      }];
+      # Dux Shell (dms.service, started by sway-session.target) draws the bar and wallpaper.
+      bars = [];
     };
 
     # base16-bright window border colours + display/idle tweaks.
@@ -151,31 +157,14 @@ in
       client.unfocused        #000000 #000000 #b0b0b0 #000000 #000000
       client.urgent           #fb0120 #fb0120 #ffffff #fb0120 #fb0120
 
-      # Disable screen blanking/DPMS (mirrors the old `xset s off -dpms`).
-      # No swayidle is configured, so the session never auto-locks.
-
-      # External display (the old i3 mirrored HDMI to the laptop panel).
-      # Output names depend on hardware — verify with `swaymsg -t get_outputs`
-      # and uncomment/adjust as needed:
+      # External display: names differ from X11 (HDMI-A-1 vs HDMI-1) — check
+      # `swaymsg -t get_outputs` and uncomment/adjust as needed:
       # output HDMI-A-1 mode 1920x1080 position 0,0
       # output eDP-1 position 0,0
     '';
   };
 
-  xdg.configFile."pictures/skull.jpg" = { source = ../../dotfiles/pictures/skull.jpg; force = true; };
-  xdg.configFile."pictures/sky.png"   = { source = ../../dotfiles/pictures/sky.png;   force = true; };
-
-  services.mako.enable = true;
-
   home.packages = with pkgs; [
-    waybar                 # Status bar (replaces i3blocks/i3status)
-    wofi                   # App launcher (rofi replacement)
-    wl-clipboard           # wl-copy / wl-paste (replaces xclip)
-    wlr-randr              # Output management (replaces xrandr)
-    networkmanagerapplet   # nm-applet for the tray
-    pavucontrol            # PipeWire/PulseAudio GUI volume control
-    brightnessctl          # Backlight/keyboard brightness
-    playerctl              # Media key control (MPRIS)
-    libnotify              # notify-send
+    wlr-randr # Output management (replaces xrandr)
   ];
 }

@@ -11,6 +11,8 @@
     ../../modules/nixos/networking.nix
     ../../modules/nixos/security.nix
     ../../modules/nixos/desktop-x11.nix      # Xorg + i3 (thoth-specific)
+    ../../modules/nixos/desktop.nix          # Sway session alongside i3 (pick at LightDM)
+    ../../modules/nixos/dux.nix              # Dux Shell (Sway session only)
     ../../modules/nixos/audio.nix
     ../../modules/nixos/virtualisation.nix
     ../../modules/nixos/smartcard.nix

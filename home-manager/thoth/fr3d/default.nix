@@ -19,6 +19,7 @@
     ../../../modules/home-manager/tmux.nix
     ../../../modules/home-manager/git.nix
     ../../../modules/home-manager/desktop-i3.nix # i3 (X11) — shared with horus
+    ../../../modules/home-manager/desktop.nix # Sway + Dux (Wayland), alongside i3
     ../../../modules/home-manager/dev-tools
     ../../../modules/home-manager/packages.nix
     ../../../modules/home-manager/ssh.nix

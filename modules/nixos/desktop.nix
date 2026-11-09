@@ -1,68 +1,18 @@
 {pkgs, ...}: {
   # -----------------------------------------------------------------------
-  # GDM + Sway (Wayland)
+  # Sway (Wayland) session — layered on desktop-x11.nix (LightDM, fonts, xkb).
+  # Per-user keybindings live in modules/home-manager/desktop.nix.
   # -----------------------------------------------------------------------
-  # Keyboard layout (consumed by GDM and the console; no Xorg required).
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # GDM display manager — runs on Wayland by default, correct host for Sway.
-  services.displayManager.gdm.enable = true;
-
-  # Sway compositor — sets up the wrapper, polkit, and required system bits.
-  # Per-user keybindings/bars live in modules/home-manager/desktop.nix.
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
-    extraOptions = ["--unsupported-gpu"];
     extraPackages = with pkgs; [
-      swaylock # Screen locker
-      swayidle # Idle management (lock/DPMS)
-      swaybg # Wallpaper
       grim # Screenshot capture
       slurp # Region selection (for screenshots)
       wl-clipboard # Wayland clipboard (wl-copy / wl-paste)
-      wofi # App launcher (Wayland-native)
     ];
   };
 
-  # -----------------------------------------------------------------------
-  # XDG portals (screen sharing, file picker, URI handling)
-  # -----------------------------------------------------------------------
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-wlr # wlroots backend for screen sharing under Sway
-    ];
-    config.common.default = "*";
-  };
-
-  # -----------------------------------------------------------------------
-  # Fonts
-  # -----------------------------------------------------------------------
-  fonts = {
-    enableDefaultPackages = true;
-    packages = with pkgs; [
-      nerd-fonts.iosevka # Primary terminal font (kitty config)
-      nerd-fonts.hack
-      nerd-fonts.fira-code
-      nerd-fonts.jetbrains-mono
-      noto-fonts
-      noto-fonts-color-emoji
-      liberation_ttf
-    ];
-    fontconfig = {
-      defaultFonts = {
-        monospace = ["UbuntuMono Nerd Font"];
-        sansSerif = ["Noto Sans"];
-        serif = ["Noto Serif"];
-      };
-    };
-  };
-
-  # VA-API hardware video decode is a per-GPU concern and lives in the host
-  # hardware module (radeonsi on horus's AMD iGPU).
+  # wlroots portal for screen sharing under Sway (gtk portal comes from desktop-x11.nix).
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-wlr];
 }

@@ -36,7 +36,8 @@ secrets/               SOPS-encrypted .yaml (age)
 
 Shared modules split into host variants where hardware differs — e.g. `hardware.nix` vs
 `hardware-intel.nix`. Both hosts were aligned on i3 (X11) via `desktop-x11.nix` + HM `desktop-i3.nix`; the
-Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but unused (Wayland fallback).
+Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) now layer a Sway + Dux Shell (`dux.nix`) session
+on top of it as a trial — pick it at LightDM; i3 stays the default session.
 
 ## Key design decisions
 
@@ -55,7 +56,7 @@ Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) are retained but un
      (`spotify-player`).
 - Home Manager integrated (`useGlobalPkgs = true`); overlays declared in `hosts/<host>/default.nix`, not in home.nix.
 - horus GPU (retired host): NVIDIA PRIME offload (AMD drives the display, NVIDIA on demand).
-- Sound: PipeWire + WirePlumber; Display: i3 (X11) (horus was aligned to thoth before retirement). Sway modules kept but unused.
+- Sound: PipeWire + WirePlumber; Display: i3 (X11) (horus was aligned to thoth before retirement); Sway + Dux Shell available as a second session (trial).
 - Secrets: SOPS + age (key at `~/.config/sops/age/keys.txt`, never in the repo → `/run/secrets/` after activation).
 
 > **Note:** the security-research tooling (CTF/pentest devShells, `secBundles`, the `scrt`
