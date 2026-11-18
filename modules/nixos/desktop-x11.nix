@@ -34,7 +34,8 @@
   # GDM's mutter reads lid state from UPower; without it the prompt lands on the closed laptop panel.
   services.upower.enable = true;
 
-  # No defaultSession: under GDM it forces SessionType=x11, which can launch Sway nested in Xorg.
+  # Pins AccountsService to sway/wayland on each GDM start; a stale x11 type nested Sway in Xorg.
+  services.displayManager.defaultSession = "sway";
 
   # -----------------------------------------------------------------------
   # XDG portals (file picker, screenshot, URI handling under X11)

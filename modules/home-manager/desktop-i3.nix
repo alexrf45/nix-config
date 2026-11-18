@@ -60,6 +60,14 @@
     cyan = "#8ea4a2"; # kitty cyan
     urgent = "#a97070"; # error (keyword)
   };
+
+  # Package autostart entries that duplicate Dux Shell under Sway; keep them X11-only.
+  x11OnlyAutostart = name: src:
+    pkgs.runCommand name {} ''
+      existing=$(sed -n 's/^NotShowIn=//p' ${src})
+      sed '/^NotShowIn=/d' ${src} > $out
+      echo "NotShowIn=''${existing}sway;wlroots;" >> $out
+    '';
 in {
   # -----------------------------------------------------------------------
   # Per-host knobs — the i3 config below is shared between horus and thoth;
@@ -470,6 +478,19 @@ in {
     services.dunst = {
       enable = true;
       settings.global.font = "Iosevka Nerd Font 10";
+    };
+
+    # X11 only — under Sway, Dux Shell owns org.freedesktop.Notifications.
+    systemd.user.services.dunst.Unit.ConditionEnvironment = "XDG_SESSION_TYPE=x11";
+
+    # Same split for the tray/compositor autostarts Dux Shell replaces under Sway.
+    xdg.configFile = {
+      "autostart/picom.desktop".source =
+        x11OnlyAutostart "picom-autostart-x11" "${pkgs.picom}/etc/xdg/autostart/picom.desktop";
+      "autostart/nm-applet.desktop".source =
+        x11OnlyAutostart "nm-applet-autostart-x11" "${pkgs.networkmanagerapplet}/etc/xdg/autostart/nm-applet.desktop";
+      "autostart/blueman.desktop".source =
+        x11OnlyAutostart "blueman-autostart-x11" "${pkgs.blueman}/etc/xdg/autostart/blueman.desktop";
     };
 
     # X11 desktop runtime tools.

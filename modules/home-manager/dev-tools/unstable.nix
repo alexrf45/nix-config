@@ -3,7 +3,6 @@
   home.packages = [
     pkgs-unstable.claude-code
     pkgs-unstable.devenv
-    pkgs._1password-gui-beta
   ];
 
   # direnv — auto-activates .envrc on cd; nix-direnv adds `use flake` and

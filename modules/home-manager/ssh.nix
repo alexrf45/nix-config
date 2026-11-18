@@ -19,6 +19,9 @@
     };
   };
 
+  # gnome-keyring (PAM, security.nix) claims SSH_AUTH_SOCK under GDM, which breaks op-ssh-sign.
+  home.sessionVariables.SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
+
   # 1Password SSH agent — expose keys from all relevant vaults.
   # Private vault is the default; HomeLab holds infrastructure keys.
   xdg.configFile."1Password/ssh/agent.toml".text = ''
