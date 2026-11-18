@@ -29,6 +29,8 @@ lspci | grep -E 'VGA|3D'
 ## thoth only — reminders
 
 - The `vmd` initrd module must stay enabled (Intel VMD; the NVMe disk won't be found without it).
+- The desktop session is Sway + Dux (Wayland), pinned via `defaultSession = "sway"`; i3 (X11) is
+  the fallback. Verify a session change with a full reboot — see `docs/desktop.md`.
 - `/home` (sda1) is preserved across reinstall — do not reformat it.
 - CIFS `/mnt/home-drive` credentials live at `/etc/nixos/smb-secrets` (prefer migrating to sops).
 - `vault-task-sync` runs from a working checkout, not the Nix store. On a fresh
