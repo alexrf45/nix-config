@@ -22,6 +22,7 @@ Stable `nixos-26.05` · select `nixos-unstable` overlay · Home Manager · secre
 | [`CLAUDE.md`](./CLAUDE.md) | Architecture, hosts, structure, and key design decisions |
 | [`docs/bootstrap.md`](./docs/bootstrap.md) | First-time install / setup |
 | [`docs/hardware.md`](./docs/hardware.md) | Hardware, storage, and boot detail |
+| [`docs/desktop.md`](./docs/desktop.md) | Desktop sessions — Sway + Dux (default), i3 (X11) fallback |
 
 ## Build / switch
 

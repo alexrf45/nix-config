@@ -6,10 +6,10 @@ Home Manager as an integrated module (`useGlobalPkgs`); secrets via SOPS + age.
 
 ## Hosts
 
-| Host    | Machine                | GPU                            | Desktop        | Role                           | Status  |
-|---------|------------------------|--------------------------------|----------------|--------------------------------|---------|
-| `thoth` | Intel i5-1155G7        | Intel Iris Xe                  | i3 (X11)       | writing / research / dev daily driver | active  |
-| `horus` | Acer Nitro 5           | AMD iGPU + NVIDIA (PRIME)      | i3 (X11)       | former workstation             | retired |
+| Host    | Machine                | GPU                            | Desktop                          | Role                           | Status  |
+|---------|------------------------|--------------------------------|----------------------------------|--------------------------------|---------|
+| `thoth` | Intel i5-1155G7        | Intel Iris Xe                  | Sway + Dux (Wayland); i3 fallback | writing / research / dev daily driver | active  |
+| `horus` | Acer Nitro 5           | AMD iGPU + NVIDIA (PRIME)      | i3 (X11)                         | former workstation             | retired |
 
 Build/switch: `sudo nixos-rebuild switch --flake .#thoth` (see the `/rebuild` command).
 
@@ -19,7 +19,8 @@ Build/switch: `sudo nixos-rebuild switch --flake .#thoth` (see the `/rebuild` co
 > `flake.nix` (a copy of the `thoth` block pointing at `./hosts/horus`), expect to fix eval
 > drift, and set the real PRIME bus IDs first (`docs/bootstrap.md`).
 
-Hardware/storage/boot detail lives in `docs/hardware.md`; first-time setup in `docs/bootstrap.md`.
+Hardware/storage/boot detail lives in `docs/hardware.md`; first-time setup in `docs/bootstrap.md`;
+the two desktop sessions (GDM pinning, Dux, X11/Wayland split) in `docs/desktop.md`.
 
 ## Structure
 
@@ -35,9 +36,11 @@ secrets/               SOPS-encrypted .yaml (age)
 ```
 
 Shared modules split into host variants where hardware differs — e.g. `hardware.nix` vs
-`hardware-intel.nix`. Both hosts were aligned on i3 (X11) via `desktop-x11.nix` + HM `desktop-i3.nix`; the
-Sway modules (`modules/nixos/desktop.nix`, HM `desktop.nix`) now layer a Sway + Dux Shell (`dux.nix`) session
-on top of it as a trial — pick it at GDM (gear icon); GDM remembers the last session.
+`hardware-intel.nix`. thoth has **consolidated on Wayland**: Sway + Dux Shell
+(`modules/nixos/desktop.nix` + `dux.nix`, HM `desktop.nix`) is the default session, pinned via
+`defaultSession = "sway"`. i3 (X11) (`desktop-x11.nix` + HM `desktop-i3.nix`) is the fallback,
+pickable at the GDM gear icon. `desktop-x11.nix` also carries what both sessions need (GDM, fonts,
+xkb, portals), so it stays imported — see `docs/desktop.md`.
 
 ## Key design decisions
 
@@ -56,7 +59,7 @@ on top of it as a trial — pick it at GDM (gear icon); GDM remembers the last s
      (`spotify-player`).
 - Home Manager integrated (`useGlobalPkgs = true`); overlays declared in `hosts/<host>/default.nix`, not in home.nix.
 - horus GPU (retired host): NVIDIA PRIME offload (AMD drives the display, NVIDIA on demand).
-- Sound: PipeWire + WirePlumber; Display: i3 (X11) (horus was aligned to thoth before retirement); Sway + Dux Shell available as a second session (trial).
+- Sound: PipeWire + WirePlumber; Display: Sway + Dux Shell (Wayland) is the default session, i3 (X11) the fallback — `docs/desktop.md`.
 - Secrets: SOPS + age (key at `~/.config/sops/age/keys.txt`, never in the repo → `/run/secrets/` after activation).
 
 > **Note:** the security-research tooling (CTF/pentest devShells, `secBundles`, the `scrt`

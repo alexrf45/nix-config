@@ -52,6 +52,10 @@ Work on a feature branch off `main` (never commit to `main`).
   any hardcoded hex or a new key there should become a `${palette.*}` reference. Then check
   that the bar text stays readable: `text`/`subtext` on `mantle`, and `base` on
   `accent`/`urgent`/`yellow`.
+- `modules/home-manager/desktop.nix` (Sway, the default session) — the `client.*` lines in
+  `extraConfig` are hardcoded hex, not the i3 `palette`. Map them the same way: `focused` =
+  `accent`, `focused_inactive` = `overlay`/`mantle`, `unfocused` = `base`, `urgent` = `urgent`.
+  Dux Shell generates its own bar/launcher theme, so there is nothing to edit for it.
 - `modules/home-manager/spotify-player.nix` — `theme = "<name>"` in `app.toml` plus the
   `theme.toml` block, whose palette mirrors kitty's (component styles map onto the theme's
   own palette roles).
@@ -65,4 +69,4 @@ Work on a feature branch off `main` (never commit to `main`).
 3. Commit (`feat: switch colorscheme to <name>`), push, PR into `main`. Remind the user
    the nvim plugin itself is fetched by lazy.nvim at runtime, so first launch after
    `switch` needs network; kitty picks the palette up on `switch` + restart; i3 borders/bar need `$mod+Shift+r`
-   (or a re-login), and rofi picks it up on next launch.
+   (or a re-login), Sway borders need `$mod+Shift+r` (reload), and rofi picks it up on next launch.
